@@ -61,7 +61,7 @@ public class GameMap {
         this.chest = new Chest(world, 6, 6);
 
         // TODO: The path file should come from somewhere else --> user should be able to choose the file
-        this.loadDrawablesFromProperties("/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
+        this.loadDrawablesFromProperties("C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
     }
 
     /**
@@ -167,5 +167,20 @@ public class GameMap {
         return backgroundElements.stream()
                 .flatMap(List::stream)
                 .toList();
+    }
+    /**
+     * Returns the width of the map in terms of the number of tiles.
+     * It calculates the maximum X-coordinate based on the loaded properties.
+     */
+    public int getWidth() {
+        return !backgroundElements.isEmpty() ? backgroundElements.size() : 0;
+    }
+
+    /**
+     * Returns the height of the map in terms of the number of tiles.
+     * It calculates the maximum Y-coordinate based on the loaded properties.
+     */
+    public int getHeight() {
+        return !backgroundElements.isEmpty() ? backgroundElements.get(0).size() : 0;
     }
 }
