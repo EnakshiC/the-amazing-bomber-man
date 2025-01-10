@@ -135,7 +135,6 @@ public class GameScreen implements Screen {
         for (Drawable paths : map.getPath()) {
             draw(spriteBatch, paths);
         }
-        draw(spriteBatch, map.getChest());
         draw(spriteBatch, map.getPlayer());
 
         // Finish drawing, i.e. send the drawn items to the graphics card

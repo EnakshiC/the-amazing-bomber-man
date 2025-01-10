@@ -47,8 +47,6 @@ public class GameMap {
     
     // Game objects
     private final Player player;
-    
-    private final Chest chest;
 
     private final List<List<Drawable>> backgroundElements = new ArrayList<>();
     
@@ -56,12 +54,11 @@ public class GameMap {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
         // Create a player with initial position (1, 3)
-        this.player = new Player(this.world, 1, 5);
-        // Create a chest in the middle of the map
-        this.chest = new Chest(world, 6, 6);
+        this.player = new Player(this.world, 1, 10);
 
         // TODO: The path file should come from somewhere else --> user should be able to choose the file
-        this.loadDrawablesFromProperties("C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
+        // this.loadDrawablesFromProperties("C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
+        this.loadDrawablesFromProperties("/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
     }
 
     /**
@@ -79,21 +76,24 @@ public class GameMap {
             // TODO: get real size of loaded map
 
             // Iterate over every row and every colum and add the Drawable found under this key
-            for (int x = 0; x < getMaxX(properties) + 1; x++) {
+            for (int x = 0; x < getMapWith(properties) + 1; x++) {
                 List<Drawable> row = new ArrayList<>();
-                for (int y = 0; y < getMaxY(properties) + 1; y++) {
+                for (int y = 0; y < getMapHeight(properties) + 1; y++) {
                     if (properties.containsKey(x + "," + y)) {
                         int value = Integer.parseInt(properties.getProperty(x + "," + y));
 
                         // TODO: Add the real property!
                         if (value == 0) {
-                             row.add(new Path(x, y));
-                        } else {
-                            row.add(new Flowers(x, y));
+                             row.add(new IndestructibleWall(world, x, y));
+                        } else if (value == 1){
+                            row.add(new DestructibleWall(world, x, y));
+                        }
+                        else {
+                            row.add(new Path(x, y));
                         }
                     } else {
                         // Fallback if a certain set of coordinates is not present in the property file
-                        row.add(new Flowers(x, y));
+                        row.add(new Path(x, y));
                     }
                 }
                 this.backgroundElements.add(row);
@@ -104,11 +104,11 @@ public class GameMap {
     }
 
     /**
-     * Returns the max x value of this map
+     * Returns the width of this map
      * @param properties is the map file
      * @return the maximum value that x can have
      */
-    public int getMaxX(Properties properties) {
+    public int getMapWith(Properties properties) {
         return properties.keySet().stream()
                 .map(key -> key.toString().split(",")[0])
                 .mapToInt(Integer::parseInt)
@@ -117,11 +117,11 @@ public class GameMap {
     }
 
     /**
-     * Returns the max y value of this map
+     * Returns the height of this map
      * @param properties is the map file
      * @return the maximum value that y can have
      */
-    public int getMaxY(Properties properties) {
+    public int getMapHeight(Properties properties) {
         return properties.keySet().stream()
                 .map(key -> key.toString().split(",")[1])
                 .mapToInt(Integer::parseInt)
@@ -157,30 +157,10 @@ public class GameMap {
         return player;
     }
     
-    /** Returns the chest on the map. */
-    public Chest getChest() {
-        return chest;
-    }
-    
     /** Returns the flowers on the map. */
     public List<Drawable> getPath() {
         return backgroundElements.stream()
                 .flatMap(List::stream)
                 .toList();
-    }
-    /**
-     * Returns the width of the map in terms of the number of tiles.
-     * It calculates the maximum X-coordinate based on the loaded properties.
-     */
-    public int getWidth() {
-        return !backgroundElements.isEmpty() ? backgroundElements.size() : 0;
-    }
-
-    /**
-     * Returns the height of the map in terms of the number of tiles.
-     * It calculates the maximum Y-coordinate based on the loaded properties.
-     */
-    public int getHeight() {
-        return !backgroundElements.isEmpty() ? backgroundElements.get(0).size() : 0;
     }
 }
