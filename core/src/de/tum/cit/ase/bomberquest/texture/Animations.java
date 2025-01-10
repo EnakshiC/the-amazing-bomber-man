@@ -55,9 +55,6 @@ public class Animations {
             SpriteSheet.CHARACTER.at(2, 4)
     );
 
-
-
-
     /**
      * The animation for the character standing still.
      * Uses the frame at row 1, column 1 of the sprite sheet.
