@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
      * The scale of the game.
      * This is used to make everything in the game look bigger or smaller.
      */
-    public static final int SCALE = 3;
+    public static final int SCALE = 2;
 
     private final BomberQuestGame game;
     private final SpriteBatch spriteBatch;
@@ -104,7 +104,7 @@ public class GameScreen implements Screen {
         
         // Render everything in the map here, in order from lowest to highest (later things appear on top)
         // You may want to add a method to GameMap to return all the drawables in the correct order
-        for (Path paths : map.getPath()) {
+        for (Drawable paths : map.getPath()) {
             draw(spriteBatch, paths);
         }
         draw(spriteBatch, map.getChest());

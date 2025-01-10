@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
-
-import java.util.Arrays;
+import de.tum.cit.ase.bomberquest.texture.Drawable;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Properties;
 import java.util.List;
 
 /**
@@ -46,8 +49,8 @@ public class GameMap {
     private final Player player;
     
     private final Chest chest;
-    
-    private final Path[][] paths;
+
+    private final List<List<Drawable>> backgroundElements = new ArrayList<>();
     
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -56,15 +59,50 @@ public class GameMap {
         this.player = new Player(this.world, 1, 5);
         // Create a chest in the middle of the map
         this.chest = new Chest(world, 6, 6);
-        // Create flowers in a 7x7 grid
-        this.paths = new Path[13][13];
-        for (int i = 0; i < paths.length; i++) {
-            for (int j = 0; j < paths[i].length; j++) {
-                this.paths[i][j] = new Path(i, j);
+
+        // TODO: The path file should come from somewhere else --> user should be able to choose the file
+        this.loadDrawablesFromProperties("/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
+    }
+
+    /**
+     * Loads properties from a files at the given path and adds the drawables to this.
+     * Checks for the correct form.
+     * @param path is the absolute path to the file.
+     */
+    private void loadDrawablesFromProperties(String path) {
+        Properties properties = new Properties();
+        try {
+            // Load the property file from the given path
+            FileInputStream input = new FileInputStream(path);
+            properties.load(input);
+
+            // TODO: get real size of loaded map
+
+            // Iterate over every row and every colum and add the Drawable found under this key
+            for (int x = 0; x < 21; x++) {
+                List<Drawable> row = new ArrayList<>();
+                for (int y = 0; y < 21; y++) {
+                    if (properties.containsKey(x + "," + y)) {
+                        int value = Integer.parseInt(properties.getProperty(x + "," + y));
+
+                        // TODO: Add the real property!
+                        if (value == 0) {
+                             row.add(new Path(x, y));
+                        } else {
+                            row.add(new Flowers(x, y));
+                        }
+                    } else {
+                        // Fallback if a certain set of coordinates is not present in the property file
+                        row.add(new Path(x, y));
+                    }
+                }
+                this.backgroundElements.add(row);
             }
+        } catch (IOException e) {
+            System.err.println("Error loading .properties-file: " + e.getMessage());
         }
     }
-    
+
     /**
      * Updates the game state. This is called once per frame.
      * Every dynamic object in the game should update its state here.
@@ -99,7 +137,9 @@ public class GameMap {
     }
     
     /** Returns the flowers on the map. */
-    public List<Path> getPath() {
-        return Arrays.stream(paths).flatMap(Arrays::stream).toList();
+    public List<Drawable> getPath() {
+        return backgroundElements.stream()
+                .flatMap(List::stream)
+                .toList();
     }
 }
