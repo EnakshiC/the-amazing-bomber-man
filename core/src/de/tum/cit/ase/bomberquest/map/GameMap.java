@@ -79,9 +79,9 @@ public class GameMap {
             // TODO: get real size of loaded map
 
             // Iterate over every row and every colum and add the Drawable found under this key
-            for (int x = 0; x < 21; x++) {
+            for (int x = 0; x < getMaxX(properties) + 1; x++) {
                 List<Drawable> row = new ArrayList<>();
-                for (int y = 0; y < 21; y++) {
+                for (int y = 0; y < getMaxY(properties) + 1; y++) {
                     if (properties.containsKey(x + "," + y)) {
                         int value = Integer.parseInt(properties.getProperty(x + "," + y));
 
@@ -93,7 +93,7 @@ public class GameMap {
                         }
                     } else {
                         // Fallback if a certain set of coordinates is not present in the property file
-                        row.add(new Path(x, y));
+                        row.add(new Flowers(x, y));
                     }
                 }
                 this.backgroundElements.add(row);
@@ -101,6 +101,32 @@ public class GameMap {
         } catch (IOException e) {
             System.err.println("Error loading .properties-file: " + e.getMessage());
         }
+    }
+
+    /**
+     * Returns the max x value of this map
+     * @param properties is the map file
+     * @return the maximum value that x can have
+     */
+    public int getMaxX(Properties properties) {
+        return properties.keySet().stream()
+                .map(key -> key.toString().split(",")[0])
+                .mapToInt(Integer::parseInt)
+                .max()
+                .orElse(0);
+    }
+
+    /**
+     * Returns the max y value of this map
+     * @param properties is the map file
+     * @return the maximum value that y can have
+     */
+    public int getMaxY(Properties properties) {
+        return properties.keySet().stream()
+                .map(key -> key.toString().split(",")[1])
+                .mapToInt(Integer::parseInt)
+                .max()
+                .orElse(0);
     }
 
     /**
