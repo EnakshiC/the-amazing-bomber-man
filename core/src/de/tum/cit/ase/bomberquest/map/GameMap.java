@@ -47,20 +47,20 @@ public class GameMap {
     
     private final Chest chest;
     
-    private final Flowers[][] flowers;
+    private final Path[][] paths;
     
     public GameMap(BomberQuestGame game) {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
         // Create a player with initial position (1, 3)
-        this.player = new Player(this.world, 1, 3);
+        this.player = new Player(this.world, 1, 5);
         // Create a chest in the middle of the map
-        this.chest = new Chest(world, 3, 3);
+        this.chest = new Chest(world, 6, 6);
         // Create flowers in a 7x7 grid
-        this.flowers = new Flowers[7][7];
-        for (int i = 0; i < flowers.length; i++) {
-            for (int j = 0; j < flowers[i].length; j++) {
-                this.flowers[i][j] = new Flowers(i, j);
+        this.paths = new Path[13][13];
+        for (int i = 0; i < paths.length; i++) {
+            for (int j = 0; j < paths[i].length; j++) {
+                this.paths[i][j] = new Path(i, j);
             }
         }
     }
@@ -99,7 +99,7 @@ public class GameMap {
     }
     
     /** Returns the flowers on the map. */
-    public List<Flowers> getFlowers() {
-        return Arrays.stream(flowers).flatMap(Arrays::stream).toList();
+    public List<Path> getPath() {
+        return Arrays.stream(paths).flatMap(Arrays::stream).toList();
     }
 }

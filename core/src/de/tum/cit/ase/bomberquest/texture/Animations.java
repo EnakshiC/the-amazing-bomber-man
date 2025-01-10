@@ -13,11 +13,18 @@ public class Animations {
     /**
      * The animation for the character walking down.
      */
-    public static final Animation<TextureRegion> CHARACTER_WALK_DOWN = new Animation<>(0.1f,
+    public static final Animation<TextureRegion> CHARACTER_WALK_DOWN = new Animation<>(0.2f,
             SpriteSheet.CHARACTER.at(1, 1),
             SpriteSheet.CHARACTER.at(1, 2),
             SpriteSheet.CHARACTER.at(1, 3),
             SpriteSheet.CHARACTER.at(1, 4)
+    );
+
+    /**
+     * The animation for the character standing
+     */
+    public static final Animation<TextureRegion> CHARACTER_STANDING = new Animation<>(0.2f,
+            SpriteSheet.CHARACTER.at(1, 1)
     );
     
 }

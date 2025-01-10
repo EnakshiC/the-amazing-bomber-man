@@ -1,12 +1,18 @@
 package de.tum.cit.ase.bomberquest.map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
+import de.tum.cit.ase.bomberquest.texture.SpriteSheet;
+
+import java.util.Objects;
 
 /**
  * Represents the player character in the game.
@@ -66,13 +72,31 @@ public class Player implements Drawable {
         // Make the player move in a circle with radius 2 tiles
         // You can change this to make the player move differently, e.g. in response to user input.
         // See Gdx.input.isKeyPressed() for keyboard input
-        float xVelocity = (float) Math.sin(this.elapsedTime) * 2;
-        float yVelocity = (float) Math.cos(this.elapsedTime) * 2;
+
+        float xVelocity = 0.0f;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            xVelocity = 2.0f;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            xVelocity = -2.0f;
+        }
+
+        float yVelocity = 0.0f;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            yVelocity = 2.0f;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            yVelocity = -2.0f;
+        }
+
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);
     }
     
     @Override
     public TextureRegion getCurrentAppearance() {
+        // If character is not moving (velocity is 0.0) return standing frame
+        if (Objects.equals(this.hitbox.getLinearVelocity(), new Vector2(0.0f, 0.0f))) {
+            return SpriteSheet.CHARACTER.at(1, 1);
+        }
+
         // Get the frame of the walk down animation that corresponds to the current time.
         return Animations.CHARACTER_WALK_DOWN.getKeyFrame(this.elapsedTime, true);
     }

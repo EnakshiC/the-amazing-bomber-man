@@ -52,7 +52,7 @@ public class BomberQuestGame extends Game {
     /**
      * Called when the game is created. Initializes the SpriteBatch and Skin.
      * During the class constructor, libGDX is not fully initialized yet.
-     * Therefore this method serves as a second constructor for the game,
+     * Therefore, this method serves as a second constructor for the game,
      * and we can use libGDX resources here.
      */
     @Override
@@ -60,7 +60,7 @@ public class BomberQuestGame extends Game {
         this.spriteBatch = new SpriteBatch(); // Create SpriteBatch for rendering
         this.skin = new Skin(Gdx.files.internal("skin/craftacular/craftacular-ui.json")); // Load UI skin
         this.map = new GameMap(this); // Create a new game map (you should change this to load the map from a file instead)
-        MusicTrack.BACKGROUND.play(); // Play some background music
+        // MusicTrack.BACKGROUND.play(); // Play some background music
         goToMenu(); // Navigate to the menu screen
     }
 
