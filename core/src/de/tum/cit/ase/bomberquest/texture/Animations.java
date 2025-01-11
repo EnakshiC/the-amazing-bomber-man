@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * These can be referenced anywhere they are needed.
  */
 public class Animations {
-    
+
     /**
      * The animation for the character walking down.
      * Uses frames from row 1, columns 1-4 of the sprite sheet.
@@ -62,5 +62,19 @@ public class Animations {
     public static final Animation<TextureRegion> CHARACTER_STANDING = new Animation<>(0.2f,
             SpriteSheet.CHARACTER.at(1, 1)
     );
-    
+
+    /**
+     * The animation for the bomb explosion's center.
+     */
+    public static final Animation<TextureRegion> EXPLOSION_CENTER = new Animation<>(0.05f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 3),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 8),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 3),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 3)
+
+    );
 }

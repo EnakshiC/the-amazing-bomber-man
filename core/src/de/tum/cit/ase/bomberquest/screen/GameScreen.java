@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.map.Bomb;
+import de.tum.cit.ase.bomberquest.map.BombExplosion;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 
@@ -140,6 +141,10 @@ public class GameScreen implements Screen {
 
         for (Bomb bomb : map.getBombsInPlay()) {
             draw(spriteBatch, bomb);
+        }
+
+        for (BombExplosion explosion : map.getExplosionTiles()) {
+            draw(spriteBatch, explosion);
         }
 
         draw(spriteBatch, map.getExit());

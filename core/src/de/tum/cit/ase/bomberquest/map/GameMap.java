@@ -5,15 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
-import de.tum.cit.ase.bomberquest.screen.GameScreen;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.GameContactListener;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.List;
 
 /**
@@ -65,6 +61,9 @@ public class GameMap {
     private final Exit exit;
 
     private List<Bomb> bombsInPlay = new ArrayList<>();
+    private final List<Bomb> bombsToExplode = new ArrayList<>();
+
+    private final List<BombExplosion> explosionTiles = new ArrayList<>();
 
     private final List<List<Drawable>> backgroundElements;
 
@@ -97,8 +96,19 @@ public class GameMap {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.M)) bombsInPlay = new ArrayList<>();
 
+        for (Bomb b : bombsInPlay) b.tick(frameTime);
+
+        for (BombExplosion e : explosionTiles) e.tick(frameTime);
+
         this.player.tick(frameTime);
         doPhysicsStep(frameTime);
+
+        // Remove bombs that are due this cycle
+        for (Bomb b : bombsToExplode) {
+            explodeBomb(b);
+            bombsInPlay.remove(b);
+        }
+
     }
 
     /**
@@ -138,8 +148,12 @@ public class GameMap {
             }
         }
 
-        if (!alredayBombOnTile) bombsInPlay.add(new Bomb(world, playerTileX, playerTileY));
+        if (!alredayBombOnTile) bombsInPlay.add(new Bomb(playerTileX, playerTileY, () -> {}, bombsToExplode));
 
+    }
+
+    private void explodeBomb(Bomb bomb) {
+        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()));
     }
 
     /**
@@ -155,6 +169,10 @@ public class GameMap {
 
     public List<Bomb> getBombsInPlay() {
         return bombsInPlay;
+    }
+
+    public List<BombExplosion> getExplosionTiles() {
+        return explosionTiles;
     }
 
     /**

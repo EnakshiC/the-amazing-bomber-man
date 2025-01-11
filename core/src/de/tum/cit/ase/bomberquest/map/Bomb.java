@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
 
+import java.util.List;
+
 // TODO: Implement Bomb
 public class Bomb implements Drawable {
 
@@ -15,30 +17,39 @@ public class Bomb implements Drawable {
     private final float x;
     private final float y;
 
-    public Bomb(World world, float x, float y) {
+    /**
+     * Tracks the time elapsed since the bomb has been placed, measured in seconds.
+     * It is incremented in each game tick with the frame's elapsed time.
+     * When the value reaches or exceeds the predefined fuse duration, the bomb explodes.
+     */
+    private float fuseTimer = 0.0f;
+    private final Runnable onExplode;
+
+    /** When adding itself to this list, the bomb will be removed next tick cycle. */
+    private final List<Bomb> bombsToBeRemovedNextCycle;
+
+    public Bomb(float x, float y, Runnable onExplode, List<Bomb> bombsToBeRemovedNextCycle) {
         this.x = x;
         this.y = y;
-        createHitbox(world);
+
+        this.onExplode = onExplode;
+        this.bombsToBeRemovedNextCycle = bombsToBeRemovedNextCycle;
     }
 
-    private void createHitbox(World world) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(this.x, this.y);
+    public void tick(float frameTime) {
+        fuseTimer += frameTime;
+        if (fuseTimer >= FUSE_TIME) {
+            fuseTimer = 0.0f;
 
-        Body body = world.createBody(bodyDef);
+            if (onExplode != null) {
+                onExplode.run();
+            }
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
+            if (bombsToBeRemovedNextCycle != null) {
+                bombsToBeRemovedNextCycle.add(this);
+            }
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.isSensor = true;
-
-        body.createFixture(fixtureDef);
-        shape.dispose();
-
-        body.setUserData(this);
+        }
     }
     
     @Override
@@ -54,11 +65,5 @@ public class Bomb implements Drawable {
     @Override
     public float getY() {
         return this.y;
-    }
-
-    public void onContact(Object other) {
-        if (other instanceof Player) {
-            System.out.println("Hit!");
-        }
     }
 }
