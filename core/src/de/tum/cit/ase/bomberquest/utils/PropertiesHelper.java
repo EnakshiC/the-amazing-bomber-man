@@ -23,7 +23,7 @@ public class PropertiesHelper {
 
     private static String currentFilePath = FALLBACK_PATH;
 
-    private static String exitCoordinates = null;
+    private static String exitCoordinates;
 
 
     /**
@@ -41,7 +41,6 @@ public class PropertiesHelper {
             System.err.println("Error loading .properties file: " + e.getMessage());
         }
 
-        ensureExitExists(properties);
         return properties;
     }
 
@@ -94,6 +93,9 @@ public class PropertiesHelper {
 
         if (isMapValid(properties)) {
             currentFilePath = path;
+            // Reset the exit
+            exitCoordinates = null;
+
             return 0;
         } else {
             System.err.println("Invalid map file. Reverting to fallback.");
@@ -165,12 +167,7 @@ public class PropertiesHelper {
 
 
     /**
-     * Retrieves the x-coordinate of the player's entrance.
-     * <p>
-     * The method scans the properties of the current map to find the first key
-     * where the value is "2", representing the player's entrance. The key is
-     * expected to be in the format "x,y". If no entrance is found, it defaults to 0.
-     *
+     * Retrieves the x-coordinate of the player's entrance from the properties file.
      * @return the x-coordinate of the player's entrance, or 0 if no entrance is found.
      */
     public static int getPlayerEntranceX() {
@@ -183,12 +180,7 @@ public class PropertiesHelper {
     }
 
     /**
-     * Retrieves the y-coordinate of the player's entrance.
-     * <p>
-     * The method scans the properties of the current map to find the first key
-     * where the value is "2", representing the player's entrance. The key is
-     * expected to be in the format "x,y". If no entrance is found, it defaults to 0.
-     *
+     * Retrieves the y-coordinate of the player's entrance from the properties file.
      * @return the y-coordinate of the player's entrance, or 0 if no entrance is found.
      */
     public static int getPlayerEntranceY() {
@@ -200,7 +192,6 @@ public class PropertiesHelper {
                 .orElse(0); // Default to 0 if no entrance is found
     }
 
-    //TODO: Due to persisting errors in identifying destructible walls as potential exit spawn points, methods: getExitX(), getExitY() & ensureExitExists() need to be reworked
     /**
      * Retrieves the x-coordinate of the exit.
      * Ensures an exit exists before retrieving its coordinates.
@@ -208,14 +199,11 @@ public class PropertiesHelper {
      * @return the x-coordinate of the exit.
      */
     public static int getExitX() {
-        Properties properties = getProperties(); // Load properties once.
-        ensureExitExists(properties); // Ensure a single exit exists.
-        return properties.keySet().stream()
-                .filter(key -> properties.getProperty(key.toString()).equals("4"))
-                .map(key -> key.toString().split(",")[0])
-                .mapToInt(Integer::parseInt)
-                .findFirst()
-                .orElse(0); // Default to 0 if no exit is found (should not happen after ensuring).
+        setExit();
+
+        System.out.println("X coordinates: " + Integer.parseInt(exitCoordinates.split(",")[0]));
+
+        return Integer.parseInt(exitCoordinates.split(",")[0]);
     }
 
     /**
@@ -225,44 +213,44 @@ public class PropertiesHelper {
      * @return the y-coordinate of the exit.
      */
     public static int getExitY() {
-        Properties properties = getProperties(); // Load properties once.
-        ensureExitExists(properties); // Ensure a single exit exists.
-        return properties.keySet().stream()
-                .filter(key -> properties.getProperty(key.toString()).equals("4"))
-                .map(key -> key.toString().split(",")[1])
-                .mapToInt(Integer::parseInt)
-                .findFirst()
-                .orElse(0); // Default to 0 if no exit is found (should not happen after ensuring).
+        setExit();
+
+        System.out.println("Y coordinates: " + Integer.parseInt(exitCoordinates.split(",")[1]));
+
+        return Integer.parseInt(exitCoordinates.split(",")[1]);
+
     }
 
 
     /**
-     * Ensures an exit exists in the map by placing it under a random destructible wall if missing.
-     *
-     * @param properties the properties to check and potentially modify.
+     * Sets and stores coordinates of an exit in this map
+     * If there is an exit in the property file, this one is used.
+     * Otherwise, an exit is placed at a random destructible wall of the map.
      */
-    private static void ensureExitExists(Properties properties) {
+    private static void setExit() {
         // Check if an exit already exists in the map.
         if (exitCoordinates != null) return; // If an exit exists, do nothing.
 
         // Find all destructible walls (value = "1").
-        List<String> destructibleWalls = new ArrayList<>();
-        for (Object key : properties.keySet()) {
-            if (properties.getProperty(key.toString()).equals("1")) {
-                destructibleWalls.add(key.toString());
+        List<String> destructibleWallsKeys = new ArrayList<>();
+        for (Object key : getProperties().keySet()) {
+            if (getProperties().getProperty(key.toString()).equals("1")) {
+                destructibleWallsKeys.add(key.toString());
             }
         }
 
         // If there are destructible walls, randomly place an exit under one of them.
-        if (!destructibleWalls.isEmpty()) {
-            String randomWall = destructibleWalls.get((int) (Math.random() * destructibleWalls.size()));
-            properties.setProperty(randomWall, "4");
-            System.out.println("Exit placed at: " + randomWall);
-            exitCoordinates = randomWall; // Cache the exit's coordinates.
+        if (!destructibleWallsKeys.isEmpty()) {
+            exitCoordinates = destructibleWallsKeys.get((int) (Math.random() * destructibleWallsKeys.size()));
+
+            System.out.println("Exit placed at: " + exitCoordinates);
         } else {
             // If no destructible walls are found, warn about the lack of exit placement.
-            System.err.println("No destructible walls found to place an exit.");
+            System.err.println("No suitable destructible walls found to place an exit.");
+
+            // Fallback
+            exitCoordinates = "1,1";
+
         }
-        System.out.println("Exit Coordinates" + "\n" + exitCoordinates);
     }
 }
