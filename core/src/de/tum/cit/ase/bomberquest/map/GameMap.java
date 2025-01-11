@@ -1,9 +1,11 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.screen.GameScreen;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.GameContactListener;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
@@ -19,13 +21,13 @@ import java.util.List;
  * Holds all the objects and entities in the game.
  */
 public class GameMap {
-    
+
     // A static block is executed once when the class is referenced for the first time.
     static {
         // Initialize the Box2D physics engine.
         com.badlogic.gdx.physics.box2d.Box2D.init();
     }
-    
+
     // Box2D physics simulation parameters (you can experiment with these if you want, but they work well as they are)
     /**
      * The time step for the physics simulation.
@@ -33,26 +35,36 @@ public class GameMap {
      * It is set to 1/refreshRate, where refreshRate is the refresh rate of the monitor, e.g., 1/60 for 60 Hz.
      */
     private static final float TIME_STEP = 1f / Gdx.graphics.getDisplayMode().refreshRate;
-    /** The number of velocity iterations for the physics simulation. */
+    /**
+     * The number of velocity iterations for the physics simulation.
+     */
     private static final int VELOCITY_ITERATIONS = 6;
-    /** The number of position iterations for the physics simulation. */
+    /**
+     * The number of position iterations for the physics simulation.
+     */
     private static final int POSITION_ITERATIONS = 2;
     /**
      * The accumulated time since the last physics step.
      * We use this to keep the physics simulation at a constant rate even if the frame rate is variable.
      */
     private float physicsTime = 0;
-    
-    /** The game, in case the map needs to access it. */
+
+    /**
+     * The game, in case the map needs to access it.
+     */
     private final BomberQuestGame game;
 
-    /** The Box2D world for physics simulation. */
+    /**
+     * The Box2D world for physics simulation.
+     */
     private final World world;
-    
+
     // Game objects
     private final Player player;
 
-    private final Bomb testBomb;
+    private final Exit exit;
+
+    private List<Bomb> bombsInPlay = new ArrayList<>();
 
     private final List<List<Drawable>> backgroundElements;
 
@@ -67,7 +79,7 @@ public class GameMap {
         // Create a player with initial position (1, 3)
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
 
-        this.testBomb = new Bomb(this.world, 1, 10);
+        this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY());
 
         // TODO: The path file should come from somewhere else --> user should be able to choose the file
 
@@ -77,16 +89,22 @@ public class GameMap {
     /**
      * Updates the game state. This is called once per frame.
      * Every dynamic object in the game should update its state here.
+     *
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) layBomb();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M)) bombsInPlay = new ArrayList<>();
+
         this.player.tick(frameTime);
         doPhysicsStep(frameTime);
     }
-    
+
     /**
      * Performs as many physics steps as necessary to catch up to the given frame time.
      * This will update the Box2D world by the given time step.
+     *
      * @param frameTime Time since last frame in seconds
      */
     private void doPhysicsStep(float frameTime) {
@@ -96,21 +114,52 @@ public class GameMap {
             this.physicsTime -= TIME_STEP;
         }
     }
-    
-    /** Returns the player on the map. */
+
+    /**
+     * Places a bomb on the tile where the player is currently positioned.
+     * Before placing the bomb, it checks if a bomb already exists
+     * on the target tile to avoid overlapping placements.
+     */
+    private void layBomb() {
+
+        // Since the players origin of coordinates is at their bottom left,
+        // but the bomb should be placed on the perceived field at the bodies center / core, we add .5 to x and y
+        // Beware that it is in our tile system not real screen coordinates
+        int playerTileX = (int) (player.getX() + .5);
+        int playerTileY = (int) (player.getY() + .5);
+
+        boolean alredayBombOnTile = false;
+        for (Bomb bomb : bombsInPlay) {
+
+
+            if (bomb.getX() == playerTileX && bomb.getY() == playerTileY) {
+                alredayBombOnTile = true;
+                break;
+            }
+        }
+
+        if (!alredayBombOnTile) bombsInPlay.add(new Bomb(world, playerTileX, playerTileY));
+
+    }
+
+    /**
+     * Returns the player on the map.
+     */
     public Player getPlayer() {
         return player;
     }
 
-    public Bomb getTestBomb() {
-        return testBomb;
+    public Exit getExit() {
+        return exit;
     }
 
-    public World getWorld() {
-        return world;
+    public List<Bomb> getBombsInPlay() {
+        return bombsInPlay;
     }
-    
-    /** Returns the all static Elements on the map (e.g. walls, paths, etc.) */
+
+    /**
+     * Returns the all static Elements on the map (e.g. walls, paths, etc.)
+     */
     public List<Drawable> getStaticElements() {
         return backgroundElements.stream()
                 .flatMap(List::stream)

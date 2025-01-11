@@ -17,11 +17,12 @@ public class GameContactListener implements ContactListener {
         Object a = contact.getFixtureA().getBody().getUserData();
         Object b = contact.getFixtureB().getBody().getUserData();
 
-        if (a instanceof DestructibleWall && b instanceof Player) {
-            ((DestructibleWall) a).destroy();
-        } else if (b instanceof DestructibleWall && a instanceof Player) {
-            ((DestructibleWall) b).destroy();
-        }
+//        if (a instanceof DestructibleWall && b instanceof Player) {
+//            if (((Player) b).isPowerful()) ((DestructibleWall) a).destroy();
+//
+//        } else if (b instanceof DestructibleWall && a instanceof Player) {
+//            if (((Player) a).isPowerful()) ((DestructibleWall) b).destroy();
+//        }
     }
 
     @Override
