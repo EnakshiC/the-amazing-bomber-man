@@ -2,9 +2,10 @@ package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
+import de.tum.cit.ase.bomberquest.utils.GameContactListener;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
 
 import java.io.FileInputStream;
@@ -44,19 +45,29 @@ public class GameMap {
     
     /** The game, in case the map needs to access it. */
     private final BomberQuestGame game;
+
     /** The Box2D world for physics simulation. */
     private final World world;
     
     // Game objects
     private final Player player;
 
+    private final Bomb testBomb;
+
     private final List<List<Drawable>> backgroundElements;
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
+
         this.world = new World(Vector2.Zero, true);
+
+        // The contact listener handles all collisions in the game
+        this.world.setContactListener(new GameContactListener());
+
         // Create a player with initial position (1, 3)
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
+
+        this.testBomb = new Bomb(this.world, 1, 10);
 
         // TODO: The path file should come from somewhere else --> user should be able to choose the file
 
@@ -89,6 +100,14 @@ public class GameMap {
     /** Returns the player on the map. */
     public Player getPlayer() {
         return player;
+    }
+
+    public Bomb getTestBomb() {
+        return testBomb;
+    }
+
+    public World getWorld() {
+        return world;
     }
     
     /** Returns the all static Elements on the map (e.g. walls, paths, etc.) */

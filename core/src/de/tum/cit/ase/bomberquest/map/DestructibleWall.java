@@ -23,6 +23,6 @@ public class DestructibleWall extends Wall {
     public void destroy() {
         setSolid(false);
         // Remove the Hitbox from the Box2D-World
-        body.getWorld().destroyBody(body);
+        // body.getWorld().destroyBody(body);
     }
 }

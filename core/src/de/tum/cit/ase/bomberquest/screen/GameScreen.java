@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.map.Bomb;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 
@@ -29,7 +31,7 @@ public class GameScreen implements Screen {
     /**
      * Sets the percentage of the overall camera viewport that the player should be in at any time.
      */
-    private  static  final float VIEW_FRAME_PERCENTAGE = 0.8f;
+    private static final float VIEW_FRAME_PERCENTAGE = 0.8f;
 
     /**
      * The scale of the game.
@@ -42,6 +44,7 @@ public class GameScreen implements Screen {
     private final GameMap map;
     private final Hud hud;
     private final OrthographicCamera mapCamera;
+
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -58,12 +61,14 @@ public class GameScreen implements Screen {
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false, (float) Gdx.graphics.getWidth() / SCALE, (float) Gdx.graphics.getHeight() / SCALE);
 
+
         // Ensure the camera starts centered on the player
         updateCamera();
     }
 
     /**
      * The render method is called every frame to render the game.
+     *
      * @param deltaTime The time in seconds since the last render.
      */
     @Override
@@ -106,14 +111,12 @@ public class GameScreen implements Screen {
         // Since the players 0,0 is at its bottom left, we need adjust the camera accordingly on the right and top
         if (playerX < mapCamera.position.x - mapCamera.viewportWidth * VIEW_FRAME_PERCENTAGE * .5) {
             mapCamera.position.x = playerX + mapCamera.viewportWidth * VIEW_FRAME_PERCENTAGE * .5f;
-        }
-        else if(playerX > mapCamera.position.x + mapCamera.viewportWidth * VIEW_FRAME_PERCENTAGE * .5 - TILE_SIZE_PX) {
+        } else if (playerX > mapCamera.position.x + mapCamera.viewportWidth * VIEW_FRAME_PERCENTAGE * .5 - TILE_SIZE_PX) {
             mapCamera.position.x = playerX - mapCamera.viewportWidth * VIEW_FRAME_PERCENTAGE * .5f + TILE_SIZE_PX;
         }
         if (playerY < mapCamera.position.y - mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5) {
             mapCamera.position.y = playerY + mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5f;
-        }
-        else if(playerY > mapCamera.position.y + mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5 - 2 * TILE_SIZE_PX) {
+        } else if (playerY > mapCamera.position.y + mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5 - 2 * TILE_SIZE_PX) {
             mapCamera.position.y = playerY - mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5f + 2 * TILE_SIZE_PX;
         }
 
@@ -134,6 +137,10 @@ public class GameScreen implements Screen {
         for (Drawable paths : map.getStaticElements()) {
             draw(spriteBatch, paths);
         }
+
+
+        draw(spriteBatch, map.getTestBomb());
+
         draw(spriteBatch, map.getPlayer());
 
         // Finish drawing, i.e. send the drawn items to the graphics card
@@ -144,6 +151,7 @@ public class GameScreen implements Screen {
      * Draws this object on the screen.
      * The texture will be scaled by the game scale and the tile size.
      * This should only be called between spriteBatch.begin() and spriteBatch.end(), e.g. in the renderMap() method.
+     *
      * @param spriteBatch The SpriteBatch to draw with.
      */
     private static void draw(SpriteBatch spriteBatch, Drawable drawable) {
@@ -160,7 +168,8 @@ public class GameScreen implements Screen {
     /**
      * Called when the window is resized.
      * This is where the camera is updated to match the new window size.
-     * @param width The new window width.
+     *
+     * @param width  The new window width.
      * @param height The new window height.
      */
     @Override

@@ -54,6 +54,11 @@ public abstract class Wall implements Drawable {
 
     public void setSolid(boolean solid) {
         this.isSolid = solid;
+
+        // Alle Fixtures des Bodys durchlaufen und den Sensor-Zustand anpassen
+        for (Fixture fixture : body.getFixtureList()) {
+            fixture.setSensor(!solid); // Sensor = true bedeutet durchlässig
+        }
     }
 
 
