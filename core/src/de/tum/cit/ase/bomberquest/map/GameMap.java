@@ -153,7 +153,18 @@ public class GameMap {
     }
 
     private void explodeBomb(Bomb bomb) {
-        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()));
+        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY(), BombExplosionTile.CENTER));
+
+        explosionTiles.add(new BombExplosion(bomb.getX()+1, bomb.getY(), BombExplosionTile.RIGHT_MIDDLE));
+        explosionTiles.add(new BombExplosion(bomb.getX()+2, bomb.getY(), BombExplosionTile.RIGHT_END));
+        explosionTiles.add(new BombExplosion(bomb.getX()-1, bomb.getY(), BombExplosionTile.LEFT_MIDDLE));
+        explosionTiles.add(new BombExplosion(bomb.getX()-2, bomb.getY(), BombExplosionTile.LEFT_END));
+
+
+        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()+1, BombExplosionTile.TOP_MIDDLE));
+        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()+2, BombExplosionTile.TOP_END));
+        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()-1, BombExplosionTile.BOTTOM_MIDDLE));
+        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()-2, BombExplosionTile.BOTTOM_END));
     }
 
     /**

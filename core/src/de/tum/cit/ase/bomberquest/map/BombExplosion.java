@@ -16,10 +16,13 @@ public class BombExplosion implements Drawable {
     final float x;
     final float y;
 
+    final BombExplosionTile bombExplosionTile;
 
-    public BombExplosion(float x, float y) {
+
+    public BombExplosion(float x, float y, BombExplosionTile bombExplosionTile) {
         this.x = x;
         this.y = y;
+        this.bombExplosionTile = bombExplosionTile;
 
     }
 
@@ -29,7 +32,7 @@ public class BombExplosion implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        return SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8);
+        return bombExplosionTile.getAnimation().getKeyFrame(elapsedTime);
     }
 
 

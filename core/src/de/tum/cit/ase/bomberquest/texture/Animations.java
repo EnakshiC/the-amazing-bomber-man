@@ -67,14 +67,47 @@ public class Animations {
      * The animation for the bomb explosion's center.
      */
     public static final Animation<TextureRegion> EXPLOSION_CENTER = new Animation<>(0.05f,
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 3),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 8),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 3),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8),
+            // TODO: FINISH
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 3)
+    );
 
+    public static final Animation<TextureRegion> EXPLOSION_LEFT_MIDDLE= new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 2)
+    );
+
+    public static final Animation<TextureRegion> EXPLOSION_LEFT_END = new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 1)
+    );
+
+    public static final Animation<TextureRegion> EXPLOSION_RIGHT_MIDDLE = new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 4)
+    );
+
+    public static final Animation<TextureRegion> EXPLOSION_RIGHT_END = new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 5)
+    );
+
+    public static final Animation<TextureRegion> EXPLOSION_TOP_MIDDLE = new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 3)
+    );
+
+    public static final Animation<TextureRegion> EXPLOSION_TOP_END = new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(5, 3)
+    );
+
+    public static final Animation<TextureRegion> EXPLOSION_BOTTOM_MIDDLE = new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(8, 3)
+    );
+
+    public static final Animation<TextureRegion> EXPLOSION_BOTTOM_END = new Animation<>(0.05f,
+            // TODO: FINISH
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(9, 3)
     );
 }
