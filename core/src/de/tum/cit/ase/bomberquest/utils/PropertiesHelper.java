@@ -18,27 +18,63 @@ import java.util.Properties;
  */
 public class PropertiesHelper {
     // TODO: Make Fallback relative to project, not absolute paths
-    private static final String FALLBACK_PATH = "/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
-    // private static final String FALLBACK_PATH = "C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
+    //private static final String FALLBACK_PATH = "/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
+    private static final String FALLBACK_PATH = "C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
 
     private static String currentFilePath = FALLBACK_PATH;
 
+    private static String exitCoordinates = null;
+
+
     /**
-     * Returns Properties instance at the curren file path
+     * Loads properties from the current map file.
+     *
+     * @return a Properties instance containing the map data.
      */
     private static Properties getProperties() {
+
         Properties properties = new Properties();
 
-        try {
-            FileInputStream input = new FileInputStream(currentFilePath);
+        try (FileInputStream input = new FileInputStream(currentFilePath)) {
             properties.load(input);
-
-            input.close();
         } catch (IOException e) {
-            System.err.println("Error loading .properties-file: " + e.getMessage());
+            System.err.println("Error loading .properties file: " + e.getMessage());
         }
 
+        ensureExitExists(properties);
         return properties;
+    }
+
+    /**
+     * Validates the map file by checking the keys (coordinates) and values (object types).
+     *
+     * @param properties the properties to validate.
+     * @return true if valid, false otherwise.
+     */
+    private static boolean isMapValid(Properties properties) {
+        for (Object key : properties.keySet()) {
+            String keyStr = key.toString();
+            // Ensure keys are valid coordinates
+            if (!keyStr.matches("\\d+,\\d+")) {
+                System.err.println("Invalid key format: " + keyStr);
+                return false;
+            }
+
+            String value = properties.getProperty(keyStr);
+            try {
+                int objectType = Integer.parseInt(value);
+                // Ensure value is a valid object type
+                if (objectType < 0 || objectType > 6) {
+                    System.err.println("Invalid object type: " + value);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid value format: " + value);
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -48,15 +84,22 @@ public class PropertiesHelper {
      * @return 0 if successful or -1 if not -> using FALLBACK_PATH.
      */
     public static int loadNewMap(String path) {
-        currentFilePath = path;
-
-        //TODO: Check if the map is correct with a better way. Do we have to check if maps are "good/correct"?
-        if (!getProperties().isEmpty()) {
-            currentFilePath = FALLBACK_PATH;
+        Properties properties = new Properties();
+        try (FileInputStream input = new FileInputStream(path)) {
+            properties.load(input);
+        } catch (IOException e) {
+            System.err.println("Error loading .properties file: " + e.getMessage());
             return -1;
         }
 
-        return 0;
+        if (isMapValid(properties)) {
+            currentFilePath = path;
+            return 0;
+        } else {
+            System.err.println("Invalid map file. Reverting to fallback.");
+            currentFilePath = FALLBACK_PATH;
+            return -1;
+        }
     }
 
     /**
@@ -86,21 +129,22 @@ public class PropertiesHelper {
     }
 
     /**
-     * Returns a List<List<Drawable>> that contains all the non-dynamic elements (walls, paths, power-ups, etc.)
+     * Returns a List<List<Drawable>> that contains all the non-dynamic elements (walls, paths, power-ups, etc.).
      *
      * @param world is the world used for walls to set hitboxes.
      */
     public static List<List<Drawable>> loadDrawablesFromProperties(World world) {
+        Properties properties = getProperties(); // Retrieve properties once.
         List<List<Drawable>> elements = new ArrayList<>();
 
-        // Iterate over every row and every colum and add the Drawable found under this key
+        // Iterate over every row and every column and add the Drawable found under this key.
         for (int x = 0; x < getMapWith() + 1; x++) {
             List<Drawable> row = new ArrayList<>();
             for (int y = 0; y < getMapHeight() + 1; y++) {
-                if (getProperties().containsKey(x + "," + y)) {
-                    int value = Integer.parseInt(getProperties().getProperty(x + "," + y));
+                String key = x + "," + y;
+                if (properties.containsKey(key)) {
+                    int value = Integer.parseInt(properties.getProperty(key));
 
-                    // TODO: Add the real property AND outsource to extra method that just matches the int to the Drawable
                     if (value == 0) {
                         row.add(new IndestructibleWall(world, x, y));
                     } else if (value == 1) {
@@ -109,7 +153,7 @@ public class PropertiesHelper {
                         row.add(new Path(x, y));
                     }
                 } else {
-                    // Fallback if a certain set of coordinates is not present in the property file
+                    // Fallback if a certain set of coordinates is not present in the property file.
                     row.add(new Path(x, y));
                 }
             }
@@ -119,13 +163,106 @@ public class PropertiesHelper {
         return elements;
     }
 
-    // TODO: Return Real Player Entrance X and Y
+
+    /**
+     * Retrieves the x-coordinate of the player's entrance.
+     * <p>
+     * The method scans the properties of the current map to find the first key
+     * where the value is "2", representing the player's entrance. The key is
+     * expected to be in the format "x,y". If no entrance is found, it defaults to 0.
+     *
+     * @return the x-coordinate of the player's entrance, or 0 if no entrance is found.
+     */
     public static int getPlayerEntranceX() {
-        return 1;
-    }
-    public static int getPlayerEntranceY() {
-        return 10;
+        return getProperties().keySet().stream()
+                .filter(key -> getProperties().getProperty(key.toString()).equals("2"))
+                .map(key -> key.toString().split(",")[0])
+                .mapToInt(Integer::parseInt)
+                .findFirst()
+                .orElse(0); // Default to 0 if no entrance is found
     }
 
-    // TODO: Return Exit -> either look for any exits that are in the map or create random exit --> See instructions
+    /**
+     * Retrieves the y-coordinate of the player's entrance.
+     * <p>
+     * The method scans the properties of the current map to find the first key
+     * where the value is "2", representing the player's entrance. The key is
+     * expected to be in the format "x,y". If no entrance is found, it defaults to 0.
+     *
+     * @return the y-coordinate of the player's entrance, or 0 if no entrance is found.
+     */
+    public static int getPlayerEntranceY() {
+        return getProperties().keySet().stream()
+                .filter(key -> getProperties().getProperty(key.toString()).equals("2"))
+                .map(key -> key.toString().split(",")[1])
+                .mapToInt(Integer::parseInt)
+                .findFirst()
+                .orElse(0); // Default to 0 if no entrance is found
+    }
+
+    //TODO: Due to persisting errors in identifying destructible walls as potential exit spawn points, methods: getExitX(), getExitY() & ensureExitExists() need to be reworked
+    /**
+     * Retrieves the x-coordinate of the exit.
+     * Ensures an exit exists before retrieving its coordinates.
+     *
+     * @return the x-coordinate of the exit.
+     */
+    public static int getExitX() {
+        Properties properties = getProperties(); // Load properties once.
+        ensureExitExists(properties); // Ensure a single exit exists.
+        return properties.keySet().stream()
+                .filter(key -> properties.getProperty(key.toString()).equals("4"))
+                .map(key -> key.toString().split(",")[0])
+                .mapToInt(Integer::parseInt)
+                .findFirst()
+                .orElse(0); // Default to 0 if no exit is found (should not happen after ensuring).
+    }
+
+    /**
+     * Retrieves the y-coordinate of the exit.
+     * Ensures an exit exists before retrieving its coordinates.
+     *
+     * @return the y-coordinate of the exit.
+     */
+    public static int getExitY() {
+        Properties properties = getProperties(); // Load properties once.
+        ensureExitExists(properties); // Ensure a single exit exists.
+        return properties.keySet().stream()
+                .filter(key -> properties.getProperty(key.toString()).equals("4"))
+                .map(key -> key.toString().split(",")[1])
+                .mapToInt(Integer::parseInt)
+                .findFirst()
+                .orElse(0); // Default to 0 if no exit is found (should not happen after ensuring).
+    }
+
+
+    /**
+     * Ensures an exit exists in the map by placing it under a random destructible wall if missing.
+     *
+     * @param properties the properties to check and potentially modify.
+     */
+    private static void ensureExitExists(Properties properties) {
+        // Check if an exit already exists in the map.
+        if (exitCoordinates != null) return; // If an exit exists, do nothing.
+
+        // Find all destructible walls (value = "1").
+        List<String> destructibleWalls = new ArrayList<>();
+        for (Object key : properties.keySet()) {
+            if (properties.getProperty(key.toString()).equals("1")) {
+                destructibleWalls.add(key.toString());
+            }
+        }
+
+        // If there are destructible walls, randomly place an exit under one of them.
+        if (!destructibleWalls.isEmpty()) {
+            String randomWall = destructibleWalls.get((int) (Math.random() * destructibleWalls.size()));
+            properties.setProperty(randomWall, "4");
+            System.out.println("Exit placed at: " + randomWall);
+            exitCoordinates = randomWall; // Cache the exit's coordinates.
+        } else {
+            // If no destructible walls are found, warn about the lack of exit placement.
+            System.err.println("No destructible walls found to place an exit.");
+        }
+        System.out.println("Exit Coordinates" + "\n" + exitCoordinates);
+    }
 }
