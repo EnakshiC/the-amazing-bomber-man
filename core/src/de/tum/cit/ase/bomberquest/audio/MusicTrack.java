@@ -1,34 +1,69 @@
 package de.tum.cit.ase.bomberquest.audio;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import java.util.Random;
+
 
 /**
  * This enum is used to manage the music tracks in the game.
- * Currently, only one track is used, but this could be extended to include multiple tracks.
- * Using an enum for this purpose is a good practice, as it allows for easy management of the music tracks
- * and prevents the same track from being loaded into memory multiple times.
- * See the assets/audio folder for the actual music files.
- * Feel free to add your own music tracks and use them in the game!
+ * It supports multiple tracks for gameplay and a single track for the menu.
+ * Music playback is controlled to make sure only one track is playing at a time.
  */
 public enum MusicTrack {
-    
-    BACKGROUND("background.mp3", 0.2f);
-    
+    MENU("GameMenuSound1.ogg", 0.2f),
+    GAMEPLAY_1("GameBGSound1.ogg", 0.3f),
+    GAMEPLAY_2("GameBGSound2.ogg", 0.3f),
+    GAMEPLAY_3("GameBGSound3.ogg", 0.3f);
+
     /** The music file owned by this variant. */
     private final Music music;
+
+    /**
+     * Enum constructor to load the music file and set its properties.
+     * @param fileName to store the name of the music file.
+     * @param volume   to store the volume level of the music.
+     */
     
     MusicTrack(String fileName, float volume) {
         this.music = Gdx.audio.newMusic(Gdx.files.internal("audio/" + fileName));
         this.music.setLooping(true);
         this.music.setVolume(volume);
     }
-    
+
     /**
-     * Play this music track.
-     * This will not stop other music from playing - if you add more tracks, you will have to handle that yourself.
+     * Plays this music track, stopping all others.
      */
     public void play() {
+        stopAll(); // Stop all music tracks before starting this one
         this.music.play();
+    }
+
+    /**
+     * Stops this specific music track.
+     */
+    public void stop() {
+        if (this.music.isPlaying()) {
+            this.music.stop();
+        }
+    }
+
+    /**
+     * Stops all music tracks.
+     */
+    public static void stopAll() {
+        for (MusicTrack track : values()) {
+            track.stop();
+        }
+    }
+
+    /**
+     * Play a random gameplay music track.
+     */
+    public static void playRandomGameplayTrack() {
+        MusicTrack[] gameplayTracks = {GAMEPLAY_1, GAMEPLAY_2, GAMEPLAY_3};
+        Random random = new Random();
+        gameplayTracks[random.nextInt(gameplayTracks.length)].play();
     }
 }
