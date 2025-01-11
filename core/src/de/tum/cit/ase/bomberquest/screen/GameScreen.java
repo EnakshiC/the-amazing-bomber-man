@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
-import de.tum.cit.ase.bomberquest.map.Path;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 
@@ -57,7 +56,7 @@ public class GameScreen implements Screen {
 
         // Create and configure the camera for the game view
         this.mapCamera = new OrthographicCamera();
-        this.mapCamera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
+        this.mapCamera.setToOrtho(false, (float) Gdx.graphics.getWidth() / SCALE, (float) Gdx.graphics.getHeight() / SCALE);
 
         // Ensure the camera starts centered on the player
         updateCamera();
@@ -96,7 +95,7 @@ public class GameScreen implements Screen {
     /**
      * Updates the camera to keep the hero character centered while ensuring it stays within the map bounds.
      * The camera only moves when the character approaches the edges of the camera's focus area.
-     * {@link de.tum.cit.ase.bomberquest.screen.GameScreen#VIEW_FRAME_PERCENTAGE} set the percentage of the overall camera viewport.
+     * {@link de.tum.cit.ase.bomberquest.screen.GameScreen#VIEW_FRAME_PERCENTAGE} sets the percentage of the overall camera viewport.
      */
     private void updateCamera() {
         // Get the player's position in the map
@@ -132,7 +131,7 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
 
         // Render everything in the map here, in order from lowest to highest (later things appear on top)
-        for (Drawable paths : map.getPath()) {
+        for (Drawable paths : map.getStaticElements()) {
             draw(spriteBatch, paths);
         }
         draw(spriteBatch, map.getPlayer());
@@ -166,7 +165,7 @@ public class GameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        mapCamera.setToOrtho(false, width / SCALE, height / SCALE);
+        mapCamera.setToOrtho(false, (float) width / SCALE, (float) height / SCALE);
         hud.resize(width, height);
 
         // Update the camera to reposition correctly

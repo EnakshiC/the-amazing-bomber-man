@@ -32,7 +32,7 @@ public class Player implements Drawable {
     /** Enum for the possible movement directions of the player. */
     private enum Direction
     {
-        UP, DOWN, LEFT, RIGHT, NONE;
+        UP, DOWN, LEFT, RIGHT, NONE
     }
 
     /**
@@ -99,11 +99,7 @@ public class Player implements Drawable {
         Direction newDirection = determineDirection();
 
         // Update the player's direction if a new direction is detected
-        if (newDirection != Direction.NONE) {
-            this.currentDirection = newDirection;
-        } else {
-            this.currentDirection = Direction.NONE;
-        }
+        this.currentDirection = newDirection;
 
         // Update the velocity of the player based on current direction
         // TODO: Ensure movement reflects the chosen direction and stops otherwise

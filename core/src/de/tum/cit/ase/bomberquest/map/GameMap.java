@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
+import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,85 +50,17 @@ public class GameMap {
     // Game objects
     private final Player player;
 
-    private final List<List<Drawable>> backgroundElements = new ArrayList<>();
-    
+    private final List<List<Drawable>> backgroundElements;
+
     public GameMap(BomberQuestGame game) {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
         // Create a player with initial position (1, 3)
-        this.player = new Player(this.world, 1, 10);
+        this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
 
         // TODO: The path file should come from somewhere else --> user should be able to choose the file
-        // this.loadDrawablesFromProperties("C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
-        this.loadDrawablesFromProperties("/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties");
-    }
 
-    /**
-     * Loads properties from a files at the given path and adds the drawables to this.
-     * Checks for the correct form.
-     * @param path is the absolute path to the file.
-     */
-    private void loadDrawablesFromProperties(String path) {
-        Properties properties = new Properties();
-        try {
-            // Load the property file from the given path
-            FileInputStream input = new FileInputStream(path);
-            properties.load(input);
-
-            // TODO: get real size of loaded map
-
-            // Iterate over every row and every colum and add the Drawable found under this key
-            for (int x = 0; x < getMapWith(properties) + 1; x++) {
-                List<Drawable> row = new ArrayList<>();
-                for (int y = 0; y < getMapHeight(properties) + 1; y++) {
-                    if (properties.containsKey(x + "," + y)) {
-                        int value = Integer.parseInt(properties.getProperty(x + "," + y));
-
-                        // TODO: Add the real property!
-                        if (value == 0) {
-                             row.add(new IndestructibleWall(world, x, y));
-                        } else if (value == 1){
-                            row.add(new DestructibleWall(world, x, y));
-                        }
-                        else {
-                            row.add(new Path(x, y));
-                        }
-                    } else {
-                        // Fallback if a certain set of coordinates is not present in the property file
-                        row.add(new Path(x, y));
-                    }
-                }
-                this.backgroundElements.add(row);
-            }
-        } catch (IOException e) {
-            System.err.println("Error loading .properties-file: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Returns the width of this map
-     * @param properties is the map file
-     * @return the maximum value that x can have
-     */
-    public int getMapWith(Properties properties) {
-        return properties.keySet().stream()
-                .map(key -> key.toString().split(",")[0])
-                .mapToInt(Integer::parseInt)
-                .max()
-                .orElse(0);
-    }
-
-    /**
-     * Returns the height of this map
-     * @param properties is the map file
-     * @return the maximum value that y can have
-     */
-    public int getMapHeight(Properties properties) {
-        return properties.keySet().stream()
-                .map(key -> key.toString().split(",")[1])
-                .mapToInt(Integer::parseInt)
-                .max()
-                .orElse(0);
+        this.backgroundElements = new ArrayList<>(PropertiesHelper.loadDrawablesFromProperties(world));
     }
 
     /**
@@ -157,10 +91,11 @@ public class GameMap {
         return player;
     }
     
-    /** Returns the flowers on the map. */
-    public List<Drawable> getPath() {
+    /** Returns the all static Elements on the map (e.g. walls, paths, etc.) */
+    public List<Drawable> getStaticElements() {
         return backgroundElements.stream()
                 .flatMap(List::stream)
                 .toList();
     }
 }
+
