@@ -2,6 +2,7 @@ package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
+import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
 /**
  * The abstract class of a Wall.
@@ -24,28 +25,7 @@ public abstract class Wall implements Drawable {
         this.x = x;
         this.y = y;
         this.isSolid = isSolid;
-        this.body = createHitbox(world);
-    }
-
-    /**
-     * Create a Box2D body for the chest.
-     * @param world The Box2D world to add the body to.
-     */
-    private Body createHitbox(World world) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(this.x, this.y);
-
-        Body body = world.createBody(bodyDef);
-
-        PolygonShape box = new PolygonShape();
-        box.setAsBox(0.5f, 0.5f);
-
-        body.createFixture(box, 1.0f);
-        box.dispose();
-
-        body.setUserData(this);
-        return body;
+        this.body = HitboxHelper.createPolygonHitbox(world, x, y, this);
     }
 
     public boolean isSolid() {
@@ -55,9 +35,9 @@ public abstract class Wall implements Drawable {
     public void setSolid(boolean solid) {
         this.isSolid = solid;
 
-        // Alle Fixtures des Bodys durchlaufen und den Sensor-Zustand anpassen
+        // Change state for 2DBox physics simulation
         for (Fixture fixture : body.getFixtureList()) {
-            fixture.setSensor(!solid); // Sensor = true bedeutet durchlässig
+            fixture.setSensor(!solid);
         }
     }
 

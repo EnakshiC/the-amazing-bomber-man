@@ -18,8 +18,8 @@ import java.util.Properties;
  */
 public class PropertiesHelper {
     // TODO: Make Fallback relative to project, not absolute paths
-    //private static final String FALLBACK_PATH = "/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
-    private static final String FALLBACK_PATH = "C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
+    private static final String FALLBACK_PATH = "/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
+    //private static final String FALLBACK_PATH = "C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
 
     private static String currentFilePath = FALLBACK_PATH;
 
@@ -201,7 +201,7 @@ public class PropertiesHelper {
     public static int getExitX() {
         setExit();
 
-        System.out.println("X coordinates: " + Integer.parseInt(exitCoordinates.split(",")[0]));
+        // System.out.println("X coordinates: " + Integer.parseInt(exitCoordinates.split(",")[0]));
 
         return Integer.parseInt(exitCoordinates.split(",")[0]);
     }
@@ -215,7 +215,7 @@ public class PropertiesHelper {
     public static int getExitY() {
         setExit();
 
-        System.out.println("Y coordinates: " + Integer.parseInt(exitCoordinates.split(",")[1]));
+        // System.out.println("Y coordinates: " + Integer.parseInt(exitCoordinates.split(",")[1]));
 
         return Integer.parseInt(exitCoordinates.split(",")[1]);
 
@@ -243,7 +243,7 @@ public class PropertiesHelper {
         if (!destructibleWallsKeys.isEmpty()) {
             exitCoordinates = destructibleWallsKeys.get((int) (Math.random() * destructibleWallsKeys.size()));
 
-            System.out.println("Exit placed at: " + exitCoordinates);
+            // System.out.println("Exit placed at: " + exitCoordinates);
         } else {
             // If no destructible walls are found, warn about the lack of exit placement.
             System.err.println("No suitable destructible walls found to place an exit.");

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.map.Bomb;
@@ -135,8 +134,8 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
 
         // Render everything in the map here, in order from lowest to highest (later things appear on top)
-        for (Drawable paths : map.getStaticElements()) {
-            draw(spriteBatch, paths);
+        for (Drawable element : map.getStaticElements()) {
+            draw(spriteBatch, element);
         }
 
         for (Bomb bomb : map.getBombsInPlay()) {

@@ -98,15 +98,11 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-        {
-            SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
-        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
-            SoundEffect.BOMB_EXPLOSION.play(0.2f);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) SoundEffect.BOMB_EXPLOSION.play(0.2f);
 
-
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) dropBomb();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.M)) bombsInPlay = new ArrayList<>();
 
@@ -127,6 +123,7 @@ public class GameMap {
             // Remove all explosions that are due this cycle
             if (element instanceof BombExplosion) {
                 explosionTiles.remove((BombExplosion) element);
+                world.destroyBody(((BombExplosion) element).getBody());
             }
 
         }
@@ -152,7 +149,7 @@ public class GameMap {
      * Before placing the bomb, it checks if a bomb already exists
      * on the target tile to avoid overlapping placements.
      */
-    private void layBomb() {
+    private void dropBomb() {
 
         // Since the players origin of coordinates is at their bottom left,
         // but the bomb should be placed on the perceived field at the bodies center / core, we add .5 to x and y
@@ -198,7 +195,7 @@ public class GameMap {
 
         // Add center tile
         // Since bomb was placed here, it can always exist.
-        explosionTiles.add(new BombExplosion(x, y, BombExplosionTile.CENTER, elementsToRemoveNextCycle));
+        explosionTiles.add(new BombExplosion(world, x, y, BombExplosionTile.CENTER, elementsToRemoveNextCycle));
 
         // Iterate over each direction
         for (String dir : direction) {
@@ -217,7 +214,7 @@ public class GameMap {
                 if (this.backgroundElements.get(newX).get(newY) instanceof IndestructibleWall) {
                     break;
                 } else {
-                    explosionTiles.add(new BombExplosion(newX, newY, BombExplosionTile.getByDirectionAndEnd(dir, i == radius), elementsToRemoveNextCycle));
+                    explosionTiles.add(new BombExplosion(world, newX, newY, BombExplosionTile.getByDirectionAndEnd(dir, i == radius), elementsToRemoveNextCycle));
                 }
             }
         }

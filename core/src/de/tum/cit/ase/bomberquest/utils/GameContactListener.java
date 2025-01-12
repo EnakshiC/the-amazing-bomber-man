@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import de.tum.cit.ase.bomberquest.map.BombExplosion;
 import de.tum.cit.ase.bomberquest.map.DestructibleWall;
 import de.tum.cit.ase.bomberquest.map.Player;
 
@@ -17,12 +18,27 @@ public class GameContactListener implements ContactListener {
         Object a = contact.getFixtureA().getBody().getUserData();
         Object b = contact.getFixtureB().getBody().getUserData();
 
-//        if (a instanceof DestructibleWall && b instanceof Player) {
-//            if (((Player) b).isPowerful()) ((DestructibleWall) a).destroy();
-//
-//        } else if (b instanceof DestructibleWall && a instanceof Player) {
-//            if (((Player) a).isPowerful()) ((DestructibleWall) b).destroy();
-//        }
+        System.out.println("Contact detected between: " + a + " and " + b);
+
+        if (a instanceof DestructibleWall && b instanceof BombExplosion) {
+            System.out.println("BOOM!");
+            ((DestructibleWall) a).destroy();
+
+        } else if (b instanceof DestructibleWall && a instanceof BombExplosion) {
+            System.out.println("BOOM!");
+            ((DestructibleWall) b).destroy();
+        }
+
+        if (a instanceof Player && b instanceof BombExplosion) {
+            System.out.println("HIT!");
+
+
+        } else if (b instanceof Player && a instanceof BombExplosion) {
+            System.out.println("HIT!");
+
+        }
+
+
     }
 
     @Override
