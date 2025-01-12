@@ -16,7 +16,7 @@ public class Exit implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        return Textures.FLOWERS;
+        return Textures.EXIT;
     }
 
     @Override

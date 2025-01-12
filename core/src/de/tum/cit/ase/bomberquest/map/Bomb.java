@@ -21,9 +21,13 @@ public class Bomb extends SelfRemovingElement {
         super(FUSE_TIME, killList);
         this.x = x;
         this.y = y;
-
     }
-    
+
+    @Override
+    public void tick(float frameTime) {
+        super.tick(frameTime);
+    }
+
     @Override
     public TextureRegion getCurrentAppearance() {
         return Textures.BOMB;
