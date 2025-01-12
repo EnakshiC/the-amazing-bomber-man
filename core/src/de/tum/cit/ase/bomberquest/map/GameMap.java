@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.audio.SoundEffect;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.GameContactListener;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
@@ -92,7 +93,15 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) layBomb();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+        {
+            SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+            SoundEffect.BOMB_EXPLOSION.play(0.2f);
+
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.M)) bombsInPlay = new ArrayList<>();
 

@@ -12,10 +12,10 @@ import java.util.Random;
  * Music playback is controlled to make sure only one track is playing at a time.
  */
 public enum MusicTrack {
-    MENU("GameMenuSound1.ogg", 0.2f),
-    GAMEPLAY_1("GameBGSound1.ogg", 0.3f),
-    GAMEPLAY_2("GameBGSound2.ogg", 0.3f),
-    GAMEPLAY_3("GameBGSound3.ogg", 0.3f);
+    MENU("GameMenuSound1.ogg", 0.1f),
+    GAMEPLAY_1("GameBGSound1.ogg", 0.1f),
+    GAMEPLAY_2("GameBGSound2.ogg", 0.1f),
+    GAMEPLAY_3("GameBGSound3.ogg", 0.1f);
 
     /** The music file owned by this variant. */
     private final Music music;
@@ -33,10 +33,10 @@ public enum MusicTrack {
     }
 
     /**
-     * Plays this music track, stopping all others.
+     * Play this music track, stopping any other currently playing music.
      */
     public void play() {
-        stopAll(); // Stop all music tracks before starting this one
+        stopAll(); // Stop all other tracks
         this.music.play();
     }
 
