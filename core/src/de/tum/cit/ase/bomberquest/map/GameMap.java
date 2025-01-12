@@ -67,6 +67,8 @@ public class GameMap {
 
     private final List<Drawable> elementsToRemoveNextCycle = new ArrayList<>();
 
+    private final List<Enemy> enemies = new ArrayList<>();
+
     private int maxBombsAllowed = 1;
     private int bombRadius = 1;
 
@@ -84,6 +86,8 @@ public class GameMap {
 
         // Create a player with initial position (1, 3)
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
+
+        this.enemies.add(new BasicEnemy(this.world, 10,5, this));
 
         this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY());
 
@@ -112,6 +116,8 @@ public class GameMap {
         for (Bomb b : bombsInPlay) b.tick(frameTime);
 
         for (BombExplosion e : explosionTiles) e.tick(frameTime);
+
+        for (Enemy enemy : enemies) enemy.tick(frameTime);
 
         this.player.tick(frameTime);
         doPhysicsStep(frameTime);
@@ -234,6 +240,10 @@ public class GameMap {
      */
     public Player getPlayer() {
         return player;
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
     }
 
     public Exit getExit() {

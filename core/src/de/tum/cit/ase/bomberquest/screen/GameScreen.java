@@ -201,6 +201,10 @@ public class GameScreen implements Screen {
             draw(spriteBatch, bomb);
         }
 
+        for (Enemy enemy : map.getEnemies()) {
+            draw(spriteBatch, enemy);
+        }
+
         for (BombExplosion explosion : map.getExplosionTiles()) {
             draw(spriteBatch, explosion);
         }

@@ -23,9 +23,7 @@ public class Textures {
 
     public static final TextureRegion BOMB = SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1);
 
-    public static final TextureRegion POWER_UP_BOMB_RADIUS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 1);
+    public static final TextureRegion POWER_UP_BOMB_RADIUS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 7);
 
-    public static final TextureRegion POWER_UP_CONCURRENT_BOMBS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 2);
-
-
+    public static final TextureRegion POWER_UP_CONCURRENT_BOMBS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 5);
 }

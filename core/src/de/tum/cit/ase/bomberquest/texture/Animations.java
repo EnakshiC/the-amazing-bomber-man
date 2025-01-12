@@ -62,6 +62,61 @@ public class Animations {
     public static final Animation<TextureRegion> CHARACTER_STANDING = new Animation<>(0.2f,
             SpriteSheet.CHARACTER.at(1, 1)
     );
+    
+    // ENEMIES
+    
+    /**
+     * The animation for the basic enemy walking down.
+     * Uses frames from row 1, columns 10-13 of the sprite sheet.
+     */
+    public static final Animation<TextureRegion> BASIC_ENEMY_WALK_DOWN = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(1, 10),
+            SpriteSheet.MOBS.at(1, 11),
+            SpriteSheet.MOBS.at(1, 12),
+            SpriteSheet.MOBS.at(1, 11)
+    );
+    
+    /**
+     * The animation for the basic enemy walking up.
+     * Uses frames from row 3, columns 10-13 of the sprite sheet.
+     */
+    public static final Animation<TextureRegion> BASIC_ENEMY_WALK_UP = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(4, 10),
+            SpriteSheet.MOBS.at(4, 11),
+            SpriteSheet.MOBS.at(4, 12),
+            SpriteSheet.MOBS.at(4, 11)
+    );
+    
+    /**
+     * The animation for the basic enemy walking left.
+     * Uses frames from row 4, columns 10-13 of the sprite sheet.
+     */
+    public static final Animation<TextureRegion> BASIC_ENEMY_WALK_LEFT = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(2, 10),
+            SpriteSheet.MOBS.at(2, 11),
+            SpriteSheet.MOBS.at(2, 12),
+            SpriteSheet.MOBS.at(2, 11)
+    );
+    
+    /**
+     * The animation for the basic enemy walking right.
+     * Uses frames from row 2, columns 10-13 of the sprite sheet.
+     */
+    public static final Animation<TextureRegion> BASIC_ENEMY_WALK_RIGHT = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(3, 10),
+            SpriteSheet.MOBS.at(3, 11),
+            SpriteSheet.MOBS.at(3, 12),
+            SpriteSheet.MOBS.at(3, 11)
+    );
+    
+    /**
+     * The animation for the basic enemy standing still.
+     * Uses the frame at row 1, column 10 of the sprite sheet.
+     */
+    public static final Animation<TextureRegion> BASIC_ENEMY_STANDING = new Animation<>(0.2f,
+            SpriteSheet.MOBS.at(1, 10)
+    );
+    
 
     /**
      * The animation for the bomb explosion's center.

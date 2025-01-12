@@ -84,7 +84,7 @@ public class HitboxHelper {
         PolygonShape box = new PolygonShape();
         // The hitbox of Walls and BombExplosion are just below .5f
         // This way BombExplosions that "fly" just by a wall do not trigger the DestructibleWalls next to it to vanish, too.
-        box.setAsBox(0.49f, 0.49f);
+        box.setAsBox(0.48f, 0.48f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = box;
