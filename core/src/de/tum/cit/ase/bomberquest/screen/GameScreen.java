@@ -45,6 +45,13 @@ public class GameScreen implements Screen {
     private final Hud hud;
     private final OrthographicCamera mapCamera;
 
+    // Dummy variables to simulate game state
+    private int bombCount = 1; // Current bombs placed
+    private int maxBombCount = 8; // Maximum bombs allowed
+    private int blastRadius = 1; // Bomb blast radius
+    private int enemiesLeft = 5; // Number of enemies remaining
+    private float countdownTimer = 300.0f; // Countdown timer in seconds
+
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -73,19 +80,54 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float deltaTime) {
-        // Check for escape key press to go back to the menu
+
+    // Clear the screen with a black color
+        ScreenUtils.clear(Color.BLACK);
+
+
+    // Check for escape key press to go back to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
+            return;
         }
-
-        // Clear the previous frame from the screen
-        ScreenUtils.clear(Color.BLACK);
 
         // Cap frame time to 250ms to prevent spiral of death
         float frameTime = Math.min(deltaTime, 0.250f);
 
         // Update the map state
         map.tick(frameTime);
+
+        // Method to check for key press to simulate victory or loss
+        //TODO: Insert real variables later
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            game.setScreen(new VictoryScreen(game));
+            return;
+        }
+
+        // Check for key press to simulate loss
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+            game.setScreen(new LossScreen(game));
+            return;
+        }
+
+        // Method to check for victory or loss >> for later!
+        /*if (map.isVictory()) {
+            game.setScreen(new VictoryScreen(game));
+            return;
+        } else if (map.isLoss()) {
+            game.setScreen(new LossScreen(game));
+            return;
+        }*/
+
+        // Check for escape key to return to the menu
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.goToMenu();
+            return;
+        }
+
+
+        // Update HUD with dynamic data
+        //hud.updateHUD(map, map.getCountdownTimer());
 
         // Update the camera
         updateCamera();
@@ -96,6 +138,8 @@ public class GameScreen implements Screen {
         // Render the HUD on the screen
         hud.render();
     }
+
+
 
     /**
      * Updates the camera to keep the hero character centered while ensuring it stays within the map bounds.
@@ -132,6 +176,7 @@ public class GameScreen implements Screen {
 
         // Start drawing
         spriteBatch.begin();
+
 
         // Render everything in the map here, in order from lowest to highest (later things appear on top)
         for (Drawable element : map.getStaticElements()) {
