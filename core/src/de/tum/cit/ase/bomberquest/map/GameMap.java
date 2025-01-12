@@ -159,6 +159,8 @@ public class GameMap {
         // Do not lay a bomb if all allowed bombs are currently placed
         if (bombsInPlay.size() >= maxBombsAllowed) return;
 
+        SoundEffect.BOMB_DROP.play();
+
         // Since the players origin of coordinates is at their bottom left,
         // but the bomb should be placed on the perceived field at the bodies center / core, we add .5 to x and y
         // Beware that it is in our tile system not real screen coordinates
@@ -188,6 +190,8 @@ public class GameMap {
      * @param bomb The bomb to be exploded. Provides information about its placement on the map (x, y).
      */
     private void explodeBomb(Bomb bomb) {
+        SoundEffect.BOMB_EXPLOSION.play();
+
         final float x = bomb.getX();
         final float y = bomb.getY();
 

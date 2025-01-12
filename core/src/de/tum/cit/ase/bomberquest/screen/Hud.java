@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import de.tum.cit.ase.bomberquest.map.GameMap;
 
 /**
  * A Heads-Up Display (HUD) that displays information on the screen.
@@ -18,22 +19,7 @@ public class Hud {
     /** The camera used to render the HUD. */
     private final OrthographicCamera camera;
 
-    // New properties for HUD display
-    /** Current bomb count placed by the player. */
-    private int currentBombCount;
-
-    /** Maximum bombs the player can place concurrently. */
-    private int maxBombCount;
-
-    /** Current blast radius of the player's bombs. */
-    private int currentBlastRadius;
-
-    /** Number of enemies left in the game. */
-    private int remainingEnemies;
-
-    /** Countdown timer for the game (in seconds). */
-    private float countdownTimer;
-
+    private final GameMap gameMap;
 
     /**
      * Constructs the HUD object with the given SpriteBatch and font.
@@ -42,11 +28,12 @@ public class Hud {
      * @param font The font used for displaying text on the HUD.
      */
 
-    public Hud(SpriteBatch spriteBatch, BitmapFont font) {
+    public Hud(SpriteBatch spriteBatch, BitmapFont font, GameMap gameMap) {
         this.spriteBatch = spriteBatch;
         this.font = font;
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.gameMap = gameMap;
     }
 
     /**
@@ -84,10 +71,10 @@ public class Hud {
 
         // Draw the HUD elements
         font.draw(spriteBatch, "Press Esc to Pause!", 10, startY);
-        font.draw(spriteBatch, "Bombs: " + currentBombCount + " / " + maxBombCount, 10, startY - padding);
-        font.draw(spriteBatch, "Blast Radius: " + currentBlastRadius, 10, startY - 2 * padding);
-        font.draw(spriteBatch, "Enemies Left: " + remainingEnemies, 10, startY - 3 * padding);
-        font.draw(spriteBatch, "Timer: " + String.format("%.1f", countdownTimer), 10, startY - 4 * padding);
+        font.draw(spriteBatch, "Bombs Allowed: " + gameMap.getMaxBombsAllowed() + " / " + 8, 10, startY - padding);
+        font.draw(spriteBatch, "Blast Radius: " + gameMap.getBombRadius(), 10, startY - 2 * padding);
+        font.draw(spriteBatch, "Enemies Left: " + 8, 10, startY - 3 * padding);
+        font.draw(spriteBatch, "Timer: " + String.format("%.1f", 1.0f), 10, startY - 4 * padding);
 
         // Finish drawing
         spriteBatch.end();

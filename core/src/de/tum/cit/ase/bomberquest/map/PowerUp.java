@@ -32,7 +32,7 @@ public abstract class PowerUp implements Drawable {
     }
 
     public void collect(GameMap gameMap) {
-        System.out.println("Collect! " + this);
+        // System.out.println("Collect! " + this);
 
         SoundEffect.POWER_UP.play();
 
