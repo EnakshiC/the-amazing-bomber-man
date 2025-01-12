@@ -63,15 +63,16 @@ public class GameMap {
     private final Exit exit;
 
     private List<Bomb> bombsInPlay = new ArrayList<>();
-
-    // private final List<Bomb> bombsToExplode = new ArrayList<>();
-
     private final List<BombExplosion> explosionTiles = new ArrayList<>();
-    // private final List<BombExplosion> explosionsToBeRemoved = new ArrayList<>();
 
     private final List<Drawable> elementsToRemoveNextCycle = new ArrayList<>();
 
-    private final List<List<Drawable>> backgroundElements;
+    private int maxBombsAllowed = 1;
+    private int bombRadius = 1;
+
+    private final List<List<Drawable>> wallElements;
+
+    private final List<PowerUp> powerUps = new ArrayList<>();
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -79,16 +80,20 @@ public class GameMap {
         this.world = new World(Vector2.Zero, true);
 
         // The contact listener handles all collisions in the game
-        this.world.setContactListener(new GameContactListener());
+        this.world.setContactListener(new GameContactListener(this));
 
         // Create a player with initial position (1, 3)
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
 
         this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY());
 
+        this.powerUps.add(new PowerUpBombRadius(world, 1,9, elementsToRemoveNextCycle));
+        this.powerUps.add(new PowerUpBombRadius(world, 5,9, elementsToRemoveNextCycle));
+        this.powerUps.add(new PowerUpConcurrentBombs(world, 7,9, elementsToRemoveNextCycle));
+
         // TODO: The path file should come from somewhere else --> user should be able to choose the file
 
-        this.backgroundElements = new ArrayList<>(PropertiesHelper.loadDrawablesFromProperties(world));
+        this.wallElements = new ArrayList<>(PropertiesHelper.loadWallsFromProperties(world));
     }
 
     /**
@@ -125,6 +130,9 @@ public class GameMap {
                 explosionTiles.remove((BombExplosion) element);
                 world.destroyBody(((BombExplosion) element).getBody());
             }
+            if (element instanceof PowerUp) {
+                powerUps.remove((PowerUp) element);
+            }
 
         }
         elementsToRemoveNextCycle.clear();
@@ -150,6 +158,8 @@ public class GameMap {
      * on the target tile to avoid overlapping placements.
      */
     private void dropBomb() {
+        // Do not lay a bomb if all allowed bombs are currently placed
+        if (bombsInPlay.size() >= maxBombsAllowed) return;
 
         // Since the players origin of coordinates is at their bottom left,
         // but the bomb should be placed on the perceived field at the bodies center / core, we add .5 to x and y
@@ -183,9 +193,6 @@ public class GameMap {
         final float x = bomb.getX();
         final float y = bomb.getY();
 
-        // TODO: Replace radius with in game variable
-        final int radius = 8;
-
         // Put directions of bomb in a list, like vectors in each up, down, left, right
         final List<String> direction = new ArrayList<>();
         direction.add("1,0");
@@ -203,7 +210,7 @@ public class GameMap {
             final int yShift = Integer.parseInt(dir.split(",")[1]);
 
             // iterate from 1 to radius
-            for (int i = 1; i <= radius; i++) {
+            for (int i = 1; i <= bombRadius; i++) {
                 // Check if the tile shifted from the bombs center is an IndestructibleWall
                 // We do not need to check for the outside of the map, since it is always surrounded by an IndestructibleWall
                 final int newX = (int) (x + xShift * i);
@@ -211,10 +218,10 @@ public class GameMap {
 
                 // If we hit an IndestructibleWall we stop in this direction and go the next
                 // Otherwise we add the next element of the bombs explosion
-                if (this.backgroundElements.get(newX).get(newY) instanceof IndestructibleWall) {
+                if (this.wallElements.get(newX).get(newY) instanceof IndestructibleWall) {
                     break;
                 } else {
-                    explosionTiles.add(new BombExplosion(world, newX, newY, BombExplosionTile.getByDirectionAndEnd(dir, i == radius), elementsToRemoveNextCycle));
+                    explosionTiles.add(new BombExplosion(world, newX, newY, BombExplosionTile.getByDirectionAndEnd(dir, i == bombRadius), elementsToRemoveNextCycle));
                 }
             }
         }
@@ -239,11 +246,30 @@ public class GameMap {
         return explosionTiles;
     }
 
+    public List<PowerUp> getPowerUps() {
+        return powerUps;
+    }
+
+    public int getBombRadius() {
+        return bombRadius;
+    }
+    public void setBombRadius(int bombRadius) {
+        this.bombRadius = bombRadius;
+    }
+
+    public int getMaxBombsAllowed () {
+        return maxBombsAllowed;
+    }
+
+    public void setMaxBombsAllowed(int maxBombsAllowed) {
+        this.maxBombsAllowed = maxBombsAllowed;
+    }
+
     /**
      * Returns the all static Elements on the map (e.g. walls, paths, etc.)
      */
-    public List<Drawable> getStaticElements() {
-        return backgroundElements.stream()
+    public List<Drawable> getWallElements() {
+        return wallElements.stream()
                 .flatMap(List::stream)
                 .toList();
     }

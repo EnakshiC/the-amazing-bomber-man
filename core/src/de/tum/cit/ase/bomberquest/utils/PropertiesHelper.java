@@ -2,6 +2,7 @@ package de.tum.cit.ase.bomberquest.utils;
 
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.map.DestructibleWall;
+import de.tum.cit.ase.bomberquest.map.EmptyTile;
 import de.tum.cit.ase.bomberquest.map.IndestructibleWall;
 import de.tum.cit.ase.bomberquest.map.Path;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
@@ -18,8 +19,8 @@ import java.util.Properties;
  */
 public class PropertiesHelper {
     // TODO: Make Fallback relative to project, not absolute paths
-    //private static final String FALLBACK_PATH = "/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
-    private static final String FALLBACK_PATH = "C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
+    private static final String FALLBACK_PATH = "/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
+    // private static final String FALLBACK_PATH = "C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
 
     private static String currentFilePath = FALLBACK_PATH;
 
@@ -131,11 +132,11 @@ public class PropertiesHelper {
     }
 
     /**
-     * Returns a List<List<Drawable>> that contains all the non-dynamic elements (walls, paths, power-ups, etc.).
+     * Returns a List<List<Drawable>> that contains all the non-dynamic elements (walls).
      *
      * @param world is the world used for walls to set hitboxes.
      */
-    public static List<List<Drawable>> loadDrawablesFromProperties(World world) {
+    public static List<List<Drawable>> loadWallsFromProperties(World world) {
         Properties properties = getProperties(); // Retrieve properties once.
         List<List<Drawable>> elements = new ArrayList<>();
 
@@ -152,11 +153,11 @@ public class PropertiesHelper {
                     } else if (value == 1) {
                         row.add(new DestructibleWall(world, x, y));
                     } else {
-                        row.add(new Path(x, y));
+                        row.add(new EmptyTile(x, y));
                     }
                 } else {
                     // Fallback if a certain set of coordinates is not present in the property file.
-                    row.add(new Path(x, y));
+                    row.add(new EmptyTile(x, y));
                 }
             }
             elements.add(row);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.map.Bomb;
 import de.tum.cit.ase.bomberquest.map.BombExplosion;
+import de.tum.cit.ase.bomberquest.map.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 
@@ -179,8 +180,12 @@ public class GameScreen implements Screen {
 
 
         // Render everything in the map here, in order from lowest to highest (later things appear on top)
-        for (Drawable element : map.getStaticElements()) {
+        for (Drawable element : map.getWallElements()) {
             draw(spriteBatch, element);
+        }
+
+        for (PowerUp powerUp : map.getPowerUps()) {
+            draw(spriteBatch, powerUp);
         }
 
         for (Bomb bomb : map.getBombsInPlay()) {

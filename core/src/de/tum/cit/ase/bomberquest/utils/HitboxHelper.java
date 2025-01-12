@@ -3,6 +3,7 @@ package de.tum.cit.ase.bomberquest.utils;
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.map.BombExplosion;
 import de.tum.cit.ase.bomberquest.map.Player;
+import de.tum.cit.ase.bomberquest.map.PowerUp;
 import de.tum.cit.ase.bomberquest.map.Wall;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
@@ -30,6 +31,8 @@ public class HitboxHelper {
         }
         else if (drawable instanceof BombExplosion) {
             return 0x0008;
+        } else if (drawable instanceof PowerUp) {
+            return 0x0016;
         } else {
             // System.err.println("No category bit matches for " + drawable);
             return 0x0000;
@@ -46,11 +49,13 @@ public class HitboxHelper {
      */
     public static short getMaskBits(Drawable drawable) {
         if (drawable instanceof Player) {
-            return 0x0002 | 0x0008 | 0x0004;
+            return 0x0002 | 0x0008 | 0x0004 | 0x0016;
         } else if (drawable instanceof Wall) {
             return 0x0001 | 0x0008;
         } else if (drawable instanceof BombExplosion) {
             return 0x0001 | 0x0004;
+        } else if (drawable instanceof PowerUp) {
+            return 0x0001;
         } else {
             // System.err.println("No category bit matches for " + drawable);
             return 0x0099;

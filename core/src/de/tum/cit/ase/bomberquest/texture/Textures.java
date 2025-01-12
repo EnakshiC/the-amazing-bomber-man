@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Textures {
     
+    public static final TextureRegion EMPTY = SpriteSheet.BASIC_TILES.at(11, 3);
+
     public static final TextureRegion FLOWERS = SpriteSheet.BASIC_TILES.at(2, 2);
 
     public static final TextureRegion PATH = SpriteSheet.BASIC_TILES.at(2, 5);
@@ -20,4 +22,10 @@ public class Textures {
     public static final TextureRegion INDESTRUCTIBLE_WALL = SpriteSheet.BASIC_TILES.at(2, 7);
 
     public static final TextureRegion BOMB = SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1);
+
+    public static final TextureRegion POWER_UP_BOMB_RADIUS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 1);
+
+    public static final TextureRegion POWER_UP_CONCURRENT_BOMBS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 2);
+
+
 }
