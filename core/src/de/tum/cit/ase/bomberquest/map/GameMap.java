@@ -101,7 +101,7 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) SoundEffect.BOMB_EXPLOSION.play(0.2f);
 
