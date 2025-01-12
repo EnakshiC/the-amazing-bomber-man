@@ -126,7 +126,7 @@ public class HitboxHelper {
 
         Body body = world.createBody(bodyDef);
         CircleShape circle = new CircleShape();
-        circle.setRadius(0.35f);
+        circle.setRadius(0.3f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;

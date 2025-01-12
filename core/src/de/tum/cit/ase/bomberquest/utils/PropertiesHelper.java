@@ -1,10 +1,7 @@
 package de.tum.cit.ase.bomberquest.utils;
 
 import com.badlogic.gdx.physics.box2d.World;
-import de.tum.cit.ase.bomberquest.map.DestructibleWall;
-import de.tum.cit.ase.bomberquest.map.EmptyTile;
-import de.tum.cit.ase.bomberquest.map.IndestructibleWall;
-import de.tum.cit.ase.bomberquest.map.Path;
+import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 import java.io.FileInputStream;
@@ -150,10 +147,17 @@ public class PropertiesHelper {
 
                     if (value == 0) {
                         row.add(new IndestructibleWall(world, x, y));
-                    } else if (value == 1) {
+                    } else if (value == 1 || value == 4 || value == 5 || value == 6) {
+                        // Add a DestructibleWall where it should be and over exit and power-ups
                         row.add(new DestructibleWall(world, x, y));
                     } else {
-                        row.add(new EmptyTile(x, y));
+                        // Make sure that DestructibleWall is placed over random generated exit, too.
+                        if (x == getExitX() && y == getExitY()) {
+                            row.add(new DestructibleWall(world, x, y));
+                        } else {
+                            row.add(new EmptyTile(x, y));
+                        }
+
                     }
                 } else {
                     // Fallback if a certain set of coordinates is not present in the property file.
@@ -161,6 +165,44 @@ public class PropertiesHelper {
                 }
             }
             elements.add(row);
+        }
+
+        return elements;
+    }
+
+    public static List<List<Path>> loadBackgroundPathsFromProperties() {
+        Properties properties = getProperties(); // Retrieve properties once.
+        List<List<Path>> elements = new ArrayList<>();
+
+        // Iterate over every row and every column and add the Drawable found under this key.
+        for (int x = 0; x < getMapWith() + 1; x++) {
+            List<Path> row = new ArrayList<>();
+            for (int y = 0; y < getMapHeight() + 1; y++) {
+                row.add(new Path(x, y));
+            }
+            elements.add(row);
+        }
+
+        return elements;
+    }
+
+    public static List<PowerUp> loadPowerUpsFromProperties(World world, List<Drawable> killList) {
+        Properties properties = getProperties(); // Retrieve properties once.
+        List<PowerUp> elements = new ArrayList<>();
+
+        // Iterate over every row and every column and add the Drawable found under this key.
+        for (int x = 0; x < getMapWith() + 1; x++) {
+            for (int y = 0; y < getMapHeight() + 1; y++) {
+                if (properties.containsKey(x + "," + y)) {
+                    int value = Integer.parseInt(properties.getProperty(x + "," + y));
+
+                    if (value == 5) {
+                        elements.add(new PowerUpConcurrentBombs(world, x, y, killList));
+                    } else if (value == 6) {
+                        elements.add(new PowerUpBombRadius(world, x, y, killList));
+                    }
+                }
+            }
         }
 
         return elements;

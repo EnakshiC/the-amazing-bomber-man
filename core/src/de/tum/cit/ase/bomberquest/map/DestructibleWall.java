@@ -14,7 +14,7 @@ public class DestructibleWall extends Wall {
     public TextureRegion getCurrentAppearance() {
         // TODO: Handle elements underneath! How do I stack them that they are not visible before, but now they are...
 
-        return this.isSolid ? Textures.DESTRUCTIBLE_WALL : Textures.PATH;
+        return this.isSolid ? Textures.DESTRUCTIBLE_WALL : Textures.EMPTY;
     }
 
     /**

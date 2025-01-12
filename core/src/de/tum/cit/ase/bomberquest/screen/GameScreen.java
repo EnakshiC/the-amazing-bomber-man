@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
-import de.tum.cit.ase.bomberquest.map.Bomb;
-import de.tum.cit.ase.bomberquest.map.BombExplosion;
-import de.tum.cit.ase.bomberquest.map.PowerUp;
+import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
-import de.tum.cit.ase.bomberquest.map.GameMap;
+import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
+
+import java.util.List;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -179,13 +179,21 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
 
 
-        // Render everything in the map here, in order from lowest to highest (later things appear on top)
-        for (Drawable element : map.getWallElements()) {
-            draw(spriteBatch, element);
+        // First render a background pattern with path tile
+        for (Path path : PropertiesHelper.loadBackgroundPathsFromProperties().stream().flatMap(List::stream).toList()) {
+            draw(spriteBatch, path);
         }
+
+        // Render middle layer: power-ups, exit, etc.
+        draw(spriteBatch, map.getExit());
 
         for (PowerUp powerUp : map.getPowerUps()) {
             draw(spriteBatch, powerUp);
+        }
+
+        // Render walls above middle layer
+        for (Drawable element : map.getWallElements()) {
+            draw(spriteBatch, element);
         }
 
         for (Bomb bomb : map.getBombsInPlay()) {
@@ -196,7 +204,7 @@ public class GameScreen implements Screen {
             draw(spriteBatch, explosion);
         }
 
-        draw(spriteBatch, map.getExit());
+
 
         draw(spriteBatch, map.getPlayer());
 

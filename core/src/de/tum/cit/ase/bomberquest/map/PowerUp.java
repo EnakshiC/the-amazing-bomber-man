@@ -2,6 +2,7 @@ package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.audio.SoundEffect;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
@@ -32,6 +33,9 @@ public abstract class PowerUp implements Drawable {
 
     public void collect(GameMap gameMap) {
         System.out.println("Collect! " + this);
+
+        SoundEffect.POWER_UP.play();
+
         effect.apply(gameMap);
         killList.add(this);
     }

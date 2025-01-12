@@ -33,6 +33,10 @@ public enum SoundEffect {
         this.sound.play(volume);
     }
 
+    public void play() {
+        this.sound.play(.2f);
+    }
+
     /**
      * Stops the sound effect.
      */

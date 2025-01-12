@@ -87,9 +87,7 @@ public class GameMap {
 
         this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY());
 
-        this.powerUps.add(new PowerUpBombRadius(world, 1,9, elementsToRemoveNextCycle));
-        this.powerUps.add(new PowerUpBombRadius(world, 5,9, elementsToRemoveNextCycle));
-        this.powerUps.add(new PowerUpConcurrentBombs(world, 7,9, elementsToRemoveNextCycle));
+        powerUps.addAll(PropertiesHelper.loadPowerUpsFromProperties(world, elementsToRemoveNextCycle));
 
         // TODO: The path file should come from somewhere else --> user should be able to choose the file
 
