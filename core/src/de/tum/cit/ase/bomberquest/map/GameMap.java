@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents the game map.
- * Holds all the objects and entities in the game.
+ * Represents the game map and manages all entities and interactions on the map,
+ * such as the player, bombs, and static elements. It integrates with the Box2D
+ * physics engine for realistic simulation of physics interactions.
  */
 public class GameMap {
 
@@ -62,9 +63,13 @@ public class GameMap {
     private final Exit exit;
 
     private List<Bomb> bombsInPlay = new ArrayList<>();
-    private final List<Bomb> bombsToExplode = new ArrayList<>();
+
+    // private final List<Bomb> bombsToExplode = new ArrayList<>();
 
     private final List<BombExplosion> explosionTiles = new ArrayList<>();
+    // private final List<BombExplosion> explosionsToBeRemoved = new ArrayList<>();
+
+    private final List<Drawable> elementsToRemoveNextCycle = new ArrayList<>();
 
     private final List<List<Drawable>> backgroundElements;
 
@@ -112,12 +117,20 @@ public class GameMap {
         this.player.tick(frameTime);
         doPhysicsStep(frameTime);
 
-        // Remove bombs that are due this cycle
-        for (Bomb b : bombsToExplode) {
-            explodeBomb(b);
-            bombsInPlay.remove(b);
-        }
 
+        for (Drawable element : elementsToRemoveNextCycle) {
+            // Remove bombs that are due this cycle
+            if (element instanceof Bomb) {
+                explodeBomb((Bomb) element);
+                bombsInPlay.remove((Bomb) element);
+            }
+            // Remove all explosions that are due this cycle
+            if (element instanceof BombExplosion) {
+                explosionTiles.remove((BombExplosion) element);
+            }
+
+        }
+        elementsToRemoveNextCycle.clear();
     }
 
     /**
@@ -157,23 +170,57 @@ public class GameMap {
             }
         }
 
-        if (!alredayBombOnTile) bombsInPlay.add(new Bomb(playerTileX, playerTileY, () -> {}, bombsToExplode));
+        if (!alredayBombOnTile) bombsInPlay.add(new Bomb(playerTileX, playerTileY, elementsToRemoveNextCycle));
 
     }
 
+
+    /**
+     * Triggers the explosion of a bomb at its specified location, determining the affected tiles
+     * within a certain radius and direction. It calculates the tiles affected by the explosion
+     * and stops the explosion's propagation when encountering indestructible obstacles.
+     *
+     * @param bomb The bomb to be exploded. Provides information about its placement on the map (x, y).
+     */
     private void explodeBomb(Bomb bomb) {
-        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY(), BombExplosionTile.CENTER));
+        final float x = bomb.getX();
+        final float y = bomb.getY();
 
-        explosionTiles.add(new BombExplosion(bomb.getX()+1, bomb.getY(), BombExplosionTile.RIGHT_MIDDLE));
-        explosionTiles.add(new BombExplosion(bomb.getX()+2, bomb.getY(), BombExplosionTile.RIGHT_END));
-        explosionTiles.add(new BombExplosion(bomb.getX()-1, bomb.getY(), BombExplosionTile.LEFT_MIDDLE));
-        explosionTiles.add(new BombExplosion(bomb.getX()-2, bomb.getY(), BombExplosionTile.LEFT_END));
+        // TODO: Replace radius with in game variable
+        final int radius = 8;
 
+        // Put directions of bomb in a list, like vectors in each up, down, left, right
+        final List<String> direction = new ArrayList<>();
+        direction.add("1,0");
+        direction.add("0,1");
+        direction.add("-1,0");
+        direction.add("0,-1");
 
-        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()+1, BombExplosionTile.TOP_MIDDLE));
-        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()+2, BombExplosionTile.TOP_END));
-        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()-1, BombExplosionTile.BOTTOM_MIDDLE));
-        explosionTiles.add(new BombExplosion(bomb.getX(), bomb.getY()-2, BombExplosionTile.BOTTOM_END));
+        // Add center tile
+        // Since bomb was placed here, it can always exist.
+        explosionTiles.add(new BombExplosion(x, y, BombExplosionTile.CENTER, elementsToRemoveNextCycle));
+
+        // Iterate over each direction
+        for (String dir : direction) {
+            final int xShift = Integer.parseInt(dir.split(",")[0]);
+            final int yShift = Integer.parseInt(dir.split(",")[1]);
+
+            // iterate from 1 to radius
+            for (int i = 1; i <= radius; i++) {
+                // Check if the tile shifted from the bombs center is an IndestructibleWall
+                // We do not need to check for the outside of the map, since it is always surrounded by an IndestructibleWall
+                final int newX = (int) (x + xShift * i);
+                final int newY = (int) (y + yShift * i);
+
+                // If we hit an IndestructibleWall we stop in this direction and go the next
+                // Otherwise we add the next element of the bombs explosion
+                if (this.backgroundElements.get(newX).get(newY) instanceof IndestructibleWall) {
+                    break;
+                } else {
+                    explosionTiles.add(new BombExplosion(newX, newY, BombExplosionTile.getByDirectionAndEnd(dir, i == radius), elementsToRemoveNextCycle));
+                }
+            }
+        }
     }
 
     /**

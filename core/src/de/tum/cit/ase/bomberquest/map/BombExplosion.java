@@ -9,33 +9,30 @@ import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.SpriteSheet;
 
-public class BombExplosion implements Drawable {
-    /** Total time elapsed since the explosion started. We use this for animating it. */
-    private float elapsedTime;
+import java.util.List;
+
+public class BombExplosion extends SelfRemovingElement {
+
+    /** The time it takes for the explosion to evaporate. */
+    public static final float EXPLOSION_DURATION = 1.0f;
 
     final float x;
     final float y;
 
     final BombExplosionTile bombExplosionTile;
 
+    public BombExplosion(float x, float y, BombExplosionTile bombExplosionTile, List<Drawable> killList) {
+        super(EXPLOSION_DURATION, killList);
 
-    public BombExplosion(float x, float y, BombExplosionTile bombExplosionTile) {
         this.x = x;
         this.y = y;
         this.bombExplosionTile = bombExplosionTile;
-
-    }
-
-    public void tick(float frameTime) {
-        this.elapsedTime += frameTime;
     }
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        return bombExplosionTile.getAnimation().getKeyFrame(elapsedTime);
+        return bombExplosionTile.getAnimation().getKeyFrame(super.getTimeSinceCreation());
     }
-
-
 
     @Override
     public float getX() {
