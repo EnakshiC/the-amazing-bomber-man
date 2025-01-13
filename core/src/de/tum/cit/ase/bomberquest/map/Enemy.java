@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Animations;
+import de.tum.cit.ase.bomberquest.texture.Destroyable;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
@@ -17,7 +18,7 @@ import java.util.Objects;
  * The movement is determined based on available directions when facing a wall. Otherwise it walks straight ahead.
  * The enemy has a hitbox for collision detection.
  */
-public abstract class Enemy implements Drawable {
+public abstract class Enemy implements Drawable, Destroyable {
     private float elapsedTime;
     private final Body hitbox;
     protected Direction currentDirection = Direction.NONE;
@@ -194,6 +195,13 @@ public abstract class Enemy implements Drawable {
             case RIGHT -> getWalkRightFrame(elapsedTime);
             default -> getStandingFrame(elapsedTime);
         };
+    }
+
+    @Override
+    public void destroyBody(World world) {
+        if (this.hitbox != null) {
+            world.destroyBody(hitbox);
+        }
     }
 }
 
