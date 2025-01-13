@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.audio.SoundEffect;
+import de.tum.cit.ase.bomberquest.texture.Destroyable;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.GameContactListener;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
@@ -106,7 +107,8 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E))
+            SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) SoundEffect.BOMB_EXPLOSION.play(0.2f);
 
@@ -133,7 +135,7 @@ public class GameMap {
             // Remove all explosions that are due this cycle
             if (element instanceof BombExplosion) {
                 explosionTiles.remove((BombExplosion) element);
-                world.destroyBody(((BombExplosion) element).getBody());
+                world.destroyBody(((BombExplosion) element).getHitbox());
             }
             if (element instanceof PowerUp) {
                 powerUps.remove((PowerUp) element);
@@ -143,6 +145,12 @@ public class GameMap {
                 enemies.remove((Enemy) element);
             }
 
+            // Remove the bodies from the world if there were any
+            if (element instanceof Destroyable) {
+                System.out.println("Try to destroy body of: " + element);
+
+                ((Destroyable) element).destroyBody(world);
+            }
         }
         elementsToRemoveNextCycle.clear();
     }
@@ -274,11 +282,12 @@ public class GameMap {
     public int getBombRadius() {
         return bombRadius;
     }
+
     public void setBombRadius(int bombRadius) {
         this.bombRadius = bombRadius;
     }
 
-    public int getMaxBombsAllowed () {
+    public int getMaxBombsAllowed() {
         return maxBombsAllowed;
     }
 
