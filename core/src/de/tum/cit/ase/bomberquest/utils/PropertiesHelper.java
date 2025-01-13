@@ -1,5 +1,6 @@
 package de.tum.cit.ase.bomberquest.utils;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
@@ -9,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * The PropertiesHelper class helps with the handling of the .properties map files.
@@ -22,6 +25,9 @@ public class PropertiesHelper {
     private static String currentFilePath = FALLBACK_PATH;
 
     private static String exitCoordinates;
+
+    // Random to select random enemies
+    private static final Random RANDOM = new Random();
 
 
     /**
@@ -208,6 +214,34 @@ public class PropertiesHelper {
         return elements;
     }
 
+    public static List<Enemy> loadEnemiesFromProperties(World world, GameMap gameMap) {
+        Properties properties = getProperties(); // Retrieve properties once.
+        List<Enemy> elements = new ArrayList<>();
+
+        // Iterate over every row and every column and add the Drawable found under this key.
+        for (int x = 0; x < getMapWith() + 1; x++) {
+            for (int y = 0; y < getMapHeight() + 1; y++) {
+                if (properties.containsKey(x + "," + y)) {
+                    int value = Integer.parseInt(properties.getProperty(x + "," + y));
+
+                    if (value == 3) {
+                        List<Supplier<Enemy>> enemySuppliers = getEnemySuppliers(world, x, y, gameMap);
+
+                        elements.add(enemySuppliers.get(RANDOM.nextInt(enemySuppliers.size())).get());
+                    }
+                }
+            }
+        }
+
+        return elements;
+    }
+
+    private static List<Supplier<Enemy>> getEnemySuppliers(World world, float x, float y, GameMap gameMap) {
+        return List.of(
+                () -> new EnemyWithBasicMovement(world, x, y, gameMap),
+                () -> new EnemyWithDecisiveMovement(world, x, y, gameMap)
+        );
+    }
 
     /**
      * Retrieves the x-coordinate of the player's entrance from the properties file.

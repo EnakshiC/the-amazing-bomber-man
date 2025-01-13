@@ -4,9 +4,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 
-public class BasicEnemy extends Enemy {
+/**
+ * A basic enemy that walks straight as long as it is possible.
+ * When hitting a wall, it randomly chooses one of the available other directions.
+ * Look: White walking human like enemy.
+ */
+public class EnemyWithBasicMovement extends Enemy {
 
-    public BasicEnemy(World world, float x, float y, GameMap gameMap) {
+    public EnemyWithBasicMovement(World world, float x, float y, GameMap gameMap) {
         super(world, x, y, gameMap);
     }
 

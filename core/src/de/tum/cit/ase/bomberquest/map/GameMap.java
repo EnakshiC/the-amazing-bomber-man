@@ -87,7 +87,8 @@ public class GameMap {
         // Create a player with initial position (1, 3)
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
 
-        this.enemies.add(new BasicEnemy(this.world, 10,5, this));
+        //this.enemies.add(new EnemyWithDecisiveMovement(this.world, 10,5, this));
+        this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
 
         this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY());
 
