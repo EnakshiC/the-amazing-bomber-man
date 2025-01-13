@@ -128,6 +128,16 @@ public class Animations {
     public static final Animation<TextureRegion> SLIMY_ENEMY_STANDING = new Animation<>(0.2f,
             SpriteSheet.MOBS.at(4, 1)
     );
+
+    public static final Animation<TextureRegion> ENEMY_DYING = new Animation<>(0.1f,
+            SpriteSheet.SMOKE.at(1, 1),
+            SpriteSheet.SMOKE.at(1, 2),
+            SpriteSheet.SMOKE.at(1, 3),
+            SpriteSheet.SMOKE.at(1, 4),
+            SpriteSheet.SMOKE.at(1, 5),
+            SpriteSheet.SMOKE.at(1, 6),
+            SpriteSheet.SMOKE.at(1, 7)
+    );
     
 
     /**

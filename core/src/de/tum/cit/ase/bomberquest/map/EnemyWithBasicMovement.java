@@ -3,6 +3,9 @@ package de.tum.cit.ase.bomberquest.map;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Animations;
+import de.tum.cit.ase.bomberquest.texture.Drawable;
+
+import java.util.List;
 
 /**
  * A basic enemy that walks straight as long as it is possible.

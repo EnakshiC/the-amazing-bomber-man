@@ -1,10 +1,7 @@
 package de.tum.cit.ase.bomberquest.utils;
 
 import com.badlogic.gdx.physics.box2d.*;
-import de.tum.cit.ase.bomberquest.map.BombExplosion;
-import de.tum.cit.ase.bomberquest.map.Player;
-import de.tum.cit.ase.bomberquest.map.PowerUp;
-import de.tum.cit.ase.bomberquest.map.Wall;
+import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 /**
@@ -24,12 +21,11 @@ public class HitboxHelper {
         // TODO: Add Enemies
         if (drawable instanceof Player) {
             return 0x0001;
+        } else if (drawable instanceof Enemy) {
+            return 0x0002;
         } else if (drawable instanceof Wall) {
             return 0x0004;
-//        } else if (drawable instanceof Enemy) {
-//            return 0x0002;
-        }
-        else if (drawable instanceof BombExplosion) {
+        } else if (drawable instanceof BombExplosion) {
             return 0x0008;
         } else if (drawable instanceof PowerUp) {
             return 0x0016;
@@ -45,16 +41,23 @@ public class HitboxHelper {
      *
      * @param drawable The Drawable object for which the mask bits are determined.
      * @return The mask bits representing the collision behavior of the Drawable.
-     *         Returns 0x0099 if no matching mask configuration exists.
+     * Returns 0x0099 if no matching mask configuration exists.
      */
     public static short getMaskBits(Drawable drawable) {
         if (drawable instanceof Player) {
-            return 0x0002 | 0x0008 | 0x0004 | 0x0016;
+            // With Enemy, Wall, BombExplosion, PowerUp
+            return 0x0002 | 0x0004 | 0x0008 | 0x0016;
+        } else if (drawable instanceof Enemy) {
+            // With Player, Wall, Bomb Explosion
+            return 0x0001 | 0x0004 | 0x0008;
         } else if (drawable instanceof Wall) {
-            return 0x0001 | 0x0008;
+            // With Player, Enemy, BombExplosion
+            return 0x0001 | 0x0002 | 0x0008;
         } else if (drawable instanceof BombExplosion) {
-            return 0x0001 | 0x0004;
+            // With Player, Enemy, Wall
+            return 0x0001 | 0x0002 | 0x0004;
         } else if (drawable instanceof PowerUp) {
+            // With Player
             return 0x0001;
         } else {
             // System.err.println("No category bit matches for " + drawable);
@@ -67,14 +70,14 @@ public class HitboxHelper {
      * Creates a polygon-shaped hitbox as a Box2D body with specified properties and configurations.
      * This method defines the physical behavior and collision settings for the body in the Box2D physics world.
      *
-     * @param world The Box2D world where the body will be added.
-     * @param x The X coordinate for the initial position of the body.
-     * @param y The Y coordinate for the initial position of the body.
-     * @param drawable The drawable object associated with the body, used to configure collision filtering.
+     * @param world         The Box2D world where the body will be added.
+     * @param x             The X coordinate for the initial position of the body.
+     * @param y             The Y coordinate for the initial position of the body.
+     * @param drawable      The drawable object associated with the body, used to configure collision filtering.
      * @param isDynamicBody Determines if the body is dynamic (true) or static (false).
      * @return The created Box2D body configured as a polygon hitbox.
      */
-    public static Body createPolygonHitbox(World world, float x, float y, Drawable drawable, boolean isDynamicBody) {
+    public static Body createPolygonHitbox(World world, float x, float y, Drawable drawable, boolean isDynamicBody, boolean isSensor) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = isDynamicBody ? BodyDef.BodyType.DynamicBody : BodyDef.BodyType.StaticBody;
         bodyDef.position.set(x, y);
@@ -88,7 +91,7 @@ public class HitboxHelper {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = box;
-        fixtureDef.isSensor = false;
+        fixtureDef.isSensor = isSensor;
 
         // Giving the current body a category bit and mask bits
         // It only collides with bodies that have a category bit listed in the mask bits
@@ -103,7 +106,7 @@ public class HitboxHelper {
     }
 
     public static Body createPolygonHitbox(World world, float x, float y, Drawable drawable) {
-        return createPolygonHitbox(world, x, y, drawable, false);
+        return createPolygonHitbox(world, x, y, drawable, false, false);
     }
 
 
@@ -112,13 +115,13 @@ public class HitboxHelper {
      * This method sets up the physical behavior and collision settings for the body in the Box2D physics world.
      * The circle hitbox is associated with a Drawable object, which is used to configure collision filtering.
      *
-     * @param world The Box2D world where the body will be added.
-     * @param startX The X coordinate for the initial position of the body.
-     * @param startY The Y coordinate for the initial position of the body.
+     * @param world    The Box2D world where the body will be added.
+     * @param startX   The X coordinate for the initial position of the body.
+     * @param startY   The Y coordinate for the initial position of the body.
      * @param drawable The drawable object associated with the body, used to configure collision filtering.
      * @return The created Box2D body configured as a circle hitbox.
      */
-    public static Body createCircleHitbox(World world, float startX, float startY, Drawable drawable) {
+    public static Body createCircleHitbox(World world, float startX, float startY, Drawable drawable, boolean isSensor) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
@@ -130,7 +133,7 @@ public class HitboxHelper {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
-        fixtureDef.isSensor = false;
+        fixtureDef.isSensor = isSensor;
 
         fixtureDef.filter.categoryBits = getCategoryBits(drawable);
         fixtureDef.filter.maskBits = getMaskBits(drawable);

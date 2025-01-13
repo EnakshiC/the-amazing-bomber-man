@@ -139,6 +139,10 @@ public class GameMap {
                 powerUps.remove((PowerUp) element);
             }
 
+            if (element instanceof Enemy) {
+                enemies.remove((Enemy) element);
+            }
+
         }
         elementsToRemoveNextCycle.clear();
     }
@@ -249,6 +253,10 @@ public class GameMap {
 
     public Exit getExit() {
         return exit;
+    }
+
+    public List<Drawable> getElementsToRemoveNextCycle() {
+        return elementsToRemoveNextCycle;
     }
 
     public List<Bomb> getBombsInPlay() {

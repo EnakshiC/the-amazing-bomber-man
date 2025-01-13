@@ -34,9 +34,18 @@ public class GameContactListener implements ContactListener {
             ((DestructibleWall) b).destroy();
         }
 
-        // TODO: GAME OVER
+        // Player is hit by bomb
         if (a instanceof Player && b instanceof BombExplosion) {
+            System.out.println("Player DIED!!!");
         } else if (b instanceof Player && a instanceof BombExplosion) {
+            System.out.println("Player DIED!!!");
+        }
+
+        // Player collides with enemy
+        if (a instanceof Player && b instanceof Enemy) {
+            System.out.println("Player DIED!!!");
+        } else if (b instanceof Player && a instanceof Enemy) {
+            System.out.println("Player DIED!!!");
         }
 
         // If Player collides with PowerUp, collect it
@@ -46,6 +55,12 @@ public class GameContactListener implements ContactListener {
             ((PowerUp) a).collect(gameMap);
         }
 
+        // If Enemy collides with BombExplosion
+        if (a instanceof Enemy && b instanceof BombExplosion) {
+            ((Enemy) a).die();
+        } else if (b instanceof Enemy && a instanceof BombExplosion) {
+            ((Enemy) b).die();
+        }
 
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 public class BombExplosion extends SelfRemovingElement {
 
     /** The time it takes for the explosion to evaporate. */
-    public static final float EXPLOSION_DURATION = 2.0f;
+    public static final float EXPLOSION_DURATION = 1.0f;
 
     final float x;
     final float y;
@@ -31,7 +31,7 @@ public class BombExplosion extends SelfRemovingElement {
         this.y = y;
         this.bombExplosionTile = bombExplosionTile;
 
-        body = HitboxHelper.createPolygonHitbox(world, x, y, this, true);
+        body = HitboxHelper.createPolygonHitbox(world, x, y, this, true, true);
     }
 
     @Override

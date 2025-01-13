@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
@@ -24,6 +25,9 @@ public abstract class Enemy implements Drawable {
 
     protected final float speed = 1f;
 
+    private boolean isDying = false;
+    private float elapsedDyingTime = 0.0f;
+
     protected abstract TextureRegion getStandingFrame(float elapsedTime);
 
     protected abstract TextureRegion getWalkUpFrame(float elapsedTime);
@@ -31,14 +35,26 @@ public abstract class Enemy implements Drawable {
     protected abstract TextureRegion getWalkLeftFrame(float elapsedTime);
     protected abstract TextureRegion getWalkRightFrame(float elapsedTime);
 
+    private final List<Drawable> killList;
+
     public enum Direction { UP, DOWN, LEFT, RIGHT, NONE }
 
     public Enemy(World world, float x, float y, GameMap gameMap) {
-        this.hitbox = HitboxHelper.createCircleHitbox(world, x, y, this);
+        this.hitbox = HitboxHelper.createCircleHitbox(world, x, y, this, true);
         this.gameMap = gameMap;
+        this.killList = gameMap.getElementsToRemoveNextCycle();
     }
 
     public void tick(float frameTime) {
+        if (isDying) {
+            elapsedDyingTime += frameTime;
+            if (elapsedDyingTime >= 0.5f) {
+                isDying = false;
+                killList.add(this);
+            }
+            return;
+        }
+
         this.elapsedTime += frameTime;
         this.currentDirection = determineDirection();
         updateVelocity();
@@ -144,6 +160,13 @@ public abstract class Enemy implements Drawable {
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);
     }
 
+    public void die() {
+        System.out.println("Enemy died: " + this);
+
+        isDying = true;
+        //killList.add(this);
+    }
+
     @Override
     public float getX() {
         return hitbox.getPosition().x;
@@ -156,6 +179,10 @@ public abstract class Enemy implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
+        if (isDying) {
+            return Animations.ENEMY_DYING.getKeyFrame(elapsedDyingTime, true);
+        }
+
         if (Objects.equals(this.hitbox.getLinearVelocity(), new Vector2(0.0f, 0.0f))) {
             return getStandingFrame(elapsedTime);
         }

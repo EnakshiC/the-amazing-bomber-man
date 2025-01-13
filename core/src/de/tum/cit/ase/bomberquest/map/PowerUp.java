@@ -28,7 +28,7 @@ public abstract class PowerUp implements Drawable {
 
         // Has the same hitbox size as player which is only 70% of tile
         // This way it is well hidden under a DestructibleWall (98% width hitbox)
-        HitboxHelper.createCircleHitbox(world, x, y, this);
+        HitboxHelper.createCircleHitbox(world, x, y, this, true);
     }
 
     public void collect(GameMap gameMap) {

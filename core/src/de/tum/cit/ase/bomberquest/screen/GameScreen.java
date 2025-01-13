@@ -196,9 +196,7 @@ public class GameScreen implements Screen {
             draw(spriteBatch, bomb);
         }
 
-        for (Enemy enemy : map.getEnemies()) {
-            draw(spriteBatch, enemy);
-        }
+
 
         // Render walls above middle layer
         for (Drawable element : map.getWallElements()) {
@@ -207,6 +205,10 @@ public class GameScreen implements Screen {
 
         for (BombExplosion explosion : map.getExplosionTiles()) {
             draw(spriteBatch, explosion);
+        }
+
+        for (Enemy enemy : map.getEnemies()) {
+            draw(spriteBatch, enemy);
         }
 
         draw(spriteBatch, map.getPlayer());

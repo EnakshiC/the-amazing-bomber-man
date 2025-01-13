@@ -17,12 +17,18 @@ public enum SpriteSheet {
     
     /** The character spritesheet, which has a grid size of 16x32. */
     CHARACTER("character.png", 16, 32),
+
     /** The basic tiles spritesheet, which has a grid size of 16x16. */
     BASIC_TILES("basictiles.png", 16, 16),
 
+    /** The original bomberman spritesheet, which has a grid size of 16x16. */
     ORIGINAL_BOMBERMAN("original-bomberman.png", 16, 16),
 
-    MOBS("mobs.png", 16, 16);
+    /** The mobs spritesheet, which has a grid size of 16x16. */
+    MOBS("mobs.png", 16, 16),
+
+    /** The smoke spritesheet, which has a grid size of 16x16. */
+    SMOKE("smoke.png", 16, 16);
     
     private final Texture spritesheet;
     private final int width;

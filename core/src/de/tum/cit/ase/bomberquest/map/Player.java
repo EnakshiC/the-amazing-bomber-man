@@ -43,7 +43,7 @@ public class Player implements Drawable {
      * @param y The starting y-coordinate of the player.
      */
     public Player(World world, float x, float y) {
-        this.hitbox = HitboxHelper.createCircleHitbox(world, x, y, this);
+        this.hitbox = HitboxHelper.createCircleHitbox(world, x, y, this, false);
     }
     
 
