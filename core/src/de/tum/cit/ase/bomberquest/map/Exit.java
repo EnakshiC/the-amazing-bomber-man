@@ -8,6 +8,7 @@ public class Exit implements Drawable {
 
     private final int x;
     private final int y;
+    boolean Open = false;
 
     public Exit(int x, int y) {
         this.x = x;
@@ -16,7 +17,8 @@ public class Exit implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        return Textures.EXIT;
+
+        return Textures.EXIT_CLOSE;
     }
 
     @Override

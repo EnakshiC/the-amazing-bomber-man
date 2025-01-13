@@ -11,7 +11,9 @@ public class Textures {
     
     public static final TextureRegion EMPTY = SpriteSheet.BASIC_TILES.at(11, 3);
 
-    public static final TextureRegion EXIT = SpriteSheet.BASIC_TILES.at(2, 2);
+    public static final TextureRegion EXIT_CLOSE = SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 12);
+
+    public static final TextureRegion EXIT_OPEN = SpriteSheet.BASIC_TILES.at(3, 7);
 
     public static final TextureRegion PATH = SpriteSheet.BASIC_TILES.at(2, 5);
 
