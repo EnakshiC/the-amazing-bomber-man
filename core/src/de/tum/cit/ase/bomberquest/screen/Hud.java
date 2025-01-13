@@ -36,6 +36,22 @@ public class Hud {
         this.gameMap = gameMap;
     }
 
+    private String getMinutes(float time)
+    {
+        return String.valueOf((int) time / 60);
+    }
+
+    private String getSeconds(float time)
+    {
+        int seconds = (int) time % 60;
+        if(seconds < 10)
+        {
+            return "0" + String.valueOf(seconds);
+        }
+        return String.valueOf(seconds);
+    }
+
+
     /**
      * Updates the HUD with the latest gameplay state.
      *
@@ -71,10 +87,10 @@ public class Hud {
 
         // Draw the HUD elements
         font.draw(spriteBatch, "Press Esc to Pause!", 10, startY);
-        font.draw(spriteBatch, "Bombs Allowed: " + gameMap.getMaxBombsAllowed() + " / " + 8, 10, startY - padding);
+        font.draw(spriteBatch, "Bombs Allowed: " + gameMap.getMaxBombsAllowed(), 10, startY - padding);
         font.draw(spriteBatch, "Blast Radius: " + gameMap.getBombRadius(), 10, startY - 2 * padding);
-        font.draw(spriteBatch, "Enemies Left: " + 8, 10, startY - 3 * padding);
-        font.draw(spriteBatch, "Timer: " + String.format("%.1f", 1.0f), 10, startY - 4 * padding);
+        font.draw(spriteBatch, "Enemies killed: " + gameMap.getEnemies().size() +"/ " + gameMap.getEnemiesCountAtBeginning(), 10, startY - 3 * padding);
+        font.draw(spriteBatch, "Time Left: " + getMinutes(gameMap.getTimeLeft()) + ":" + getSeconds(gameMap.getTimeLeft()), 10, startY - 4 * padding);
 
         // Finish drawing
         spriteBatch.end();

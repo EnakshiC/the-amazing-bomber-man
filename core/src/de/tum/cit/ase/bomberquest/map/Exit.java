@@ -17,6 +17,7 @@ public class Exit implements Drawable {
         this.gameMap=gameMap;
     }
 
+    //Adds any
     @Override
     public TextureRegion getCurrentAppearance() {
         if(gameMap.getEnemies().isEmpty()) {

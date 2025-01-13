@@ -70,8 +70,12 @@ public class GameMap {
 
     private final List<Enemy> enemies = new ArrayList<>();
 
+    private final int enemiesCountAtBeginning;
+
     private int maxBombsAllowed = 1;
     private int bombRadius = 1;
+
+    private float timeLeft = 300.0f;
 
     private final List<List<Drawable>> wallElements;
 
@@ -91,6 +95,8 @@ public class GameMap {
         //this.enemies.add(new EnemyWithDecisiveMovement(this.world, 10,5, this));
         this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
 
+        this.enemiesCountAtBeginning= enemies.size();
+
         this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY(), this);
 
         powerUps.addAll(PropertiesHelper.loadPowerUpsFromProperties(world, elementsToRemoveNextCycle));
@@ -107,6 +113,8 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
+        timeLeft -= frameTime;
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.E))
             SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
 
@@ -143,6 +151,7 @@ public class GameMap {
 
             if (element instanceof Enemy) {
                 enemies.remove((Enemy) element);
+                System.out.println("Enemies remaining: " + enemies.size());
             }
 
             // Remove the bodies from the world if there were any
@@ -257,6 +266,16 @@ public class GameMap {
 
     public List<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public int getEnemiesCountAtBeginning()
+    {
+        return enemiesCountAtBeginning;
+    }
+
+    public float getTimeLeft()
+    {
+        return timeLeft;
     }
 
     public Exit getExit() {
