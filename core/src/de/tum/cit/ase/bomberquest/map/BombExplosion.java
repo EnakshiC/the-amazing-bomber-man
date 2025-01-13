@@ -15,7 +15,7 @@ import java.util.List;
 public class BombExplosion extends SelfRemovingElement {
 
     /** The time it takes for the explosion to evaporate. */
-    public static final float EXPLOSION_DURATION = 1.0f;
+    public static final float EXPLOSION_DURATION = 2.0f;
 
     final float x;
     final float y;
