@@ -8,17 +8,23 @@ public class Exit implements Drawable {
 
     private final int x;
     private final int y;
-    boolean Open = false;
+    private final GameMap gameMap;
 
-    public Exit(int x, int y) {
+
+    public Exit(int x, int y, GameMap gameMap) {
         this.x = x;
         this.y = y;
+        this.gameMap=gameMap;
     }
 
     @Override
     public TextureRegion getCurrentAppearance() {
-
-        return Textures.EXIT_CLOSE;
+        if(gameMap.getEnemies().isEmpty()) {
+            return Textures.EXIT_OPEN;
+        }
+        else {
+            return Textures.EXIT_CLOSE;
+        }
     }
 
     @Override
@@ -35,4 +41,5 @@ public class Exit implements Drawable {
     public String toString() {
         return "x: " + x + " y: " + y;
     }
+
 }

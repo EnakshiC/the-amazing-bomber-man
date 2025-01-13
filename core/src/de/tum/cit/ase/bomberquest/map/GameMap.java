@@ -90,7 +90,7 @@ public class GameMap {
         //this.enemies.add(new EnemyWithDecisiveMovement(this.world, 10,5, this));
         this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
 
-        this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY());
+        this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY(), this);
 
         powerUps.addAll(PropertiesHelper.loadPowerUpsFromProperties(world, elementsToRemoveNextCycle));
 
