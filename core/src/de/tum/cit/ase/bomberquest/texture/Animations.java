@@ -2,7 +2,7 @@ package de.tum.cit.ase.bomberquest.texture;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import de.tum.cit.ase.bomberquest.map.BombExplosion;
+import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
 
 /**
  * Contains all animation constants used in the game.

@@ -1,8 +1,10 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
+import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
 /**
  * Represents the exit point in a game map, which can open or close based on the state of the map.
@@ -15,15 +17,22 @@ public class Exit implements Drawable {
     private final int y;
     private final GameMap gameMap;
 
-    public Exit(int x, int y, GameMap gameMap) {
+    public Exit(World world, int x, int y, GameMap gameMap) {
         this.x = x;
         this.y = y;
         this.gameMap=gameMap;
+
+        HitboxHelper.createPolygonHitbox(world, x, y, this);
+    }
+
+    /** The exit is open if there are no more enemies alive in the map. */
+    public boolean isOpen() {
+        return gameMap.getEnemies().isEmpty();
     }
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        if(gameMap.getEnemies().isEmpty()) {
+        if(isOpen()) {
             return Textures.EXIT_OPEN;
         }
         else {

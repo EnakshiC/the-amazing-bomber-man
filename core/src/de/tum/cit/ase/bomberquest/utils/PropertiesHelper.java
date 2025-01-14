@@ -2,6 +2,16 @@ package de.tum.cit.ase.bomberquest.utils;
 
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.map.*;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.DestructibleWall;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.EmptyTile;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.IndestructibleWall;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.Path;
+import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.enemies.EnemyWithBasicMovement;
+import de.tum.cit.ase.bomberquest.map.enemies.EnemyWithDecisiveMovement;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUpBombRadius;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUpConcurrentBombs;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 import java.io.FileInputStream;
@@ -180,7 +190,6 @@ public class PropertiesHelper {
      * @return a 2D list containing {@link Path} objects that represent the background paths of the map.
      */
     public static List<List<Path>> loadBackgroundPathsFromProperties() {
-        Properties properties = getProperties(); // Retrieve properties once.
         List<List<Path>> elements = new ArrayList<>();
 
         // Iterate over every row and every column and add the Drawable found under this key.

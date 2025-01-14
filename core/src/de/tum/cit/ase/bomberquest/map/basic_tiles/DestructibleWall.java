@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.map;
+package de.tum.cit.ase.bomberquest.map.basic_tiles;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
@@ -19,7 +19,7 @@ public class DestructibleWall extends Wall implements Destroyable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        return this.isSolid ? Textures.DESTRUCTIBLE_WALL : Textures.EMPTY;
+        return this.solid ? Textures.DESTRUCTIBLE_WALL : Textures.EMPTY;
     }
 
     /**

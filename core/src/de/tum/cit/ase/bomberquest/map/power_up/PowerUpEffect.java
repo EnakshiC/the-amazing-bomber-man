@@ -1,4 +1,6 @@
-package de.tum.cit.ase.bomberquest.map;
+package de.tum.cit.ase.bomberquest.map.power_up;
+
+import de.tum.cit.ase.bomberquest.map.GameMap;
 
 /**
  * Represents a power-up effect that can be applied to a game map.

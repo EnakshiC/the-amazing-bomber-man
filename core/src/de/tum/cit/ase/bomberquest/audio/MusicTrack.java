@@ -35,7 +35,7 @@ public enum MusicTrack {
      * @param fileName to store the name of the music file.
      */
     MusicTrack(String fileName) {
-        this(fileName, 0.1f);
+        this(fileName, 0.2f);
     }
 
     /**

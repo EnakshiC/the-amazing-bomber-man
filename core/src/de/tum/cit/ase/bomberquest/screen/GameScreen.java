@@ -11,6 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.map.*;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.Path;
+import de.tum.cit.ase.bomberquest.map.bomb.Bomb;
+import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
+import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
 

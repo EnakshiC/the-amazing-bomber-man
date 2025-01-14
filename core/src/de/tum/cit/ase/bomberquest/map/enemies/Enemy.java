@@ -1,9 +1,12 @@
-package de.tum.cit.ase.bomberquest.map;
+package de.tum.cit.ase.bomberquest.map.enemies;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.map.GameMap;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.DestructibleWall;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.IndestructibleWall;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Destroyable;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
@@ -166,7 +169,7 @@ public abstract class Enemy implements Drawable, Destroyable {
         List<Direction> directions = new ArrayList<>(List.of(Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN));
 
         for (Drawable drawable : gameMap.getWallElements()) {
-            if (!(drawable instanceof IndestructibleWall) && !((drawable instanceof DestructibleWall) && ((DestructibleWall) drawable).isSolid)) continue;
+            if (!(drawable instanceof IndestructibleWall) && !((drawable instanceof DestructibleWall) && ((DestructibleWall) drawable).isSolid())) continue;
 
             int drawableX = Math.round(drawable.x());
             int drawableY = Math.round(drawable.y());

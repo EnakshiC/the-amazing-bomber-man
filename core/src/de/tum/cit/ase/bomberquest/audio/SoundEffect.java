@@ -26,22 +26,9 @@ public enum SoundEffect {
 
     /**
      * Plays the sound effect.
-     *
-     * @param volume The volume to play the sound effect at (0.0f to 1.0f).
      */
-    public void play(float volume) {
-        this.sound.play(volume);
-    }
-
     public void play() {
-        this.sound.play(.2f);
-    }
-
-    /**
-     * Stops the sound effect.
-     */
-    public void stop() {
-        this.sound.stop();
+        this.sound.play(.5f);
     }
 }
 

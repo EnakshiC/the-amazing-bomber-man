@@ -6,6 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.audio.SoundEffect;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.IndestructibleWall;
+import de.tum.cit.ase.bomberquest.map.bomb.Bomb;
+import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
+import de.tum.cit.ase.bomberquest.map.bomb.BombExplosionTile;
+import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Destroyable;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.GameContactListener;
@@ -94,7 +100,7 @@ public class GameMap {
         this.enemiesCountAtBeginning = enemies.size();
 
         // Load exit
-        this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY(), this);
+        this.exit = new Exit(world, PropertiesHelper.getExitX(), PropertiesHelper.getExitY(), this);
 
         // Load all power-ups
         powerUps.addAll(PropertiesHelper.loadPowerUpsFromProperties(world, objectsToRemoveNextCycle));

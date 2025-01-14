@@ -5,6 +5,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import de.tum.cit.ase.bomberquest.map.*;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.DestructibleWall;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.Wall;
+import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
+import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 
 /**
  * A custom implementation of the ContactListener interface that manages collisions

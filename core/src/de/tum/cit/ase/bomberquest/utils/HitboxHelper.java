@@ -2,6 +2,10 @@ package de.tum.cit.ase.bomberquest.utils;
 
 import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.map.*;
+import de.tum.cit.ase.bomberquest.map.basic_tiles.Wall;
+import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
+import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 /**
@@ -28,6 +32,8 @@ public class HitboxHelper {
             return 0x0008;
         } else if (drawable instanceof PowerUp) {
             return 0x0016;
+        } else if (drawable instanceof Exit) {
+            return 0x0032;
         } else {
             // System.err.println("No category bit matches for " + drawable);
             return 0x0000;
@@ -44,8 +50,8 @@ public class HitboxHelper {
      */
     public static short getMaskBits(Drawable drawable) {
         if (drawable instanceof Player) {
-            // With Enemy, Wall, BombExplosion, PowerUp
-            return 0x0002 | 0x0004 | 0x0008 | 0x0016;
+            // With Enemy, Wall, BombExplosion, PowerUp, Exit
+            return 0x0002 | 0x0004 | 0x0008 | 0x0016 | 0x0032;
         } else if (drawable instanceof Enemy) {
             // With Player, Wall, Bomb Explosion
             return 0x0001 | 0x0004 | 0x0008;
@@ -57,6 +63,8 @@ public class HitboxHelper {
             return 0x0001 | 0x0002 | 0x0004;
         } else if (drawable instanceof PowerUp) {
             // With Player
+            return 0x0001;
+        } else if (drawable instanceof Exit) {
             return 0x0001;
         } else {
             // System.err.println("No category bit matches for " + drawable);
@@ -81,27 +89,13 @@ public class HitboxHelper {
         bodyDef.type = isDynamicBody ? BodyDef.BodyType.DynamicBody : BodyDef.BodyType.StaticBody;
         bodyDef.position.set(x, y);
 
-        Body body = world.createBody(bodyDef);
-
         PolygonShape box = new PolygonShape();
+
         // The hitbox of Walls and BombExplosion are just below .5f
         // This way BombExplosions that "fly" just by a wall do not trigger the DestructibleWalls next to it to vanish, too.
         box.setAsBox(0.48f, 0.48f);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = box;
-        fixtureDef.isSensor = isSensor;
-
-        // Giving the current body a category bit and mask bits
-        // It only collides with bodies that have a category bit listed in the mask bits
-        fixtureDef.filter.categoryBits = getCategoryBits(drawable);
-        fixtureDef.filter.maskBits = getMaskBits(drawable);
-
-        body.createFixture(fixtureDef);
-        box.dispose();
-
-        body.setUserData(drawable);
-        return body;
+        return createBody(box, isSensor, drawable, bodyDef, world);
     }
 
     public static Body createPolygonHitbox(World world, float x, float y, Drawable drawable) {
@@ -126,12 +120,28 @@ public class HitboxHelper {
 
         bodyDef.position.set(startX, startY);
 
-        Body body = world.createBody(bodyDef);
         CircleShape circle = new CircleShape();
         circle.setRadius(0.3f);
 
+        return createBody(circle, isSensor, drawable, bodyDef, world);
+    }
+
+    /**
+     * Creates a physics body in the Box2D world using the specified shape, properties, and configurations.
+     * The created body is configured with collision filtering and user data linking it to the provided drawable object.
+     *
+     * @param shape The shape of the body to be created, defining its physical appearance and collision bounds.
+     * @param isSensor A boolean indicating if the body is a sensor. Sensors do not produce collision responses but detect overlaps.
+     * @param drawable The associated drawable object, used for collision filtering and as user data for the body.
+     * @param bodyDef The body definition containing initial physical properties like type, position, and rotation.
+     * @param world The Box2D world where the body will be added.
+     * @return The created Box2D body configured with the specified properties and collision settings.
+     */
+    private static Body createBody(Shape shape, boolean isSensor, Drawable drawable, BodyDef bodyDef, World world) {
+        Body body = world.createBody(bodyDef);
+
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = circle;
+        fixtureDef.shape = shape;
         fixtureDef.isSensor = isSensor;
 
         fixtureDef.filter.categoryBits = getCategoryBits(drawable);
@@ -139,7 +149,7 @@ public class HitboxHelper {
 
         body.createFixture(fixtureDef);
 
-        circle.dispose();
+        shape.dispose();
         // Set the player as the user data of the body so we can look up the player from the body later.
         body.setUserData(drawable);
         return body;

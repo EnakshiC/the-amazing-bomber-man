@@ -1,8 +1,9 @@
-package de.tum.cit.ase.bomberquest.map;
+package de.tum.cit.ase.bomberquest.map.bomb;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.map.SelfRemovingElement;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * The explosion lasts for a limited duration, after which it self-removes
  * from the game world.
  */
-public class BombExplosion extends SelfRemovingElement  {
+public class BombExplosion extends SelfRemovingElement {
 
     /** The time it takes for the explosion to evaporate. */
     public static final float EXPLOSION_DURATION = 1.0f;
