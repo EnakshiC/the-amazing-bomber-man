@@ -162,10 +162,9 @@ public abstract class Enemy implements Drawable, Destroyable {
     }
 
     public void die() {
-        System.out.println("Enemy died: " + this);
+        // System.out.println("Enemy died: " + this);
 
         isDying = true;
-        //killList.add(this);
     }
 
     @Override

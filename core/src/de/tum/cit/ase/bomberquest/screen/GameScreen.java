@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
@@ -46,13 +47,20 @@ public class GameScreen implements Screen {
     private final Hud hud;
     private final OrthographicCamera mapCamera;
 
-    // Dummy variables to simulate game state
-    private int bombCount = 1; // Current bombs placed
-    private int maxBombCount = 8; // Maximum bombs allowed
-    private int blastRadius = 1; // Bomb blast radius
-    private int enemiesLeft = 5; // Number of enemies remaining
-    private float countdownTimer = 300.0f; // Countdown timer in seconds
+    /**
+     * A list of cached background Path objects used for optimizing render performance.
+     */
+    private final List<Path> backgroundPaths;
 
+    /**
+     * A cache used for storing and rendering sprites efficiently.
+     */
+    private SpriteCache spriteCache;
+
+    /**
+     * Represents the identifier for the cached background assets in the sprite cache.
+     */
+    private int cacheId;
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -70,9 +78,37 @@ public class GameScreen implements Screen {
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false, (float) Gdx.graphics.getWidth() / SCALE, (float) Gdx.graphics.getHeight() / SCALE);
 
+        // Load background tiles once
+        // TODO: Check if it still works when we change the map!
+        this.backgroundPaths = PropertiesHelper.loadBackgroundPathsFromProperties()
+                .stream().flatMap(List::stream).toList();
+
+        // Initialize the cache for the background tiles
+        initBackgroundCache();
 
         // Ensure the camera starts centered on the player
         updateCamera();
+    }
+
+    /**
+     * Initializes the background sprite cache for efficient rendering.
+     */
+    private void initBackgroundCache() {
+        System.out.println("initBackgroundCache");
+
+        spriteCache = new SpriteCache();
+        spriteCache.beginCache();
+
+        for (Path path : backgroundPaths) {
+            float x = path.getX() * TILE_SIZE_PX * SCALE;
+            float y = path.getY() * TILE_SIZE_PX * SCALE;
+            TextureRegion region = path.getCurrentAppearance();
+            float width = region.getRegionWidth() * SCALE;
+            float height = region.getRegionHeight() * SCALE;
+            spriteCache.add(region, x, y, width, height);
+        }
+
+        cacheId = spriteCache.endCache();
     }
 
     /**
@@ -83,11 +119,11 @@ public class GameScreen implements Screen {
     @Override
     public void render(float deltaTime) {
 
-    // Clear the screen with a black color
+        // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
 
-
-    // Check for escape key press to go back to the menu
+        // TODO: Check that this just PAUSES the game, but does not end it!
+        // Check for escape key press to go back to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
             return;
@@ -112,24 +148,11 @@ public class GameScreen implements Screen {
             return;
         }
 
-        // Method to check for victory or loss >> for later!
-        /*if (map.isVictory()) {
-            game.setScreen(new VictoryScreen(game));
-            return;
-        } else if (map.isLoss()) {
-            game.setScreen(new LossScreen(game));
-            return;
-        }*/
-
         // Check for escape key to return to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
             return;
         }
-
-
-        // Update HUD with dynamic data
-        //hud.updateHUD(map, map.getCountdownTimer());
 
         // Update the camera
         updateCamera();
@@ -140,8 +163,6 @@ public class GameScreen implements Screen {
         // Render the HUD on the screen
         hud.render();
     }
-
-
 
     /**
      * Updates the camera to keep the hero character centered while ensuring it stays within the map bounds.
@@ -173,17 +194,22 @@ public class GameScreen implements Screen {
      * Renders the game map using the configured camera.
      */
     private void renderMap() {
+        // Load background from cache
+        spriteCache.setProjectionMatrix(mapCamera.combined);
+        spriteCache.begin();
+        spriteCache.draw(cacheId);
+        spriteCache.end();
+
         // This configures the spriteBatch to use the camera's perspective when rendering
         spriteBatch.setProjectionMatrix(mapCamera.combined);
 
         // Start drawing
         spriteBatch.begin();
 
-
         // First render a background pattern with path tile
-        for (Path path : PropertiesHelper.loadBackgroundPathsFromProperties().stream().flatMap(List::stream).toList()) {
-            draw(spriteBatch, path);
-        }
+//        for (Path path : backgroundPaths) {
+//            draw(spriteBatch, path);
+//        }
 
         // Render middle layer: power-ups, exit, etc.
         draw(spriteBatch, map.getExit());
@@ -195,7 +221,6 @@ public class GameScreen implements Screen {
         for (Bomb bomb : map.getBombsInPlay()) {
             draw(spriteBatch, bomb);
         }
-
 
 
         // Render walls above middle layer
@@ -212,7 +237,6 @@ public class GameScreen implements Screen {
         }
 
         draw(spriteBatch, map.getPlayer());
-
 
 
         // Finish drawing, i.e. send the drawn items to the graphics card

@@ -81,6 +81,8 @@ public class GameMap {
 
     private final List<PowerUp> powerUps = new ArrayList<>();
 
+    private boolean gameIsOver = false;
+
     public GameMap(BomberQuestGame game) {
         this.game = game;
 
@@ -113,7 +115,18 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
+
+        if (gameIsOver) return;
+
         timeLeft -= frameTime;
+
+        if (timeLeft <= 0) {
+            gameIsOver = true;
+            timeLeft = 0.0f;
+            // handleGameOver(false);
+        }
+
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.E))
             SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
@@ -135,6 +148,11 @@ public class GameMap {
 
 
         for (Drawable element : elementsToRemoveNextCycle) {
+            // Remove the bodies from the world before the element is removed
+            if (element instanceof Destroyable) {
+                ((Destroyable) element).destroyBody(world);
+            }
+
             // Remove bombs that are due this cycle
             if (element instanceof Bomb) {
                 explodeBomb((Bomb) element);
@@ -151,14 +169,7 @@ public class GameMap {
 
             if (element instanceof Enemy) {
                 enemies.remove((Enemy) element);
-                System.out.println("Enemies remaining: " + enemies.size());
-            }
-
-            // Remove the bodies from the world if there were any
-            if (element instanceof Destroyable) {
-                System.out.println("Try to destroy body of: " + element);
-
-                ((Destroyable) element).destroyBody(world);
+                // System.out.println("Enemies left: " + enemies.size());
             }
         }
         elementsToRemoveNextCycle.clear();

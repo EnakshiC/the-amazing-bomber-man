@@ -1,6 +1,5 @@
 package de.tum.cit.ase.bomberquest.utils;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
@@ -218,6 +217,8 @@ public class PropertiesHelper {
         Properties properties = getProperties(); // Retrieve properties once.
         List<Enemy> elements = new ArrayList<>();
 
+        int count = 0;
+
         // Iterate over every row and every column and add the Drawable found under this key.
         for (int x = 0; x < getMapWith() + 1; x++) {
             for (int y = 0; y < getMapHeight() + 1; y++) {
@@ -228,10 +229,14 @@ public class PropertiesHelper {
                         List<Supplier<Enemy>> enemySuppliers = getEnemySuppliers(world, x, y, gameMap);
 
                         elements.add(enemySuppliers.get(RANDOM.nextInt(enemySuppliers.size())).get());
+
+                        count++;
                     }
                 }
             }
         }
+
+        System.out.println("Loaded " + count + " enemies.");
 
         return elements;
     }
