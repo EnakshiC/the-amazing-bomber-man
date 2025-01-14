@@ -63,6 +63,10 @@ public class Animations {
             SpriteSheet.CHARACTER.at(1, 1)
     );
 
+    public static final Animation<TextureRegion> CHARACTER_DYING = new Animation<>(0.2f,
+            SpriteSheet.CHARACTER.at(1, 15)
+    );
+
     public static final Animation<TextureRegion> BASIC_ENEMY_WALK_DOWN = new Animation<>(0.1f,
             SpriteSheet.MOBS.at(1, 10),
             SpriteSheet.MOBS.at(1, 11),

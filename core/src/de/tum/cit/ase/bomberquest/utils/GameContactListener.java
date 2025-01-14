@@ -39,18 +39,16 @@ public class GameContactListener implements ContactListener {
             ((DestructibleWall) b).destroy();
         }
 
-        // TODO: Player is hit by bomb, player dies
         if (a instanceof Player && b instanceof BombExplosion) {
-            System.out.println("Player DIED!!!");
+            gameMap.endGame(false);
         } else if (b instanceof Player && a instanceof BombExplosion) {
-            System.out.println("Player DIED!!!");
+            gameMap.endGame(false);
         }
 
-        // TODO: Player collides with enemy, player dies
         if (a instanceof Player && b instanceof Enemy) {
-            System.out.println("Player DIED!!!");
+            gameMap.endGame(false);
         } else if (b instanceof Player && a instanceof Enemy) {
-            System.out.println("Player DIED!!!");
+            gameMap.endGame(false);
         }
 
         // If Player collides with PowerUp, collect it
@@ -74,6 +72,16 @@ public class GameContactListener implements ContactListener {
             ((Enemy) b).turnAround();
         }
 
+        // If Player collides with Exit and Exit is open, game is won
+        if (a instanceof Exit && b instanceof Player) {
+            if (((Exit) a).isOpen()) {
+                gameMap.endGame(true);
+            }
+        } else if (b instanceof Exit && a instanceof Player) {
+            if (((Exit) b).isOpen()) {
+                gameMap.endGame(true);
+            }
+        }
     }
 
     @Override
@@ -82,8 +90,10 @@ public class GameContactListener implements ContactListener {
     }
 
     @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {}
+    public void preSolve(Contact contact, Manifold oldManifold) {
+    }
 
     @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {}
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+    }
 }

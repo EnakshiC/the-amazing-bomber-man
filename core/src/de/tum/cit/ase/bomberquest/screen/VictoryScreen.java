@@ -66,11 +66,11 @@ public class VictoryScreen implements Screen
         font.draw(spriteBatch, instructionMessage, centerX - instructionMessageWidth / 2, centerY - 20);
 
         spriteBatch.end();
-        System.out.println("SpriteBatch.end() called");
+        // System.out.println("SpriteBatch.end() called");
 
         // Check if the player presses Enter to return to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            System.out.println("Returning to main menu from Victory Screen.");
+            // System.out.println("Returning to main menu from Victory Screen.");
             game.goToMenu();
         }
     }

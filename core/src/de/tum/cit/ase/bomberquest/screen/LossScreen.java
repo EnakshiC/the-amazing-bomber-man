@@ -37,7 +37,7 @@ public class LossScreen implements Screen
             ScreenUtils.clear(new Color(0.8f, 0.2f, 0.2f, 1));
 
             spriteBatch.begin();
-            System.out.println("SpriteBatch.begin() called");
+            // System.out.println("SpriteBatch.begin() called");
 
             // Center the text dynamically
             String gameOverMessage = "Game Over!";
@@ -56,12 +56,12 @@ public class LossScreen implements Screen
             font.draw(spriteBatch, instructionMessage, centerX - instructionMessageWidth / 2, centerY - 20);
 
             spriteBatch.end();
-            System.out.println("SpriteBatch.end() called");
+            // System.out.println("SpriteBatch.end() called");
 
 
             // Check if the player presses Enter to return to the menu
             if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-                System.out.println("Returning to main menu from Loss Screen.");
+                // System.out.println("Returning to main menu from Loss Screen.");
                 game.goToMenu();
             }
         }

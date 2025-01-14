@@ -73,7 +73,9 @@ public class GameMap {
     private final List<List<Drawable>> wallElements;
     private final List<PowerUp> powerUps = new ArrayList<>();
 
-    /** Objects in this list will be removed from World/Canvas next tick cycle */
+    /**
+     * Objects in this list will be removed from World/Canvas next tick cycle
+     */
     private final List<Drawable> objectsToRemoveNextCycle = new ArrayList<>();
 
     // Game progress values
@@ -83,6 +85,8 @@ public class GameMap {
     private float timeLeft = 300.0f;
 
     private boolean gameIsOver = false;
+    private boolean gameWasWon = false;
+    private float gameOverFadeOutTime = 0.0f;
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -117,7 +121,12 @@ public class GameMap {
      */
     public void tick(float frameTime) {
         // No more updates if the game is over
-        if (gameIsOver) return;
+        //
+        if (gameIsOver) {
+            gameOverFadeOutTime += frameTime;
+            endGame(gameWasWon);
+            return;
+        }
 
         // Handle the timer of the current game
         timeLeft -= frameTime;
@@ -210,6 +219,24 @@ public class GameMap {
 
     }
 
+    /**
+     * Ends the game and terminates the game loop. Depending on the outcome
+     * it will either transition to the victory screen or handle the player's death and
+     * the subsequent transition to the defeat screen.
+     *
+     * @param victory a boolean indicating whether the game ended in victory (true) or defeat (false)
+     */
+    public void endGame(boolean victory) {
+        // End the game and game loop
+        gameIsOver = true;
+        gameWasWon = victory;
+
+        if (gameOverFadeOutTime == 0.0f) player.die();
+
+        if (gameOverFadeOutTime >= 1.0f) {
+            game.goToGameEndScreen(victory);
+        }
+    }
 
     /**
      * Triggers the explosion of a bomb at its specified location, determining the affected tiles

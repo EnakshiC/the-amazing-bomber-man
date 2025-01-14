@@ -1,6 +1,7 @@
 package de.tum.cit.ase.bomberquest.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +23,7 @@ import de.tum.cit.ase.bomberquest.BomberQuestGame;
 public class MenuScreen implements Screen {
 
     private final Stage stage;
+    private final BomberQuestGame game;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -51,6 +53,8 @@ public class MenuScreen implements Screen {
                 game.goToGame(); // Change to the game screen when button is pressed
             }
         });
+
+        this.game = game;
     }
     
     /**
@@ -63,7 +67,11 @@ public class MenuScreen implements Screen {
         float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death        ScreenUtils.clear(Color.BLACK);
         ScreenUtils.clear(Color.BLACK);
         stage.act(frameTime); // Update the stage
-        stage.draw(); // Draw the stage
+        stage.draw();// Draw the stage
+
+        //Start the game on ENTER
+        // Pressing SPACE car drops a bomb
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) game.goToGame();
     }
     
     /**

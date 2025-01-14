@@ -40,6 +40,8 @@ public class Player implements Drawable {
         UP, DOWN, LEFT, RIGHT, NONE
     }
 
+    private boolean isDying = false;
+
     /**
      * Constructor to create a player instance at a specified position.
      *
@@ -59,6 +61,11 @@ public class Player implements Drawable {
     public void tick(float frameTime) {
         //Incrementing elapsed time for animations
         this.elapsedTime += frameTime;
+
+        // Do not update if player is dying
+        if (isDying) {
+            return;
+        }
 
         // Update the player's direction if a new direction is detected
         this.currentDirection = determineDirection();
@@ -103,6 +110,10 @@ public class Player implements Drawable {
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);
     }
 
+    public void die() {
+        isDying = true;
+    }
+
     /**
      * Returns the appropriate texture region (animation frame) based on the player's movement state.
      *
@@ -110,6 +121,10 @@ public class Player implements Drawable {
      */
     @Override
     public TextureRegion getCurrentAppearance() {
+        if (isDying) {
+            return Animations.CHARACTER_DYING.getKeyFrame(elapsedTime, true);
+        }
+
         if (Objects.equals(this.hitbox.getLinearVelocity(), new Vector2(0.0f, 0.0f))) {
             return Animations.CHARACTER_STANDING.getKeyFrame(elapsedTime, true);
         }

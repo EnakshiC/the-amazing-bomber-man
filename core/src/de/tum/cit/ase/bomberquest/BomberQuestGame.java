@@ -9,7 +9,9 @@ import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.audio.SoundEffect;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.screen.GameScreen;
+import de.tum.cit.ase.bomberquest.screen.LossScreen;
 import de.tum.cit.ase.bomberquest.screen.MenuScreen;
+import de.tum.cit.ase.bomberquest.screen.VictoryScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 /**
@@ -82,6 +84,23 @@ public class BomberQuestGame extends Game {
     public void goToGame() {
         MusicTrack.playRandomGameplayTrack(); // Play one of the random gameplay tracks
         this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
+    }
+
+    /**
+     * Switches to the game ended screen with information depending on the victory or loss.
+     */
+    public void goToGameEndScreen(boolean victory) {
+        // TODO: Play Victory/Loss Sound/Music
+
+        // TODO: Replace with new GameEnded Screen
+        if (victory) {
+            this.setScreen(new VictoryScreen(this));
+        } else {
+            this.setScreen(new LossScreen(this));
+        }
+
+        // Reset Game
+        this.map = new GameMap(this);
     }
 
     /** Returns the skin for UI elements. */
