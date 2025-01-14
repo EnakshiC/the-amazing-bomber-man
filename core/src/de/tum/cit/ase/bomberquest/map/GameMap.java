@@ -231,7 +231,7 @@ public class GameMap {
         gameIsOver = true;
         gameWasWon = victory;
 
-        if (gameOverFadeOutTime == 0.0f) player.die();
+        if (gameOverFadeOutTime == 0.0f && !victory) player.die();
 
         if (gameOverFadeOutTime >= 1.0f) {
             game.goToGameEndScreen(victory);
