@@ -131,6 +131,39 @@ public class Animations {
             SpriteSheet.MOBS.at(4, 1)
     );
 
+    public static final Animation<TextureRegion> BAT_ENEMY_WALK_DOWN = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(5, 4),
+            SpriteSheet.MOBS.at(5, 5),
+            SpriteSheet.MOBS.at(5, 6),
+            SpriteSheet.MOBS.at(5, 5)
+    );
+
+    public static final Animation<TextureRegion> BAT_ENEMY_WALK_UP = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(8, 4),
+            SpriteSheet.MOBS.at(8, 5),
+            SpriteSheet.MOBS.at(8, 6),
+            SpriteSheet.MOBS.at(8, 5)
+    );
+
+    public static final Animation<TextureRegion> BAT_ENEMY_WALK_LEFT = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(6, 4),
+            SpriteSheet.MOBS.at(6, 5),
+            SpriteSheet.MOBS.at(6, 6),
+            SpriteSheet.MOBS.at(6, 5)
+    );
+
+    public static final Animation<TextureRegion> BAT_ENEMY_WALK_RIGHT = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(7, 4),
+            SpriteSheet.MOBS.at(7, 5),
+            SpriteSheet.MOBS.at(7, 6),
+            SpriteSheet.MOBS.at(7, 5)
+    );
+
+    public static final Animation<TextureRegion> BAT_ENEMY_STANDING = new Animation<>(0.2f,
+            SpriteSheet.MOBS.at(5, 4)
+    );
+
+
     public static final Animation<TextureRegion> ENEMY_DYING = new Animation<>(0.1f,
             SpriteSheet.SMOKE.at(1, 1),
             SpriteSheet.SMOKE.at(1, 2),
@@ -154,7 +187,7 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 3)
     );
 
-    public static final Animation<TextureRegion> EXPLOSION_LEFT_MIDDLE= new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
+    public static final Animation<TextureRegion> EXPLOSION_LEFT_MIDDLE = new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 2),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 7),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 2),

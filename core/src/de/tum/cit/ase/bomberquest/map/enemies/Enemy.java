@@ -45,7 +45,25 @@ public abstract class Enemy implements Drawable, Destroyable {
 
     private final List<Drawable> objectsToBeRemovedNextCycle;
 
-    public enum Direction { UP, DOWN, LEFT, RIGHT, NONE }
+    public enum Direction {
+        UP, DOWN, LEFT, RIGHT, NONE;
+
+        public static int dx(Direction dir) {
+            return switch (dir) {
+                case LEFT -> -1;
+                case RIGHT -> 1;
+                default -> 0;
+            };
+        }
+
+        public static int dy(Direction dir) {
+            return switch (dir) {
+                case UP -> 1;
+                case DOWN -> -1;
+                default -> 0;
+            };
+        }
+    }
 
     /**
      * Constructs an Enemy object in the game world at a specified position with
@@ -120,8 +138,8 @@ public abstract class Enemy implements Drawable, Destroyable {
      *         from the tile origin, false otherwise.
      */
     protected boolean isCloseToTileOrigin() {
-        float px = x();
-        float py = y();
+        float px = getX();
+        float py = getY();
 
         float tileX = (float) Math.floor(px);
         float tileY = (float) Math.floor(py);
@@ -164,15 +182,15 @@ public abstract class Enemy implements Drawable, Destroyable {
      *         are not blocked by obstacles.
      */
     protected List<Direction> availableDirections() {
-        int x = Math.round(x());
-        int y = Math.round(y());
+        int x = Math.round(getX());
+        int y = Math.round(getY());
         List<Direction> directions = new ArrayList<>(List.of(Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN));
 
         for (Drawable drawable : gameMap.getWallElements()) {
             if (!(drawable instanceof IndestructibleWall) && !((drawable instanceof DestructibleWall) && ((DestructibleWall) drawable).isSolid())) continue;
 
-            int drawableX = Math.round(drawable.x());
-            int drawableY = Math.round(drawable.y());
+            int drawableX = Math.round(drawable.getX());
+            int drawableY = Math.round(drawable.getY());
 
             if (drawableX == x - 1 && drawableY == y) directions.remove(Direction.LEFT);
             if (drawableX == x + 1 && drawableY == y) directions.remove(Direction.RIGHT);
@@ -212,13 +230,13 @@ public abstract class Enemy implements Drawable, Destroyable {
     }
 
     @Override
-    public float x() {
+    public float getX() {
         return hitbox.getPosition().x;
     }
 
 
     @Override
-    public float y() {
+    public float getY() {
         return hitbox.getPosition().y;
     }
 

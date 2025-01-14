@@ -70,12 +70,12 @@ public abstract class PowerUp implements Drawable, Destroyable {
     }
 
     @Override
-    public float x() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public float y() {
+    public float getY() {
         return y;
     }
 

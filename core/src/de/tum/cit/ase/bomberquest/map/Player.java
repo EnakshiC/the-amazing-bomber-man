@@ -146,7 +146,7 @@ public class Player implements Drawable {
      * @return The x-coordinate of the player's hitbox.
      */
     @Override
-    public float x() {
+    public float getX() {
         // The x-coordinate of the player is the x-coordinate of the hitbox (this can change every frame).
         return hitbox.getPosition().x;
     }
@@ -157,7 +157,7 @@ public class Player implements Drawable {
      * @return The y-coordinate of the player's hitbox.
      */
     @Override
-    public float y() {
+    public float getY() {
         // The y-coordinate of the player is the y-coordinate of the hitbox (this can change every frame).
         return hitbox.getPosition().y;
     }

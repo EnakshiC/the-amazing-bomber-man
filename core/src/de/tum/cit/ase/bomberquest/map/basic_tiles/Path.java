@@ -9,7 +9,7 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
  * A path is a non-interactive element that provides visual details
  * and serves as a decorative feature in the game grid.
  */
-public record Path(float x, float y) implements Drawable {
+public record Path(float getX, float getY) implements Drawable {
     @Override
     public TextureRegion getCurrentAppearance() {
         return Textures.PATH;

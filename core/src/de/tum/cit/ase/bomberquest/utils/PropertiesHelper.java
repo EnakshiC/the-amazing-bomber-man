@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * It stores the current map, returns enemies, players positions, entries, exits, etc.
  */
 public class PropertiesHelper {
-    private static final String FALLBACK_PATH = "maps/map-1.properties";
+    private static final String FALLBACK_PATH = "maps/map-2.properties";
 
     private static String currentFilePath = FALLBACK_PATH;
 

@@ -52,12 +52,12 @@ public class BombExplosion extends SelfRemovingElement {
     }
 
     @Override
-    public float x() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public float y() {
+    public float getY() {
         return y;
     }
 

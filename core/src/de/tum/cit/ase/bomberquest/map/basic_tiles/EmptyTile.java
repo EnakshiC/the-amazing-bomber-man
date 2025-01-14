@@ -9,7 +9,7 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
  * The EmptyTile is a non-collidable, transparent object that is mainly used to fill
  * gaps between walls in the List<List<Drawable>> of wall in the map.
  */
-public record EmptyTile(float x, float y) implements Drawable {
+public record EmptyTile(float getX, float getY) implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {

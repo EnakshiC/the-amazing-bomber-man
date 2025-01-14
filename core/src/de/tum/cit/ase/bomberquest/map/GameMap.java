@@ -11,6 +11,7 @@ import de.tum.cit.ase.bomberquest.map.bomb.Bomb;
 import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
 import de.tum.cit.ase.bomberquest.map.bomb.BombExplosionTile;
 import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.enemies.EnemySmartSearcher;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Destroyable;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
@@ -100,7 +101,8 @@ public class GameMap {
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
 
         // Load all enemies and store initial count
-        this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
+        // this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
+        enemies.add(new EnemySmartSearcher(world, 10, 5, this));
         this.enemiesCountAtBeginning = enemies.size();
 
         // Load exit
@@ -132,8 +134,8 @@ public class GameMap {
         timeLeft -= frameTime;
         if (timeLeft <= 0) {
             gameIsOver = true;
+            gameWasWon = false;
             timeLeft = 0.0f;
-            // handleGameOver(false);
         }
 
         // Pressing SPACE car drops a bomb
@@ -202,14 +204,14 @@ public class GameMap {
         // Since the players origin of coordinates is at their bottom left,
         // but the bomb should be placed on the perceived field at the bodies center / core, we add .5 to x and y
         // Beware that it is in our tile system not real screen coordinates
-        int playerTileX = (int) (player.x() + .5);
-        int playerTileY = (int) (player.y() + .5);
+        int playerTileX = (int) (player.getX() + .5);
+        int playerTileY = (int) (player.getY() + .5);
 
         boolean alredayBombOnTile = false;
         for (Bomb bomb : bombsInPlay) {
 
 
-            if (bomb.x() == playerTileX && bomb.y() == playerTileY) {
+            if (bomb.getX() == playerTileX && bomb.getY() == playerTileY) {
                 alredayBombOnTile = true;
                 break;
             }
@@ -248,8 +250,8 @@ public class GameMap {
     private void explodeBomb(Bomb bomb) {
         SoundEffect.BOMB_EXPLOSION.play();
 
-        final float x = bomb.x();
-        final float y = bomb.y();
+        final float x = bomb.getX();
+        final float y = bomb.getY();
 
         // Put directions of bomb in a list, like vectors in each up, down, left, right
         final List<String> direction = new ArrayList<>();
