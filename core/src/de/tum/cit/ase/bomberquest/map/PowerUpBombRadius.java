@@ -10,8 +10,8 @@ public class PowerUpBombRadius extends PowerUp {
 
     private final static int MAX_POSSIBLE = 8;
 
-    public PowerUpBombRadius(World world, float x, float y, List<Drawable> killList) {
-        super(world, x, y, new BombRadiusEffect(), Textures.POWER_UP_BOMB_RADIUS, killList);
+    public PowerUpBombRadius(World world, float x, float y, List<Drawable> objectsToBeRemovedNextCycle) {
+        super(world, x, y, new BombRadiusEffect(), Textures.POWER_UP_BOMB_RADIUS, objectsToBeRemovedNextCycle);
     }
 
     private static class BombRadiusEffect implements PowerUpEffect {

@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * Represents an abstract enemy that can move within a game world.
- * The movement is determined based on available directions when facing a wall. Otherwise it walks straight ahead.
+ * The movement is determined based on available directions when facing a wall. Otherwise, it walks straight ahead.
  * The enemy has a hitbox for collision detection.
  */
 public abstract class Enemy implements Drawable, Destroyable {
@@ -26,40 +26,51 @@ public abstract class Enemy implements Drawable, Destroyable {
 
     protected final float speed = 1f;
 
+    /** If set to true, the dying process of the enemy is started */
     private boolean isDying = false;
+
+    /** The time elapsed since the enemy 'started' dying */
     private float elapsedDyingTime = 0.0f;
 
-    protected abstract TextureRegion getStandingFrame(float elapsedTime);
+    private float elapsedTurnAroundTime = 0.0f;
 
+    protected abstract TextureRegion getStandingFrame(float elapsedTime);
     protected abstract TextureRegion getWalkUpFrame(float elapsedTime);
     protected abstract TextureRegion getWalkDownFrame(float elapsedTime);
     protected abstract TextureRegion getWalkLeftFrame(float elapsedTime);
     protected abstract TextureRegion getWalkRightFrame(float elapsedTime);
 
-    private final List<Drawable> killList;
+    private final List<Drawable> objectsToBeRemovedNextCycle;
 
     public enum Direction { UP, DOWN, LEFT, RIGHT, NONE }
 
     public Enemy(World world, float x, float y, GameMap gameMap) {
         this.hitbox = HitboxHelper.createCircleHitbox(world, x, y, this, true);
         this.gameMap = gameMap;
-        this.killList = gameMap.getElementsToRemoveNextCycle();
+        this.objectsToBeRemovedNextCycle = gameMap.getObjectsToRemoveNextCycle();
     }
 
     public void tick(float frameTime) {
+        // If enemy is dying update dying time and remove after 0.5 seconds
         if (isDying) {
             elapsedDyingTime += frameTime;
             if (elapsedDyingTime >= 0.5f) {
                 isDying = false;
-                killList.add(this);
+                objectsToBeRemovedNextCycle.add(this);
             }
             return;
         }
 
         this.elapsedTime += frameTime;
-        this.currentDirection = determineDirection();
+
+        // If the enemy is currently in a turn-around, do not determine a new direction, but update elapsedTurnAroundTime
+        if (elapsedTurnAroundTime <= 0.0f) {
+            this.currentDirection = determineDirection();
+        } else {
+            elapsedTurnAroundTime -= frameTime;
+        }
+
         updateVelocity();
-        // System.out.println("X: " + getX() + " Y: " + getY());
     }
 
     /**
@@ -107,6 +118,27 @@ public abstract class Enemy implements Drawable, Destroyable {
         float distSq = dx * dx + dy * dy;
 
         return distSq < 0.01f;
+    }
+
+    /**
+     * Reverses the current direction of the entity for a certain amount of time.
+     */
+    public void turnAround() {
+        if (currentDirection == Direction.UP) {
+            currentDirection = Direction.DOWN;
+        } else if (currentDirection == Direction.DOWN) {
+            currentDirection = Direction.UP;
+        } else if (currentDirection == Direction.LEFT) {
+            currentDirection = Direction.RIGHT;
+        } else if (currentDirection == Direction.RIGHT) {
+            currentDirection = Direction.LEFT;
+        } else {
+            currentDirection = Direction.NONE;
+        }
+
+        elapsedTurnAroundTime = .5f;
+
+        System.err.println("Enemy had to trigger turnaround due to Wall collision!");
     }
 
     /**
@@ -161,9 +193,8 @@ public abstract class Enemy implements Drawable, Destroyable {
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);
     }
 
-    public void die() {
-        // System.out.println("Enemy died: " + this);
-
+    /** Triggers the dying state of the enemy. */
+    public void kill() {
         isDying = true;
     }
 
@@ -171,6 +202,7 @@ public abstract class Enemy implements Drawable, Destroyable {
     public float getX() {
         return hitbox.getPosition().x;
     }
+
 
     @Override
     public float getY() {

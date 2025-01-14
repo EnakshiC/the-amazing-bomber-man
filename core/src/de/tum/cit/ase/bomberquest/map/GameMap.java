@@ -60,26 +60,21 @@ public class GameMap {
 
     // Game objects
     private final Player player;
-
     private final Exit exit;
-
-    private List<Bomb> bombsInPlay = new ArrayList<>();
+    private final List<Bomb> bombsInPlay = new ArrayList<>();
     private final List<BombExplosion> explosionTiles = new ArrayList<>();
-
-    private final List<Drawable> elementsToRemoveNextCycle = new ArrayList<>();
-
     private final List<Enemy> enemies = new ArrayList<>();
+    private final List<List<Drawable>> wallElements;
+    private final List<PowerUp> powerUps = new ArrayList<>();
 
+    // These elements will be removed from World/Canvas next tick cycle
+    private final List<Drawable> objectsToRemoveNextCycle = new ArrayList<>();
+
+    // Game progress values
     private final int enemiesCountAtBeginning;
-
     private int maxBombsAllowed = 1;
     private int bombRadius = 1;
-
     private float timeLeft = 300.0f;
-
-    private final List<List<Drawable>> wallElements;
-
-    private final List<PowerUp> powerUps = new ArrayList<>();
 
     private boolean gameIsOver = false;
 
@@ -94,18 +89,18 @@ public class GameMap {
         // Create a player with initial position (1, 3)
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
 
-        //this.enemies.add(new EnemyWithDecisiveMovement(this.world, 10,5, this));
+        // Load all enemies and store initial count
         this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
+        this.enemiesCountAtBeginning = enemies.size();
 
-        this.enemiesCountAtBeginning= enemies.size();
-
+        // Load exit
         this.exit = new Exit(PropertiesHelper.getExitX(), PropertiesHelper.getExitY(), this);
 
-        powerUps.addAll(PropertiesHelper.loadPowerUpsFromProperties(world, elementsToRemoveNextCycle));
+        // Load all power-ups
+        powerUps.addAll(PropertiesHelper.loadPowerUpsFromProperties(world, objectsToRemoveNextCycle));
 
-        // TODO: The path file should come from somewhere else --> user should be able to choose the file
-
-        this.wallElements = new ArrayList<>(PropertiesHelper.loadWallsFromProperties(world));
+        // Load all wall elements
+        this.wallElements = new ArrayList<>(PropertiesHelper.loadWallsFromProperties(world, objectsToRemoveNextCycle));
     }
 
     /**
@@ -115,64 +110,53 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
-
+        // No more updates if the game is over
         if (gameIsOver) return;
 
+        // Handle the timer of the current game
         timeLeft -= frameTime;
-
         if (timeLeft <= 0) {
             gameIsOver = true;
             timeLeft = 0.0f;
             // handleGameOver(false);
         }
 
-
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.E))
-            SoundEffect.BOMB_DROP.play(0.2f); //Testing for SoundEffects, comment out if not needed
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) SoundEffect.BOMB_EXPLOSION.play(0.2f);
-
+        // Pressing SPACE car drops a bomb
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) dropBomb();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.M)) bombsInPlay = new ArrayList<>();
-
+        // Update the tick methods of all time sensitive classes
         for (Bomb b : bombsInPlay) b.tick(frameTime);
-
         for (BombExplosion e : explosionTiles) e.tick(frameTime);
-
         for (Enemy enemy : enemies) enemy.tick(frameTime);
-
         this.player.tick(frameTime);
+
+        // Update the world's physics engine
         doPhysicsStep(frameTime);
 
+        // Handle all objects that are marked to be removed next cycle
+        for (Drawable object : objectsToRemoveNextCycle) {
+            // Remove the bodies from the world before the object is removed
+            if (object instanceof Destroyable) ((Destroyable) object).destroyBody(world);
 
-        for (Drawable element : elementsToRemoveNextCycle) {
-            // Remove the bodies from the world before the element is removed
-            if (element instanceof Destroyable) {
-                ((Destroyable) element).destroyBody(world);
-            }
-
-            // Remove bombs that are due this cycle
-            if (element instanceof Bomb) {
-                explodeBomb((Bomb) element);
-                bombsInPlay.remove((Bomb) element);
+            // Trigger bomb explosion and remove bombs that are due
+            if (object instanceof Bomb) {
+                explodeBomb((Bomb) object);
+                bombsInPlay.remove((Bomb) object);
             }
             // Remove all explosions that are due this cycle
-            if (element instanceof BombExplosion) {
-                explosionTiles.remove((BombExplosion) element);
-                world.destroyBody(((BombExplosion) element).getHitbox());
-            }
-            if (element instanceof PowerUp) {
-                powerUps.remove((PowerUp) element);
+            if (object instanceof BombExplosion) {
+                explosionTiles.remove((BombExplosion) object);
+                world.destroyBody(((BombExplosion) object).getHitbox());
             }
 
-            if (element instanceof Enemy) {
-                enemies.remove((Enemy) element);
-                // System.out.println("Enemies left: " + enemies.size());
-            }
+            // Remove all collected power-ups
+            if (object instanceof PowerUp) powerUps.remove((PowerUp) object);
+
+            // Remove all enemies that were killed and died
+            if (object instanceof Enemy) enemies.remove((Enemy) object);
+
         }
-        elementsToRemoveNextCycle.clear();
+        objectsToRemoveNextCycle.clear();
     }
 
     /**
@@ -216,7 +200,7 @@ public class GameMap {
             }
         }
 
-        if (!alredayBombOnTile) bombsInPlay.add(new Bomb(playerTileX, playerTileY, elementsToRemoveNextCycle));
+        if (!alredayBombOnTile) bombsInPlay.add(new Bomb(playerTileX, playerTileY, objectsToRemoveNextCycle));
 
     }
 
@@ -243,7 +227,7 @@ public class GameMap {
 
         // Add center tile
         // Since bomb was placed here, it can always exist.
-        explosionTiles.add(new BombExplosion(world, x, y, BombExplosionTile.CENTER, elementsToRemoveNextCycle));
+        explosionTiles.add(new BombExplosion(world, x, y, BombExplosionTile.CENTER, objectsToRemoveNextCycle));
 
         // Iterate over each direction
         for (String dir : direction) {
@@ -262,7 +246,7 @@ public class GameMap {
                 if (this.wallElements.get(newX).get(newY) instanceof IndestructibleWall) {
                     break;
                 } else {
-                    explosionTiles.add(new BombExplosion(world, newX, newY, BombExplosionTile.getByDirectionAndEnd(dir, i == bombRadius), elementsToRemoveNextCycle));
+                    explosionTiles.add(new BombExplosion(world, newX, newY, BombExplosionTile.getByDirectionAndEnd(dir, i == bombRadius), objectsToRemoveNextCycle));
                 }
             }
         }
@@ -279,13 +263,11 @@ public class GameMap {
         return enemies;
     }
 
-    public int getEnemiesCountAtBeginning()
-    {
+    public int getEnemiesCountAtBeginning() {
         return enemiesCountAtBeginning;
     }
 
-    public float getTimeLeft()
-    {
+    public float getTimeLeft() {
         return timeLeft;
     }
 
@@ -293,8 +275,8 @@ public class GameMap {
         return exit;
     }
 
-    public List<Drawable> getElementsToRemoveNextCycle() {
-        return elementsToRemoveNextCycle;
+    public List<Drawable> getObjectsToRemoveNextCycle() {
+        return objectsToRemoveNextCycle;
     }
 
     public List<Bomb> getBombsInPlay() {

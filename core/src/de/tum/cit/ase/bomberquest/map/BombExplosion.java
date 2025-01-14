@@ -21,8 +21,8 @@ public class BombExplosion extends SelfRemovingElement implements Destroyable {
 
     final Body hitbox;
 
-    public BombExplosion(World world, float x, float y, BombExplosionTile bombExplosionTile, List<Drawable> killList) {
-        super(EXPLOSION_DURATION, killList);
+    public BombExplosion(World world, float x, float y, BombExplosionTile bombExplosionTile, List<Drawable> objectsToBeRemovedNextCycle) {
+        super(EXPLOSION_DURATION, objectsToBeRemovedNextCycle);
 
         this.x = x;
         this.y = y;

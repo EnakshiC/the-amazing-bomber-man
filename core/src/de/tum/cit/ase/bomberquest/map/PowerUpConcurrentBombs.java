@@ -10,8 +10,8 @@ public class PowerUpConcurrentBombs extends PowerUp {
 
     private static final int MAX_POSSIBLE = 8;
 
-    public PowerUpConcurrentBombs(World world, float x, float y, List<Drawable> killList) {
-        super(world, x, y, new ConcurrentBombsEffect(), Textures.POWER_UP_CONCURRENT_BOMBS, killList);
+    public PowerUpConcurrentBombs(World world, float x, float y, List<Drawable> objectsToBeRemovedNextCycle) {
+        super(world, x, y, new ConcurrentBombsEffect(), Textures.POWER_UP_CONCURRENT_BOMBS, objectsToBeRemovedNextCycle);
     }
 
     /**
@@ -23,9 +23,6 @@ public class PowerUpConcurrentBombs extends PowerUp {
             int currentMaxBombs = gameMap.getMaxBombsAllowed();
             if (currentMaxBombs < MAX_POSSIBLE) {
                 gameMap.setMaxBombsAllowed(currentMaxBombs + 1);
-                System.out.println("Max bombs allowed increased to: " + (currentMaxBombs + 1));
-            } else {
-                System.out.println("Max bombs allowed is already at the maximum: " + MAX_POSSIBLE);
             }
         }
     }

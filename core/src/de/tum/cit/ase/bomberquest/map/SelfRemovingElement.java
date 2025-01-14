@@ -22,12 +22,12 @@ public abstract class SelfRemovingElement implements Drawable {
      * Once a drawable element's time-to-live exceeds its limit or other removal
      * conditions are met, it can be added to this list.
      */
-    private final List<Drawable> killList;
+    private final List<Drawable> objectsToBeRemovedNextCycle;
 
-    public SelfRemovingElement(float timeToLive, List<Drawable> killList) {
+    public SelfRemovingElement(float timeToLive, List<Drawable> objectsToBeRemovedNextCycle) {
         this.timeToLive = timeToLive;
         this.timeSinceCreation = 0.0f;
-        this.killList = killList;
+        this.objectsToBeRemovedNextCycle = objectsToBeRemovedNextCycle;
     }
 
     public void tick(float frameTime) {
@@ -35,8 +35,8 @@ public abstract class SelfRemovingElement implements Drawable {
         if (timeSinceCreation >= timeToLive) {
             timeSinceCreation = 0.0f;
 
-            if (killList != null) {
-                killList.add(this);
+            if (objectsToBeRemovedNextCycle != null) {
+                objectsToBeRemovedNextCycle.add(this);
             }
         }
     }

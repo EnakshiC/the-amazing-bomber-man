@@ -138,7 +138,7 @@ public class PropertiesHelper {
      *
      * @param world is the world used for walls to set hitboxes.
      */
-    public static List<List<Drawable>> loadWallsFromProperties(World world) {
+    public static List<List<Drawable>> loadWallsFromProperties(World world, List<Drawable> objectsToBeRemovedNextCycle) {
         Properties properties = getProperties(); // Retrieve properties once.
         List<List<Drawable>> elements = new ArrayList<>();
 
@@ -154,11 +154,11 @@ public class PropertiesHelper {
                         row.add(new IndestructibleWall(world, x, y));
                     } else if (value == 1 || value == 4 || value == 5 || value == 6) {
                         // Add a DestructibleWall where it should be and over exit and power-ups
-                        row.add(new DestructibleWall(world, x, y));
+                        row.add(new DestructibleWall(world, x, y, objectsToBeRemovedNextCycle));
                     } else {
                         // Make sure that DestructibleWall is placed over random generated exit, too.
                         if (x == getExitX() && y == getExitY()) {
-                            row.add(new DestructibleWall(world, x, y));
+                            row.add(new DestructibleWall(world, x, y, objectsToBeRemovedNextCycle));
                         } else {
                             row.add(new EmptyTile(x, y));
                         }
@@ -191,7 +191,7 @@ public class PropertiesHelper {
         return elements;
     }
 
-    public static List<PowerUp> loadPowerUpsFromProperties(World world, List<Drawable> killList) {
+    public static List<PowerUp> loadPowerUpsFromProperties(World world, List<Drawable> objectsToBeRemovedNextCycle) {
         Properties properties = getProperties(); // Retrieve properties once.
         List<PowerUp> elements = new ArrayList<>();
 
@@ -202,9 +202,9 @@ public class PropertiesHelper {
                     int value = Integer.parseInt(properties.getProperty(x + "," + y));
 
                     if (value == 5) {
-                        elements.add(new PowerUpConcurrentBombs(world, x, y, killList));
+                        elements.add(new PowerUpConcurrentBombs(world, x, y, objectsToBeRemovedNextCycle));
                     } else if (value == 6) {
-                        elements.add(new PowerUpBombRadius(world, x, y, killList));
+                        elements.add(new PowerUpBombRadius(world, x, y, objectsToBeRemovedNextCycle));
                     }
                 }
             }

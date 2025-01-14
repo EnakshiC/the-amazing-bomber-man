@@ -17,8 +17,8 @@ public class Bomb extends SelfRemovingElement {
     private final float x;
     private final float y;
 
-    public Bomb(float x, float y, List<Drawable> killList) {
-        super(FUSE_TIME, killList);
+    public Bomb(float x, float y, List<Drawable> objectsToBeRemovedNextCycle) {
+        super(FUSE_TIME, objectsToBeRemovedNextCycle);
         this.x = x;
         this.y = y;
     }

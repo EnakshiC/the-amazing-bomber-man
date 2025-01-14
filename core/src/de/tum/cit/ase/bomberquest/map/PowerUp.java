@@ -17,17 +17,17 @@ public abstract class PowerUp implements Drawable, Destroyable {
 
     private final TextureRegion appearance;
 
-    private final List<Drawable> killList;
+    private final List<Drawable> objectsToBeRemovedNextCycle;
 
     private final PowerUpEffect effect;
 
     private final Body hitbox;
 
-    public PowerUp(World world, float x, float y, PowerUpEffect effect, TextureRegion appearance, List<Drawable> killList) {
+    public PowerUp(World world, float x, float y, PowerUpEffect effect, TextureRegion appearance, List<Drawable> objectsToBeRemovedNextCycle) {
         this.x = x;
         this.y = y;
         this.appearance = appearance;
-        this.killList = killList;
+        this.objectsToBeRemovedNextCycle = objectsToBeRemovedNextCycle;
         this.effect = effect;
 
         // Has the same hitbox size as player which is only 70% of tile
@@ -36,12 +36,10 @@ public abstract class PowerUp implements Drawable, Destroyable {
     }
 
     public void collect(GameMap gameMap) {
-        // System.out.println("Collect! " + this);
-
         SoundEffect.POWER_UP.play();
 
         effect.apply(gameMap);
-        killList.add(this);
+        objectsToBeRemovedNextCycle.add(this);
     }
 
     @Override

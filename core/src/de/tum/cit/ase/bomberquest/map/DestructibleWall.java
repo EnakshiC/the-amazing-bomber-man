@@ -2,12 +2,19 @@ package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.texture.Destroyable;
+import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
 
-public class DestructibleWall extends Wall {
+import java.util.List;
 
-    public DestructibleWall(World world, float x, float y) {
+public class DestructibleWall extends Wall implements Destroyable {
+
+    private final List<Drawable> objectsToBeRemovedNextCycle;
+
+    public DestructibleWall(World world, float x, float y, List<Drawable> objectsToBeRemovedNextCycle) {
         super(world, x, y, true);
+        this.objectsToBeRemovedNextCycle = objectsToBeRemovedNextCycle;
     }
 
     @Override
@@ -22,7 +29,13 @@ public class DestructibleWall extends Wall {
      */
     public void destroy() {
         setSolid(false);
-        // Remove the Hitbox from the Box2D-World
-        // body.getWorld().destroyBody(body);
+        this.objectsToBeRemovedNextCycle.add(this);
+    }
+
+    @Override
+    public void destroyBody(World world) {
+        if (this.body != null) {
+            world.destroyBody(body);
+        }
     }
 }
