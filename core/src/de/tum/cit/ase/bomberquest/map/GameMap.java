@@ -97,12 +97,11 @@ public class GameMap {
         // The contact listener handles all collisions in the game
         this.world.setContactListener(new GameContactListener(this));
 
-        // Create a player with initial position (1, 3)
+        // Create a player at correct position on map
         this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
 
         // Load all enemies and store initial count
-        // this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
-        enemies.add(new EnemySmartSearcher(world, 10, 5, this));
+        this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
         this.enemiesCountAtBeginning = enemies.size();
 
         // Load exit

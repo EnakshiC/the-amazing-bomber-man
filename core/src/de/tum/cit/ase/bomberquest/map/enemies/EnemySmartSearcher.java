@@ -50,9 +50,10 @@ public class EnemySmartSearcher extends Enemy {
         // System.out.println("Player X: " + targetX + " Player Y: " + targetY);
         // System.out.println("Start X: " + startX + " Start Y: " + startY);
 
-        // If we are already at the target --> success --> exit
+        // If we are already at the target, return,
+        // but still continue to hit the enemy also visually instead of stopping at the tiles corner
         if (startX == targetX && startY == targetY) {
-            return Direction.NONE;
+            return currentDirection;
         }
 
         // Define open list for A* algorithm

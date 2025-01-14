@@ -7,6 +7,7 @@ import de.tum.cit.ase.bomberquest.map.basic_tiles.EmptyTile;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.IndestructibleWall;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.Path;
 import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.enemies.EnemySmartSearcher;
 import de.tum.cit.ase.bomberquest.map.enemies.EnemyWithBasicMovement;
 import de.tum.cit.ase.bomberquest.map.enemies.EnemyWithDecisiveMovement;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
@@ -27,7 +28,7 @@ import java.util.function.Supplier;
  * It stores the current map, returns enemies, players positions, entries, exits, etc.
  */
 public class PropertiesHelper {
-    private static final String FALLBACK_PATH = "maps/map-2.properties";
+    private static final String FALLBACK_PATH = "maps/map-1.properties";
 
     private static String currentFilePath = FALLBACK_PATH;
 
@@ -275,7 +276,8 @@ public class PropertiesHelper {
     private static List<Supplier<Enemy>> getEnemySuppliers(World world, float x, float y, GameMap gameMap) {
         return List.of(
                 () -> new EnemyWithBasicMovement(world, x, y, gameMap),
-                () -> new EnemyWithDecisiveMovement(world, x, y, gameMap)
+                () -> new EnemyWithDecisiveMovement(world, x, y, gameMap),
+                () -> new EnemySmartSearcher(world, x, y, gameMap)
         );
     }
 
