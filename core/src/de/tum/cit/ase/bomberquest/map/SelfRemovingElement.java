@@ -9,7 +9,6 @@ import java.util.List;
  * Represents an abstract drawable element in the game with a limited lifespan.
  * Once the duration specified by the time-to-live value elapses, the element
  * self-removes by adding itself to a specified kill list.
- *
  * This class is intended to be extended by other classes that require drawable
  * elements with a finite lifespan and automated lifecycle management.
  */
@@ -24,6 +23,15 @@ public abstract class SelfRemovingElement implements Drawable {
      */
     private final List<Drawable> objectsToBeRemovedNextCycle;
 
+    /**
+     * Constructs a SelfRemovingElement with a specified time-to-live duration and a list of objects
+     * to be removed in the next update cycle.
+     *
+     * @param timeToLive The duration in seconds after which the element will add itself to the removal list.
+     * @param objectsToBeRemovedNextCycle A list of {@link Drawable} objects that are marked for removal
+     *                                    in the subsequent cycle. The current object will be added to
+     *                                    this list when the time-to-live elapses.
+     */
     public SelfRemovingElement(float timeToLive, List<Drawable> objectsToBeRemovedNextCycle) {
         this.timeToLive = timeToLive;
         this.timeSinceCreation = 0.0f;

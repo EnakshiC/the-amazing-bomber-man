@@ -10,6 +10,11 @@ import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
 import java.util.List;
 
+/**
+ * Represents a power-up in the game, which can be collected by players to
+ * activate its effect. A power-up is a drawable entity with a physical
+ * presence in the game world and a specific effect applied upon collection.
+ */
 public abstract class PowerUp implements Drawable, Destroyable {
 
     private final float x;
@@ -19,10 +24,21 @@ public abstract class PowerUp implements Drawable, Destroyable {
 
     private final List<Drawable> objectsToBeRemovedNextCycle;
 
+    /** The effect of the PowerUp containing the apply method. */
     private final PowerUpEffect effect;
 
     private final Body hitbox;
 
+    /**
+     * Creates a new PowerUp instance that applies a designated effect when picked up by the player.
+     *
+     * @param world The physics world where the PowerUp exists, enabling physical interactions.
+     * @param x The X-coordinate (in tiles) of the PowerUp's position.
+     * @param y The Y-coordinate (in tiles) of the PowerUp's position.
+     * @param effect The specific effect that will be applied when the PowerUp is collected.
+     * @param appearance The texture or visual representation of the PowerUp.
+     * @param objectsToBeRemovedNextCycle A list of objects scheduled for removal in the next game cycle.
+     */
     public PowerUp(World world, float x, float y, PowerUpEffect effect, TextureRegion appearance, List<Drawable> objectsToBeRemovedNextCycle) {
         this.x = x;
         this.y = y;
@@ -35,6 +51,11 @@ public abstract class PowerUp implements Drawable, Destroyable {
         hitbox = HitboxHelper.createCircleHitbox(world, x, y, this, true);
     }
 
+    /**
+     * Collects the PowerUp, triggering its effect and sound, scheduling it for removal in the next game cycle.
+     *
+     * @param gameMap The current game map where the PowerUp's effect will be applied upon collection.
+     */
     public void collect(GameMap gameMap) {
         SoundEffect.POWER_UP.play();
 
@@ -48,12 +69,12 @@ public abstract class PowerUp implements Drawable, Destroyable {
     }
 
     @Override
-    public float getX() {
+    public float x() {
         return x;
     }
 
     @Override
-    public float getY() {
+    public float y() {
         return y;
     }
 

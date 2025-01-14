@@ -28,27 +28,18 @@ public abstract class Wall implements Drawable {
         this.body = HitboxHelper.createPolygonHitbox(world, x, y, this);
     }
 
-    public boolean isSolid() {
-        return isSolid;
-    }
-
     public void setSolid(boolean solid) {
         this.isSolid = solid;
-
-        // Change state for 2DBox physics simulation
-        for (Fixture fixture : body.getFixtureList()) {
-            fixture.setSensor(!solid);
-        }
     }
 
 
     @Override
-    public float getX() {
+    public float x() {
         return x;
     }
 
     @Override
-    public float getY() {
+    public float y() {
         return y;
     }
 }

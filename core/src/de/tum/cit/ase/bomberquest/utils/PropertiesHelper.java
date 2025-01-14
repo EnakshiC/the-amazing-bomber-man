@@ -17,9 +17,7 @@ import java.util.function.Supplier;
  * It stores the current map, returns enemies, players positions, entries, exits, etc.
  */
 public class PropertiesHelper {
-    // TODO: Make Fallback relative to project, not absolute paths
-    private static final String FALLBACK_PATH = "/Users/maximilianschiff/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
-    // private static final String FALLBACK_PATH = "C:/Users/enaks/IdeaProjects/itp2425itp2425projectwork-onemanshow/maps/map-1.properties";
+    private static final String FALLBACK_PATH = "maps/map-1.properties";
 
     private static String currentFilePath = FALLBACK_PATH;
 
@@ -175,6 +173,12 @@ public class PropertiesHelper {
         return elements;
     }
 
+    /**
+     * Loads background paths from the properties associated with the current map file
+     * and constructs a grid of paths based on the map's dimensions.
+     *
+     * @return a 2D list containing {@link Path} objects that represent the background paths of the map.
+     */
     public static List<List<Path>> loadBackgroundPathsFromProperties() {
         Properties properties = getProperties(); // Retrieve properties once.
         List<List<Path>> elements = new ArrayList<>();
@@ -191,6 +195,13 @@ public class PropertiesHelper {
         return elements;
     }
 
+    /**
+     * Loads power-up objects from the map's properties file based on their coordinates and types.
+     *
+     * @param world the physics world to initialize their hitboxes.
+     * @param objectsToBeRemovedNextCycle a list of drawable objects that are flagged for removal in the next game cycle.
+     * @return a list of PowerUp objects created from the map properties.
+     */
     public static List<PowerUp> loadPowerUpsFromProperties(World world, List<Drawable> objectsToBeRemovedNextCycle) {
         Properties properties = getProperties(); // Retrieve properties once.
         List<PowerUp> elements = new ArrayList<>();
@@ -213,11 +224,16 @@ public class PropertiesHelper {
         return elements;
     }
 
+    /**
+     * Loads and initializes a list of Enemy objects based on the specified map properties.
+     *
+     * @param world the physics world to associate the enemies with, enabling proper interaction and behaviors.
+     * @param gameMap the map object where the enemies will be placed and operated upon.
+     * @return a list of Enemy objects loaded and initialized based on the map properties.
+     */
     public static List<Enemy> loadEnemiesFromProperties(World world, GameMap gameMap) {
         Properties properties = getProperties(); // Retrieve properties once.
         List<Enemy> elements = new ArrayList<>();
-
-        int count = 0;
 
         // Iterate over every row and every column and add the Drawable found under this key.
         for (int x = 0; x < getMapWith() + 1; x++) {
@@ -229,18 +245,24 @@ public class PropertiesHelper {
                         List<Supplier<Enemy>> enemySuppliers = getEnemySuppliers(world, x, y, gameMap);
 
                         elements.add(enemySuppliers.get(RANDOM.nextInt(enemySuppliers.size())).get());
-
-                        count++;
                     }
                 }
             }
         }
 
-        System.out.println("Loaded " + count + " enemies.");
-
         return elements;
     }
 
+    /**
+     * Provides a list of suppliers that generate enemy objects with specific movement behaviors.
+     * This is used to spawn a random enemy type at this position on the map.
+     *
+     * @param world the physics world where the enemies will be placed.
+     * @param x the initial x-coordinate for the enemies.
+     * @param y the initial y-coordinate for the enemies.
+     * @param gameMap the map object associated with the enemies' interactions and behaviors.
+     * @return a list of suppliers, each capable of generating an enemy instance.
+     */
     private static List<Supplier<Enemy>> getEnemySuppliers(World world, float x, float y, GameMap gameMap) {
         return List.of(
                 () -> new EnemyWithBasicMovement(world, x, y, gameMap),
@@ -250,6 +272,7 @@ public class PropertiesHelper {
 
     /**
      * Retrieves the x-coordinate of the player's entrance from the properties file.
+     *
      * @return the x-coordinate of the player's entrance, or 0 if no entrance is found.
      */
     public static int getPlayerEntranceX() {
@@ -263,6 +286,7 @@ public class PropertiesHelper {
 
     /**
      * Retrieves the y-coordinate of the player's entrance from the properties file.
+     *
      * @return the y-coordinate of the player's entrance, or 0 if no entrance is found.
      */
     public static int getPlayerEntranceY() {
@@ -282,9 +306,6 @@ public class PropertiesHelper {
      */
     public static int getExitX() {
         setExit();
-
-        // System.out.println("X coordinates: " + Integer.parseInt(exitCoordinates.split(",")[0]));
-
         return Integer.parseInt(exitCoordinates.split(",")[0]);
     }
 
@@ -296,13 +317,9 @@ public class PropertiesHelper {
      */
     public static int getExitY() {
         setExit();
-
-        // System.out.println("Y coordinates: " + Integer.parseInt(exitCoordinates.split(",")[1]));
-
         return Integer.parseInt(exitCoordinates.split(",")[1]);
 
     }
-
 
     /**
      * Sets and stores coordinates of an exit in this map
@@ -310,9 +327,23 @@ public class PropertiesHelper {
      * Otherwise, an exit is placed at a random destructible wall of the map.
      */
     private static void setExit() {
-        // Check if an exit already exists in the map.
-        if (exitCoordinates != null) return; // If an exit exists, do nothing.
+        // Check if an exit is already stored for this map.
+        if (exitCoordinates != null) return;
 
+        // 1 --> if there is an exit set for this map
+        List<String> exitKeys = new ArrayList<>();
+        for (Object key : getProperties().keySet()) {
+            if (getProperties().getProperty(key.toString()).equals("4")) {
+                exitKeys.add(key.toString());
+            }
+        }
+        // Select one of the found exit entries and set exitCoordinates
+        if (!exitKeys.isEmpty()) {
+            exitCoordinates = exitKeys.get((int) (Math.random() * exitKeys.size()));
+            return;
+        }
+
+        // 2 --> if there is no exit set, place under random destructible wall
         // Find all destructible walls (value = "1").
         List<String> destructibleWallsKeys = new ArrayList<>();
         for (Object key : getProperties().keySet()) {
@@ -324,15 +355,12 @@ public class PropertiesHelper {
         // If there are destructible walls, randomly place an exit under one of them.
         if (!destructibleWallsKeys.isEmpty()) {
             exitCoordinates = destructibleWallsKeys.get((int) (Math.random() * destructibleWallsKeys.size()));
-
-            // System.out.println("Exit placed at: " + exitCoordinates);
         } else {
             // If no destructible walls are found, warn about the lack of exit placement.
             System.err.println("No suitable destructible walls found to place an exit.");
 
-            // Fallback
+            // Fallback at bottom left corner
             exitCoordinates = "1,1";
-
         }
     }
 }

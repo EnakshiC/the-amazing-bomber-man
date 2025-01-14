@@ -4,28 +4,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
 
-public class EmptyTile implements Drawable {
-
-    private final float x;
-    private final float y;
-
-    public EmptyTile(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
+/**
+ * Represents an empty tile in the game world.
+ * The EmptyTile is a non-collidable, transparent object that is mainly used to fill
+ * gaps between walls in the List<List<Drawable>> of wall in the map.
+ */
+public record EmptyTile(float x, float y) implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
         return Textures.EMPTY;
-    }
-
-    @Override
-    public float getX() {
-        return x;
-    }
-
-    @Override
-    public float getY() {
-        return y;
     }
 }

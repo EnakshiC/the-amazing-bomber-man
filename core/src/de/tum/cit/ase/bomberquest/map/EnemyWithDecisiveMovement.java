@@ -3,7 +3,6 @@ package de.tum.cit.ase.bomberquest.map;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Animations;
-import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 import java.util.List;
 
@@ -18,6 +17,14 @@ public class EnemyWithDecisiveMovement extends Enemy {
     private static final float DECISION_DELAY = .1f;
     private float decisionTimer = 0.0f;
 
+    /**
+     * Constructs an EnemyWithDecisiveMovement instance.
+     *
+     * @param world The game world the enemy belongs to.
+     * @param x The initial x-coordinate position of the enemy.
+     * @param y The initial y-coordinate position of the enemy.
+     * @param gameMap The map in which the enemy operates.
+     */
     public EnemyWithDecisiveMovement(World world, float x, float y, GameMap gameMap) {
         super(world, x, y, gameMap);
     }

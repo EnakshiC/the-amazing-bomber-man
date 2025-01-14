@@ -18,7 +18,6 @@ public class HitboxHelper {
      * @return The category bits representing the type of the Drawable. Returns 0x0000 if no matching category exists.
      */
     public static short getCategoryBits(Drawable drawable) {
-        // TODO: Add Enemies
         if (drawable instanceof Player) {
             return 0x0001;
         } else if (drawable instanceof Enemy) {

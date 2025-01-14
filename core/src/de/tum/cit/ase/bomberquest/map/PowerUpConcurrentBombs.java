@@ -6,10 +6,23 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
 
 import java.util.List;
 
+/**
+ * PowerUpConcurrentBombs is a specific type of PowerUp that increases the maximum
+ * number of bombs a player can place concurrently when collected up to a maximum.
+ */
 public class PowerUpConcurrentBombs extends PowerUp {
 
     private static final int MAX_POSSIBLE = 8;
 
+    /**
+     * Constructs a PowerUpConcurrentBombs object, a specific type of PowerUp that increases
+     * the maximum number of bombs a player can place concurrently when collected.
+     *
+     * @param world The physics world where the PowerUp exists, enabling physical interactions.
+     * @param x The X-coordinate (in tiles) of the PowerUp's position.
+     * @param y The Y-coordinate (in tiles) of the PowerUp's position.
+     * @param objectsToBeRemovedNextCycle A list of objects scheduled for removal in the next game cycle.
+     */
     public PowerUpConcurrentBombs(World world, float x, float y, List<Drawable> objectsToBeRemovedNextCycle) {
         super(world, x, y, new ConcurrentBombsEffect(), Textures.POWER_UP_CONCURRENT_BOMBS, objectsToBeRemovedNextCycle);
     }

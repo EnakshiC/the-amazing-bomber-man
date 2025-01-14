@@ -1,13 +1,16 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
 
 import java.util.List;
 
-// TODO: Implement Bomb
+/**
+ * Represents a bomb that can be placed in the game world.
+ * The bomb is a self-removing element that explodes after a defined fuse time
+ * and is subsequently scheduled for removal from the game.
+ */
 public class Bomb extends SelfRemovingElement {
 
     /** The time it takes for the bomb to explode after it has been placed. */
@@ -34,12 +37,12 @@ public class Bomb extends SelfRemovingElement {
     }
 
     @Override
-    public float getX() {
+    public float x() {
         return this.x;
     }
 
     @Override
-    public float getY() {
+    public float y() {
         return this.y;
     }
 }

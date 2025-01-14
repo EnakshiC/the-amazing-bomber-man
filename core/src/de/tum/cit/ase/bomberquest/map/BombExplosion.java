@@ -4,12 +4,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
-import de.tum.cit.ase.bomberquest.texture.Destroyable;
 import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 
 import java.util.List;
 
-public class BombExplosion extends SelfRemovingElement implements Destroyable {
+/**
+ * Represents an explosion that occurs when a bomb detonates in the game.
+ * The explosion lasts for a limited duration, after which it self-removes
+ * from the game world.
+ */
+public class BombExplosion extends SelfRemovingElement  {
 
     /** The time it takes for the explosion to evaporate. */
     public static final float EXPLOSION_DURATION = 1.0f;
@@ -21,6 +25,16 @@ public class BombExplosion extends SelfRemovingElement implements Destroyable {
 
     final Body hitbox;
 
+    /**
+     * Constructs a new BombExplosion object representing an explosion triggered by a bomb.
+     * The explosion has a limited duration after which it is automatically removed from the game.
+     *
+     * @param world The game world in which the explosion occurs. It is used for registering the hitbox.
+     * @param x The X coordinate of the explosion's origin within the game world grid.
+     * @param y The Y coordinate of the explosion's origin within the game world grid.
+     * @param bombExplosionTile The specific visual and structural tile to use for this explosion.
+     * @param objectsToBeRemovedNextCycle A list of objects that will be removed from the game at the end of their lifecycle.
+     */
     public BombExplosion(World world, float x, float y, BombExplosionTile bombExplosionTile, List<Drawable> objectsToBeRemovedNextCycle) {
         super(EXPLOSION_DURATION, objectsToBeRemovedNextCycle);
 
@@ -37,23 +51,16 @@ public class BombExplosion extends SelfRemovingElement implements Destroyable {
     }
 
     @Override
-    public float getX() {
+    public float x() {
         return x;
     }
 
     @Override
-    public float getY() {
+    public float y() {
         return y;
     }
 
     public Body getHitbox() {
         return hitbox;
-    }
-
-    @Override
-    public void destroyBody(World world) {
-        if (hitbox != null) {
-            // world.destroyBody(hitbox);
-        }
     }
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * Represents something that can be drawn on the screen.
- * NOTE: The position returned by {@link #getX()} and {@link #getY()} is the
+ * NOTE: The position returned by {@link #x()} and {@link #y()} is the
  * position of the BOTTOM LEFT CORNER of the texture in the game.
  */
 public interface Drawable {
@@ -23,7 +23,7 @@ public interface Drawable {
      * and {@link de.tum.cit.ase.bomberquest.screen.GameScreen#SCALE} to get the pixel coordinate.
      * @return The X coordinate of the drawable.
      */
-    float getX();
+    float x();
     
     /**
      * Gets the Y coordinate of the drawable in the game world grid.
@@ -32,6 +32,6 @@ public interface Drawable {
      * and {@link de.tum.cit.ase.bomberquest.screen.GameScreen#SCALE} to get the pixel coordinate.
      * @return The Y coordinate of the drawable.
      */
-    float getY();
+    float y();
     
 }

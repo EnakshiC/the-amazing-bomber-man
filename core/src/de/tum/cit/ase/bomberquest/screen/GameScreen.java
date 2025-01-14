@@ -94,14 +94,14 @@ public class GameScreen implements Screen {
      * Initializes the background sprite cache for efficient rendering.
      */
     private void initBackgroundCache() {
-        System.out.println("initBackgroundCache");
+        // System.out.println("initBackgroundCache");
 
         spriteCache = new SpriteCache();
         spriteCache.beginCache();
 
         for (Path path : backgroundPaths) {
-            float x = path.getX() * TILE_SIZE_PX * SCALE;
-            float y = path.getY() * TILE_SIZE_PX * SCALE;
+            float x = path.x() * TILE_SIZE_PX * SCALE;
+            float y = path.y() * TILE_SIZE_PX * SCALE;
             TextureRegion region = path.getCurrentAppearance();
             float width = region.getRegionWidth() * SCALE;
             float height = region.getRegionHeight() * SCALE;
@@ -122,7 +122,6 @@ public class GameScreen implements Screen {
         // Clear the screen with a black color
         ScreenUtils.clear(Color.BLACK);
 
-        // TODO: Check that this just PAUSES the game, but does not end it!
         // Check for escape key press to go back to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
@@ -171,8 +170,8 @@ public class GameScreen implements Screen {
      */
     private void updateCamera() {
         // Get the player's position in the map
-        float playerX = map.getPlayer().getX() * TILE_SIZE_PX * SCALE;
-        float playerY = map.getPlayer().getY() * TILE_SIZE_PX * SCALE;
+        float playerX = map.getPlayer().x() * TILE_SIZE_PX * SCALE;
+        float playerY = map.getPlayer().y() * TILE_SIZE_PX * SCALE;
 
         // Only adjust the camera if the players positions breaks out of the VIEW_FRAME_PERCENTAGE ratio of the frame
         // Since the players 0,0 is at its bottom left, we need adjust the camera accordingly on the right and top
@@ -194,7 +193,7 @@ public class GameScreen implements Screen {
      * Renders the game map using the configured camera.
      */
     private void renderMap() {
-        // Load background from cache
+        // Load background Path tiles from cache
         spriteCache.setProjectionMatrix(mapCamera.combined);
         spriteCache.begin();
         spriteCache.draw(cacheId);
@@ -205,11 +204,6 @@ public class GameScreen implements Screen {
 
         // Start drawing
         spriteBatch.begin();
-
-        // First render a background pattern with path tile
-//        for (Path path : backgroundPaths) {
-//            draw(spriteBatch, path);
-//        }
 
         // Render middle layer: power-ups, exit, etc.
         draw(spriteBatch, map.getExit());
@@ -253,8 +247,8 @@ public class GameScreen implements Screen {
     private static void draw(SpriteBatch spriteBatch, Drawable drawable) {
         TextureRegion texture = drawable.getCurrentAppearance();
         // Drawable coordinates are in tiles, so we need to scale them to pixels
-        float x = drawable.getX() * TILE_SIZE_PX * SCALE;
-        float y = drawable.getY() * TILE_SIZE_PX * SCALE;
+        float x = drawable.x() * TILE_SIZE_PX * SCALE;
+        float y = drawable.y() * TILE_SIZE_PX * SCALE;
         // Additionally scale everything by the game scale
         float width = texture.getRegionWidth() * SCALE;
         float height = texture.getRegionHeight() * SCALE;

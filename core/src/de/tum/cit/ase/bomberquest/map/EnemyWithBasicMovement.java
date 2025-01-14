@@ -3,9 +3,6 @@ package de.tum.cit.ase.bomberquest.map;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.texture.Animations;
-import de.tum.cit.ase.bomberquest.texture.Drawable;
-
-import java.util.List;
 
 /**
  * A basic enemy that walks straight as long as it is possible.
@@ -14,6 +11,14 @@ import java.util.List;
  */
 public class EnemyWithBasicMovement extends Enemy {
 
+    /**
+     * Constructs an instance of a basic enemy with simple movement behavior.
+     *
+     * @param world the physical world where the enemy exists
+     * @param x the initial x-coordinate of the enemy in the game world
+     * @param y the initial y-coordinate of the enemy in the game world
+     * @param gameMap the game map the enemy is associated with
+     */
     public EnemyWithBasicMovement(World world, float x, float y, GameMap gameMap) {
         super(world, x, y, gameMap);
     }

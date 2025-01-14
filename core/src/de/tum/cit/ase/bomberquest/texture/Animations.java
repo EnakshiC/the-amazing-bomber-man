@@ -22,7 +22,6 @@ public class Animations {
             SpriteSheet.CHARACTER.at(1, 4)
     );
 
-    //TODO: Extend the Animations Class: Add new animations for walking up, left, and right, using the corresponding regions from the sprite sheet.
     /**
      * The animation for the character walking up.
      * Uses frames from row 3, columns 1-4 of the sprite sheet.
@@ -63,7 +62,6 @@ public class Animations {
     public static final Animation<TextureRegion> CHARACTER_STANDING = new Animation<>(0.2f,
             SpriteSheet.CHARACTER.at(1, 1)
     );
-
 
     public static final Animation<TextureRegion> BASIC_ENEMY_WALK_DOWN = new Animation<>(0.1f,
             SpriteSheet.MOBS.at(1, 10),
@@ -138,12 +136,7 @@ public class Animations {
             SpriteSheet.SMOKE.at(1, 6),
             SpriteSheet.SMOKE.at(1, 7)
     );
-    
 
-    /**
-     * The animation for the bomb explosion's center.
-     */
-    //Centre
     public static final Animation<TextureRegion> EXPLOSION_CENTER = new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 3),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8),
@@ -156,8 +149,6 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 3)
     );
-
-    //Left side
 
     public static final Animation<TextureRegion> EXPLOSION_LEFT_MIDDLE= new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 2),
@@ -185,8 +176,6 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 1)
     );
 
-
-    //Right side
     public static final Animation<TextureRegion> EXPLOSION_RIGHT_MIDDLE = new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 4),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 9),
@@ -213,7 +202,6 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 5)
     );
 
-    //Top side
     public static final Animation<TextureRegion> EXPLOSION_TOP_MIDDLE = new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 3),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 8),
@@ -241,7 +229,6 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(5, 3)
     );
 
-    //Bottom side
     public static final Animation<TextureRegion> EXPLOSION_BOTTOM_MIDDLE = new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(8, 3),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(8, 8),

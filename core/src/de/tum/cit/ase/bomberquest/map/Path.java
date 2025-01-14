@@ -5,32 +5,13 @@ import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
 
 /**
- * Flowers are a static object without any special properties.
- * They do not have a hitbox, so the player does not collide with them.
- * They are purely decorative and serve as a nice floor decoration.
+ * Represents a path texture drawable in the game world.
+ * A path is a non-interactive element that provides visual details
+ * and serves as a decorative feature in the game grid.
  */
-public class Path implements Drawable {
-
-    private final int x;
-    private final int y;
-
-    public Path(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
+public record Path(float x, float y) implements Drawable {
     @Override
     public TextureRegion getCurrentAppearance() {
         return Textures.PATH;
-    }
-
-    @Override
-    public float getX() {
-        return x;
-    }
-
-    @Override
-    public float getY() {
-        return y;
     }
 }

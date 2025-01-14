@@ -67,7 +67,7 @@ public class GameMap {
     private final List<List<Drawable>> wallElements;
     private final List<PowerUp> powerUps = new ArrayList<>();
 
-    // These elements will be removed from World/Canvas next tick cycle
+    /** Objects in this list will be removed from World/Canvas next tick cycle */
     private final List<Drawable> objectsToRemoveNextCycle = new ArrayList<>();
 
     // Game progress values
@@ -187,14 +187,14 @@ public class GameMap {
         // Since the players origin of coordinates is at their bottom left,
         // but the bomb should be placed on the perceived field at the bodies center / core, we add .5 to x and y
         // Beware that it is in our tile system not real screen coordinates
-        int playerTileX = (int) (player.getX() + .5);
-        int playerTileY = (int) (player.getY() + .5);
+        int playerTileX = (int) (player.x() + .5);
+        int playerTileY = (int) (player.y() + .5);
 
         boolean alredayBombOnTile = false;
         for (Bomb bomb : bombsInPlay) {
 
 
-            if (bomb.getX() == playerTileX && bomb.getY() == playerTileY) {
+            if (bomb.x() == playerTileX && bomb.y() == playerTileY) {
                 alredayBombOnTile = true;
                 break;
             }
@@ -215,8 +215,8 @@ public class GameMap {
     private void explodeBomb(Bomb bomb) {
         SoundEffect.BOMB_EXPLOSION.play();
 
-        final float x = bomb.getX();
-        final float y = bomb.getY();
+        final float x = bomb.x();
+        final float y = bomb.y();
 
         // Put directions of bomb in a list, like vectors in each up, down, left, right
         final List<String> direction = new ArrayList<>();
