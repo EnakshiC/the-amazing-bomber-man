@@ -21,9 +21,11 @@ import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserIntent;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.
@@ -35,11 +37,19 @@ public class MenuScreen implements Screen {
     private final BomberQuestGame game;
 
     /**
+     * The key of the currently selected map
+     * Is "<Custom Map>" if a file was selected
+     */
+
+    private String currentKey;
+
+    /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
      *
      * @param game The main game class, used to access global resources and methods.
      */
     public MenuScreen(BomberQuestGame game) {
+        currentKey = PropertiesHelper.getMapPaths().keySet().iterator().next();
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -63,6 +73,41 @@ public class MenuScreen implements Screen {
             }
         });
 
+        // Add a label and two buttons for iterating through the map
+        Label mapLabel = new Label(currentKey, game.getSkin());
+        TextButton previousButton = new TextButton("<", game.getSkin(), "default");
+        TextButton nextButton = new TextButton(">", game.getSkin(), "default");
+        
+        Table rowTable = new Table();
+        rowTable.add(previousButton).size(60).padRight(20);
+        rowTable.add(mapLabel).padRight(20).width(290);
+        rowTable.add(nextButton).size(60);
+        table.add(rowTable).padBottom(20).row();
+        
+        previousButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                List<String> keys = new ArrayList<>(PropertiesHelper.getMapPaths().keySet());
+                int currentIndex = keys.contains(currentKey) ? keys.indexOf(currentKey) : 1;
+                currentKey = keys.get((currentIndex - 1 + keys.size()) % keys.size());
+                mapLabel.setText(currentKey);
+                PropertiesHelper.loadNewMap(PropertiesHelper.getMapPaths().get(currentKey));
+                game.resetGame();
+            }
+        });
+        
+        nextButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                List<String> keys = new ArrayList<>(PropertiesHelper.getMapPaths().keySet());
+                int currentIndex = keys.contains(currentKey) ? keys.indexOf(currentKey) : -1;
+                currentKey = keys.get((currentIndex + 1) % keys.size());
+                mapLabel.setText(currentKey);
+                PropertiesHelper.loadNewMap(PropertiesHelper.getMapPaths().get(currentKey));
+                game.resetGame();
+            }
+        });
+        
         // Create and add a button to open the file loader
         TextButton loadMapButton = new TextButton("Load map from file...", game.getSkin());
         table.add(loadMapButton).width(450).row();
@@ -83,8 +128,9 @@ public class MenuScreen implements Screen {
                         if (fileHandle.extension().equals("properties")) {
                             PropertiesHelper.loadNewMap(fileHandle.path());
                             game.resetGame();
+                            currentKey = "< CUSTOM MAP >";
+                            mapLabel.setText(currentKey);
                         }
-
                     }
 
                     @Override

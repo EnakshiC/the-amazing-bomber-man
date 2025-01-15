@@ -17,10 +17,7 @@ import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -37,6 +34,15 @@ public class PropertiesHelper {
     // Random to select random enemies
     private static final Random RANDOM = new Random();
 
+    // Available maps in the game initially
+    private static final Map<String, String> MAP_PATHS = Map.of(
+            "Map 1", "maps/map-1.properties",
+            "Map 2", "maps/map-2.properties"
+    );
+
+    public static Map<String, String> getMapPaths() {
+        return MAP_PATHS;
+    }
 
     /**
      * Loads properties from the current map file.
