@@ -3,6 +3,7 @@ package de.tum.cit.ase.bomberquest.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,6 +16,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
+import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
+import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
+import games.spooky.gdx.nativefilechooser.NativeFileChooserIntent;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.
@@ -42,15 +51,54 @@ public class MenuScreen implements Screen {
         stage.addActor(table); // Add the table to the stage
 
         // Add a label as a title
-        table.add(new Label("Hello World from the Menu!", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("The Amazing Bomber Man", game.getSkin(), "title")).padBottom(80).row();
 
         // Create and add a button to go to the game screen
         TextButton goToGameButton = new TextButton("Go To Game", game.getSkin());
-        table.add(goToGameButton).width(300).row();
+        table.add(goToGameButton).width(450).padBottom(20).row();
         goToGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.goToGame(); // Change to the game screen when button is pressed
+            }
+        });
+
+        // Create and add a button to open the file loader
+        TextButton loadMapButton = new TextButton("Load map from file...", game.getSkin());
+        table.add(loadMapButton).width(450).row();
+        loadMapButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                NativeFileChooserConfiguration chooserConfig = new NativeFileChooserConfiguration();
+                chooserConfig.title = "Choose Map File";
+                chooserConfig.directory = new FileHandle(System.getProperty("user.home"));
+                chooserConfig.intent = NativeFileChooserIntent.OPEN;
+
+                NativeFileChooserCallback callback = new NativeFileChooserCallback() {
+                    @Override
+                    public void onFileChosen(FileHandle fileHandle) {
+                        System.out.println("Chosen File: " + fileHandle.path() );
+
+                        // Check if it is a .properties File
+                        if (fileHandle.extension().equals("properties")) {
+                            PropertiesHelper.loadNewMap(fileHandle.path());
+                            game.resetGame();
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancellation() {
+                        // System.out.println("Cancel Choose File");
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        System.err.println("Error: " + e);
+                    }
+                };
+                chooserConfig.title = "Chose Map File";
+                game.getFileChooser().chooseFile(chooserConfig, callback);
             }
         });
 

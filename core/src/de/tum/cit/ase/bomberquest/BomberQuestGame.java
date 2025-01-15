@@ -99,7 +99,11 @@ public class BomberQuestGame extends Game {
             this.setScreen(new LossScreen(this));
         }
 
-        // Reset Game
+        this.resetGame();
+    }
+
+    public void resetGame() {
+        // Creating a new map will load with new parameters
         this.map = new GameMap(this);
     }
 
@@ -116,6 +120,11 @@ public class BomberQuestGame extends Game {
     /** Returns the current map, if there is one. */
     public GameMap getMap() {
         return map;
+    }
+
+    /** Returns the fileChooser */
+    public NativeFileChooser getFileChooser() {
+        return fileChooser;
     }
     
     /**

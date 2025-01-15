@@ -92,15 +92,14 @@ public class PropertiesHelper {
      * Stores a new map path if there is a valid file at the given path.
      *
      * @param path is an absolute path to a .properties map file.
-     * @return 0 if successful or -1 if not -> using FALLBACK_PATH.
      */
-    public static int loadNewMap(String path) {
+    public static void loadNewMap(String path) {
         Properties properties = new Properties();
         try (FileInputStream input = new FileInputStream(path)) {
             properties.load(input);
         } catch (IOException e) {
             System.err.println("Error loading .properties file: " + e.getMessage());
-            return -1;
+            return;
         }
 
         if (isMapValid(properties)) {
@@ -108,11 +107,9 @@ public class PropertiesHelper {
             // Reset the exit
             exitCoordinates = null;
 
-            return 0;
         } else {
             System.err.println("Invalid map file. Reverting to fallback.");
             currentFilePath = FALLBACK_PATH;
-            return -1;
         }
     }
 
