@@ -67,6 +67,7 @@ public class Animations {
             SpriteSheet.CHARACTER.at(1, 15)
     );
 
+    //Animations for Basic Enemies
     public static final Animation<TextureRegion> BASIC_ENEMY_WALK_DOWN = new Animation<>(0.1f,
             SpriteSheet.MOBS.at(1, 10),
             SpriteSheet.MOBS.at(1, 11),
@@ -99,6 +100,7 @@ public class Animations {
             SpriteSheet.MOBS.at(1, 10)
     );
 
+    //Animations for Slimey Enemies
     public static final Animation<TextureRegion> SLIMY_ENEMY_WALK_DOWN = new Animation<>(0.1f,
             SpriteSheet.MOBS.at(5, 1),
             SpriteSheet.MOBS.at(5, 2),
@@ -131,6 +133,7 @@ public class Animations {
             SpriteSheet.MOBS.at(4, 1)
     );
 
+    //Animations for Bats
     public static final Animation<TextureRegion> BAT_ENEMY_WALK_DOWN = new Animation<>(0.1f,
             SpriteSheet.MOBS.at(5, 4),
             SpriteSheet.MOBS.at(5, 5),
@@ -164,6 +167,41 @@ public class Animations {
     );
 
 
+    //Animations for Ghosts
+    public static final Animation<TextureRegion> GHOST_ENEMY_WALK_DOWN = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(5, 7),
+            SpriteSheet.MOBS.at(5, 8),
+            SpriteSheet.MOBS.at(5, 9),
+            SpriteSheet.MOBS.at(5, 8)
+    );
+
+
+    public static final Animation<TextureRegion> GHOST_ENEMY_WALK_UP = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(8, 7),
+            SpriteSheet.MOBS.at(8, 8),
+            SpriteSheet.MOBS.at(8, 9),
+            SpriteSheet.MOBS.at(8, 8)
+            );
+
+    public static final Animation<TextureRegion> GHOST_ENEMY_WALK_LEFT = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(6, 7),
+            SpriteSheet.MOBS.at(6, 8),
+            SpriteSheet.MOBS.at(6, 9),
+            SpriteSheet.MOBS.at(6, 8)
+    );
+
+    public static final Animation<TextureRegion> GHOST_ENEMY_WALK_RIGHT = new Animation<>(0.1f,
+            SpriteSheet.MOBS.at(7, 7),
+            SpriteSheet.MOBS.at(7, 8),
+            SpriteSheet.MOBS.at(7, 9),
+            SpriteSheet.MOBS.at(7, 8)
+    );
+
+    public static final Animation<TextureRegion>GHOST_ENEMY_STANDING=new Animation<>(0.2f,
+            SpriteSheet.MOBS.at(4, 7)
+            );
+
+    //Animations for Enemies Dying
     public static final Animation<TextureRegion> ENEMY_DYING = new Animation<>(0.1f,
             SpriteSheet.SMOKE.at(1, 1),
             SpriteSheet.SMOKE.at(1, 2),
@@ -174,6 +212,7 @@ public class Animations {
             SpriteSheet.SMOKE.at(1, 7)
     );
 
+    //Animations for Bombs
     public static final Animation<TextureRegion> EXPLOSION_CENTER = new Animation<>(BombExplosion.EXPLOSION_DURATION / 10f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 3),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(7, 8),

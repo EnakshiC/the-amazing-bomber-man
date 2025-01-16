@@ -15,6 +15,7 @@ import de.tum.cit.ase.bomberquest.map.basic_tiles.Path;
 import de.tum.cit.ase.bomberquest.map.bomb.Bomb;
 import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
 import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.enemies.EnemyGhost;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
@@ -231,8 +232,18 @@ public class GameScreen implements Screen {
             draw(spriteBatch, explosion);
         }
 
-        for (Enemy enemy : map.getEnemies()) {
-            draw(spriteBatch, enemy);
+        for (Enemy enemy : map.getEnemies())
+        {
+            if(enemy instanceof EnemyGhost)
+            {
+                //Draw EnemyGhost with different alpha value than other enemies
+                spriteBatch.setColor(1, 1, 1,((EnemyGhost)enemy).getAlpha());
+                draw(spriteBatch, enemy);
+                spriteBatch.setColor(1, 1, 1, 1);
+            }
+            else{
+                draw(spriteBatch, enemy);
+            }
         }
 
         draw(spriteBatch, map.getPlayer());

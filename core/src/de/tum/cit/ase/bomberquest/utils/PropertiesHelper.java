@@ -6,10 +6,7 @@ import de.tum.cit.ase.bomberquest.map.basic_tiles.DestructibleWall;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.EmptyTile;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.IndestructibleWall;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.Path;
-import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
-import de.tum.cit.ase.bomberquest.map.enemies.EnemySmartSearcher;
-import de.tum.cit.ase.bomberquest.map.enemies.EnemyWithBasicMovement;
-import de.tum.cit.ase.bomberquest.map.enemies.EnemyWithDecisiveMovement;
+import de.tum.cit.ase.bomberquest.map.enemies.*;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUpBombRadius;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUpConcurrentBombs;
@@ -280,7 +277,8 @@ public class PropertiesHelper {
         return List.of(
                 () -> new EnemyWithBasicMovement(world, x, y, gameMap),
                 () -> new EnemyWithDecisiveMovement(world, x, y, gameMap),
-                () -> new EnemySmartSearcher(world, x, y, gameMap)
+                () -> new EnemySmartSearcher(world, x, y, gameMap),
+                ()->new EnemyGhost(world, x, y, gameMap)
         );
     }
 
