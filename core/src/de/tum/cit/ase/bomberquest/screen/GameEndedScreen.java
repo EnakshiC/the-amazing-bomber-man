@@ -75,7 +75,7 @@ public class GameEndedScreen implements Screen {
         //Checking for player's ENTER input
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
         {
-            game.goToGame();
+            game.goToMenu();
         }
     }
 
