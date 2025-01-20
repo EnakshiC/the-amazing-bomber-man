@@ -140,18 +140,6 @@ public class GameScreen implements Screen {
         // Update the map state
         map.tick(frameTime);
 
-        // Method to check for key press to simulate victory or loss
-        //TODO: Insert real variables later
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            game.setScreen(new VictoryScreen(game));
-            return;
-        }
-
-        // Check for key press to simulate loss
-        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-            game.setScreen(new LossScreen(game));
-            return;
-        }
 
         // Check for escape key to return to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {

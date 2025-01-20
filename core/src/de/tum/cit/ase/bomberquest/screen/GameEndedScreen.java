@@ -73,7 +73,8 @@ public class GameEndedScreen implements Screen {
         spriteBatch.end();
 
         //Checking for player's ENTER input
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER));{
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        {
             game.goToGame();
         }
     }
