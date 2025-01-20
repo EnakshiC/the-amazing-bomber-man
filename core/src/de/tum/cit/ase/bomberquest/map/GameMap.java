@@ -98,7 +98,7 @@ public class GameMap {
         this.world.setContactListener(new GameContactListener(this));
 
         // Create a player at correct position on map
-        this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY());
+        this.player = new Player(this.world, PropertiesHelper.getPlayerEntranceX(), PropertiesHelper.getPlayerEntranceY(), this);
 
         // Load all enemies and store initial count
         this.enemies.addAll(PropertiesHelper.loadEnemiesFromProperties(world, this));
@@ -199,7 +199,6 @@ public class GameMap {
         if (bombsInPlay.size() >= maxBombsAllowed) return;
 
         SoundEffect.BOMB_DROP.play();
-
         // Since the players origin of coordinates is at their bottom left,
         // but the bomb should be placed on the perceived field at the bodies center / core, we add .5 to x and y
         // Beware that it is in our tile system not real screen coordinates

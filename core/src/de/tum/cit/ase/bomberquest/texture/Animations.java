@@ -78,7 +78,10 @@ public class Animations {
      */
 
     public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_DOWN = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(1, 6)
+            SpriteSheet.CHARACTER.at(1, 1),
+            SpriteSheet.CHARACTER.at(1, 6),
+            SpriteSheet.CHARACTER.at(1, 7),
+            SpriteSheet.CHARACTER.at(1, 8)
     );
 
     /**
@@ -86,7 +89,10 @@ public class Animations {
      * Uses the frame at row 3, column 6 of the sprite sheet.
      */
     public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_UP = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(3, 6)
+            SpriteSheet.CHARACTER.at(3, 1),
+            SpriteSheet.CHARACTER.at(3, 6),
+            SpriteSheet.CHARACTER.at(3, 7),
+            SpriteSheet.CHARACTER.at(3, 8)
     );
 
     /**
@@ -94,7 +100,10 @@ public class Animations {
      * Uses the frame at row 4, column 6 of the sprite sheet.
      */
     public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_LEFT = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(4, 6)
+            SpriteSheet.CHARACTER.at(4, 1),
+            SpriteSheet.CHARACTER.at(4, 6),
+            SpriteSheet.CHARACTER.at(4, 7),
+            SpriteSheet.CHARACTER.at(4, 8)
     );
 
     /**
@@ -102,7 +111,10 @@ public class Animations {
      * Uses the frame at row 2, column 6 of the sprite sheet.
      */
     public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_RIGHT = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(2, 6)
+            SpriteSheet.CHARACTER.at(2, 1),
+            SpriteSheet.CHARACTER.at(2, 6),
+            SpriteSheet.CHARACTER.at(2, 7),
+            SpriteSheet.CHARACTER.at(2, 8)
     );
 
     // Animations for Character Covering Ears
@@ -111,7 +123,14 @@ public class Animations {
      * Uses the frames at row 1, column 7-8 of the sprite sheet.
      */
     public static final Animation<TextureRegion> CHARACTER_COVER_EARS_DOWN = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(1, 7), SpriteSheet.CHARACTER.at(1, 8)
+            SpriteSheet.CHARACTER.at(1, 10),
+            SpriteSheet.CHARACTER.at(1, 11),
+            SpriteSheet.CHARACTER.at(1, 12),
+            SpriteSheet.CHARACTER.at(1, 13)
+    );
+
+    public static final Animation<TextureRegion> CHARACTER_COVER_EARS_STANDING = new Animation<>(0.2f,
+            SpriteSheet.CHARACTER.at(1, 10)
     );
 
     /**
@@ -119,7 +138,10 @@ public class Animations {
      * Uses the frames at row 3, column 7-8 of the sprite sheet.
      */
     public static final Animation<TextureRegion> CHARACTER_COVER_EARS_UP = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(3, 7), SpriteSheet.CHARACTER.at(3, 8)
+            SpriteSheet.CHARACTER.at(3, 10),
+            SpriteSheet.CHARACTER.at(3, 11),
+            SpriteSheet.CHARACTER.at(3, 12),
+            SpriteSheet.CHARACTER.at(3, 13)
     );
 
     /**
@@ -127,7 +149,10 @@ public class Animations {
      * Uses the frames at row 4, column 7-8 of the sprite sheet.
      */
     public static final Animation<TextureRegion> CHARACTER_COVER_EARS_LEFT = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(4, 7), SpriteSheet.CHARACTER.at(4, 8)
+            SpriteSheet.CHARACTER.at(4, 10),
+            SpriteSheet.CHARACTER.at(4, 11),
+            SpriteSheet.CHARACTER.at(4, 12),
+            SpriteSheet.CHARACTER.at(4, 13)
     );
 
     /**
@@ -135,7 +160,10 @@ public class Animations {
      * Uses the frames at row 2, column 7-8 of the sprite sheet.
      */
     public static final Animation<TextureRegion> CHARACTER_COVER_EARS_RIGHT = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(2, 7), SpriteSheet.CHARACTER.at(2, 8)
+            SpriteSheet.CHARACTER.at(2, 10),
+            SpriteSheet.CHARACTER.at(2, 11),
+            SpriteSheet.CHARACTER.at(2, 12),
+            SpriteSheet.CHARACTER.at(2, 13)
     );
 
 

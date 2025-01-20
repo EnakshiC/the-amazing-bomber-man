@@ -42,6 +42,8 @@ public class Player implements Drawable {
 
     private boolean isDying = false;
 
+    private final GameMap gameMap;
+
     /**
      * Constructor to create a player instance at a specified position.
      *
@@ -49,8 +51,9 @@ public class Player implements Drawable {
      * @param x     The starting x-coordinate of the player.
      * @param y     The starting y-coordinate of the player.
      */
-    public Player(World world, float x, float y) {
+    public Player(World world, float x, float y, GameMap gameMap) {
         this.hitbox = HitboxHelper.createCircleHitbox(world, x, y, this, false);
+        this.gameMap = gameMap;
     }
 
     /**
@@ -126,10 +129,23 @@ public class Player implements Drawable {
         }
 
         if (Objects.equals(this.hitbox.getLinearVelocity(), new Vector2(0.0f, 0.0f))) {
-            return Animations.CHARACTER_STANDING.getKeyFrame(elapsedTime, true);
+            if (!gameMap.getExplosionTiles().isEmpty() || !gameMap.getBombsInPlay().isEmpty())
+            {
+                return Animations.CHARACTER_COVER_EARS_STANDING.getKeyFrame(elapsedTime, true);
+            }
+            return Animations.CHARACTER_STANDING.getKeyFrame(elapsedTime, false);
         }
 
         // TODO: Have different appearance when laying a bomb...
+        if (!gameMap.getBombsInPlay().isEmpty() || !gameMap.getExplosionTiles().isEmpty())
+        {
+            return switch (this.currentDirection) {
+                case UP -> Animations.CHARACTER_COVER_EARS_UP.getKeyFrame(elapsedTime, true);
+                case LEFT -> Animations.CHARACTER_COVER_EARS_LEFT.getKeyFrame(elapsedTime, true);
+                case RIGHT -> Animations.CHARACTER_COVER_EARS_RIGHT.getKeyFrame(elapsedTime, true);
+                default -> Animations.CHARACTER_COVER_EARS_DOWN.getKeyFrame(elapsedTime, true);
+            };
+        }
 
         return switch (this.currentDirection) {
             case UP -> Animations.CHARACTER_WALK_UP.getKeyFrame(elapsedTime, true);
