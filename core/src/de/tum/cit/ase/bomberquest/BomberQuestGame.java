@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.audio.SoundEffect;
 import de.tum.cit.ase.bomberquest.map.GameMap;
-import de.tum.cit.ase.bomberquest.screen.GameScreen;
-import de.tum.cit.ase.bomberquest.screen.LossScreen;
-import de.tum.cit.ase.bomberquest.screen.MenuScreen;
-import de.tum.cit.ase.bomberquest.screen.VictoryScreen;
+import de.tum.cit.ase.bomberquest.screen.*;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 /**
@@ -90,14 +87,15 @@ public class BomberQuestGame extends Game {
      * Switches to the game ended screen with information depending on the victory or loss.
      */
     public void goToGameEndScreen(boolean victory) {
-        // TODO: Play Victory/Loss Sound/Music
-
-        // TODO: Replace with new GameEnded Screen
-        if (victory) {
-            this.setScreen(new VictoryScreen(this));
-        } else {
-            this.setScreen(new LossScreen(this));
+        //Playing victory or loss soundtrack
+        if(victory){
+            SoundEffect.PLAYER_WIN.play();
         }
+        else{
+            SoundEffect.PLAYER_LOSE.play();
+        }
+
+        this.setScreen(new GameEndedScreen(this, victory));
 
         this.resetGame();
     }

@@ -12,6 +12,7 @@ public interface Drawable {
     /**
      * Gets the current appearance of the Drawable.
      * This can change over time.
+     *
      * @return The current appearance as a {@link TextureRegion}.
      */
     TextureRegion getCurrentAppearance();

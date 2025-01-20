@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.audio.SoundEffect;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.DestructibleWall;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.IndestructibleWall;
@@ -227,6 +228,7 @@ public abstract class Enemy implements Drawable, Destroyable {
     /** Triggers the dying state of the enemy. */
     public void kill() {
         isDying = true;
+        SoundEffect.ENEMY_DYING.play();
     }
 
     @Override

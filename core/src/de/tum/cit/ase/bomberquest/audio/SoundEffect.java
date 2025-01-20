@@ -11,7 +11,9 @@ public enum SoundEffect {
     BOMB_EXPLOSION("Game_BombExplodes_Sound.mp3"),
     POWER_UP("Game_CollectPowerUp_Sound.mp3"),
     PLAYER_WIN("Game_PlayerWon_Sound.mp3"),
-    PLAYER_LOSE("Game_PlayerLost_Sound.mp3");
+    PLAYER_LOSE("Game_PlayerLost_Sound.mp3"),
+    PLAYER_DYING("Game_PlayerDying_Sound.mp3"),
+    ENEMY_DYING("Game_EnemyDying_Sound.mp3");
 
     private final Sound sound;
 
