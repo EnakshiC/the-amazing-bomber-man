@@ -40,6 +40,8 @@ public class BomberQuestGame extends Game {
      */
     private GameMap map;
 
+    private boolean hasStarted = false;
+
     /**
      * Constructor for BomberQuestGame.
      *
@@ -79,6 +81,7 @@ public class BomberQuestGame extends Game {
      * Switches to the game screen.
      */
     public void goToGame() {
+        hasStarted = true;
         MusicTrack.playRandomGameplayTrack(); // Play one of the random gameplay tracks
         this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
     }
@@ -101,6 +104,7 @@ public class BomberQuestGame extends Game {
     }
 
     public void resetGame() {
+        hasStarted = false;
         // Creating a new map will load with new parameters
         this.map = new GameMap(this);
     }
@@ -124,6 +128,9 @@ public class BomberQuestGame extends Game {
     public NativeFileChooser getFileChooser() {
         return fileChooser;
     }
+
+    /** Returns if a games has started */
+    public boolean hasStarted() { return hasStarted; }
     
     /**
      * Switches to the given screen and disposes of the previous screen.

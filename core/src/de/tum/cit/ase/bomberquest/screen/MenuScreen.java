@@ -37,8 +37,14 @@ public class MenuScreen implements Screen {
      * The key of the currently selected map
      * Is "<Custom Map>" if a file was selected
      */
-
     private String currentKey;
+
+    private final TextButton goToGameButton;
+    private final TextButton endGameButton;
+    private final TextButton previousMapButton;
+    private final TextButton nextMapButton;
+    private final TextButton loadMapButton;
+
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -46,7 +52,7 @@ public class MenuScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public MenuScreen(BomberQuestGame game) {
-        currentKey = PropertiesHelper.getMapPaths().keySet().iterator().next();
+        currentKey = "Map 1";// PropertiesHelper.getMapPaths().keySet().iterator().next();
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -61,7 +67,8 @@ public class MenuScreen implements Screen {
         table.add(new Label("The Amazing Bomber Man", game.getSkin(), "title")).padBottom(80).row();
 
         // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Go To Game", game.getSkin());
+        // It continues the game if it is running or starts it, if it is a new game
+        goToGameButton = new TextButton("Start Game", game.getSkin());
         table.add(goToGameButton).width(450).padBottom(20).row();
         goToGameButton.addListener(new ChangeListener() {
             @Override
@@ -70,18 +77,28 @@ public class MenuScreen implements Screen {
             }
         });
 
+        endGameButton = new TextButton("End Game", game.getSkin());
+        table.add(endGameButton).width(450).padBottom(20).row();
+        endGameButton.setDisabled(!game.hasStarted());
+        endGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.resetGame(); // Change to the game screen when button is pressed
+            }
+        });
+
         // Add a label and two buttons for iterating through the map
         Label mapLabel = new Label(currentKey, game.getSkin());
-        TextButton previousButton = new TextButton("<", game.getSkin(), "default");
-        TextButton nextButton = new TextButton(">", game.getSkin(), "default");
+        previousMapButton = new TextButton("<", game.getSkin(), "default");
+        nextMapButton = new TextButton(">", game.getSkin(), "default");
         
         Table rowTable = new Table();
-        rowTable.add(previousButton).size(60).padRight(20);
+        rowTable.add(previousMapButton).size(60).padRight(20);
         rowTable.add(mapLabel).padRight(20).width(290);
-        rowTable.add(nextButton).size(60);
+        rowTable.add(nextMapButton).size(60);
         table.add(rowTable).padBottom(20).row();
         
-        previousButton.addListener(new ChangeListener() {
+        previousMapButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 List<String> keys = new ArrayList<>(PropertiesHelper.getMapPaths().keySet());
@@ -93,7 +110,7 @@ public class MenuScreen implements Screen {
             }
         });
         
-        nextButton.addListener(new ChangeListener() {
+        nextMapButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 List<String> keys = new ArrayList<>(PropertiesHelper.getMapPaths().keySet());
@@ -106,7 +123,7 @@ public class MenuScreen implements Screen {
         });
         
         // Create and add a button to open the file loader
-        TextButton loadMapButton = new TextButton("Load map from file...", game.getSkin());
+        loadMapButton = new TextButton("Load map from file...", game.getSkin());
         table.add(loadMapButton).width(450).row();
         loadMapButton.addListener(new ChangeListener() {
             @Override
@@ -163,6 +180,13 @@ public class MenuScreen implements Screen {
         //Start the game on ENTER
         // Pressing SPACE car drops a bomb
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) game.goToGame();
+
+        // Update the buttons based on if the game is running or not
+        goToGameButton.setText(game.hasStarted() ? "Continue Game" : "Start Game");
+        endGameButton.setDisabled(!game.hasStarted());
+        previousMapButton.setDisabled(game.hasStarted());
+        nextMapButton.setDisabled(game.hasStarted());
+        loadMapButton.setDisabled(game.hasStarted());
     }
     
     /**

@@ -133,6 +133,7 @@ public class PropertiesHelper {
                         row.add(new DestructibleWall(world, x, y, objectsToBeRemovedNextCycle));
                     } else {
                         // Make sure that DestructibleWall is placed over random generated exit, too.
+                        ensureExitCoordinatesInitialized();
                         if (x == getExitX() && y == getExitY()) {
                             row.add(new DestructibleWall(world, x, y, objectsToBeRemovedNextCycle));
                         } else {
@@ -306,7 +307,7 @@ public class PropertiesHelper {
      * @return the x-coordinate of the exit.
      */
     public static int getExitX() {
-        setExit();
+        ensureExitCoordinatesInitialized();
         return Integer.parseInt(exitCoordinates.split(",")[0]);
     }
 
@@ -317,9 +318,15 @@ public class PropertiesHelper {
      * @return the y-coordinate of the exit.
      */
     public static int getExitY() {
-        setExit();
+        ensureExitCoordinatesInitialized();
         return Integer.parseInt(exitCoordinates.split(",")[1]);
 
+    }
+
+    private static synchronized void ensureExitCoordinatesInitialized() {
+        if (exitCoordinates == null) {
+            setExit();
+        }
     }
 
     /**

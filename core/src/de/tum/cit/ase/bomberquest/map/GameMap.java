@@ -11,7 +11,6 @@ import de.tum.cit.ase.bomberquest.map.bomb.Bomb;
 import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
 import de.tum.cit.ase.bomberquest.map.bomb.BombExplosionTile;
 import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
-import de.tum.cit.ase.bomberquest.map.enemies.EnemySmartSearcher;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Destroyable;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
@@ -125,7 +124,6 @@ public class GameMap {
      */
     public void tick(float frameTime) {
         // No more updates if the game is over
-        //
         if (gameIsOver) {
             gameOverFadeOutTime += frameTime;
             endGame(gameWasWon);
