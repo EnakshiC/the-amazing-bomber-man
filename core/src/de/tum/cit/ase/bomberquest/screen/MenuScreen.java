@@ -39,11 +39,15 @@ public class MenuScreen implements Screen {
      */
     private String currentKey;
 
+    // All buttons of the MenuScreen
+    // ... as local variables since we need to edit them in render() according to the current game running or not
     private final TextButton goToGameButton;
     private final TextButton endGameButton;
     private final TextButton previousMapButton;
     private final TextButton nextMapButton;
     private final TextButton loadMapButton;
+    private final TextButton previousEnemySettingButton;
+    private final TextButton nextEnemySettingButton;
 
 
     /**
@@ -87,17 +91,18 @@ public class MenuScreen implements Screen {
             }
         });
 
+        // ITERATE THROUGH EXISTING MAPS
         // Add a label and two buttons for iterating through the map
         Label mapLabel = new Label(currentKey, game.getSkin());
         previousMapButton = new TextButton("<", game.getSkin(), "default");
         nextMapButton = new TextButton(">", game.getSkin(), "default");
-        
+
         Table rowTable = new Table();
         rowTable.add(previousMapButton).size(60).padRight(20);
         rowTable.add(mapLabel).padRight(20).width(290);
         rowTable.add(nextMapButton).size(60);
         table.add(rowTable).padBottom(20).row();
-        
+
         previousMapButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -109,7 +114,7 @@ public class MenuScreen implements Screen {
                 game.resetGame();
             }
         });
-        
+
         nextMapButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -121,7 +126,37 @@ public class MenuScreen implements Screen {
                 game.resetGame();
             }
         });
-        
+
+        // SELECT ENEMY SETTINGS
+        // Add a label and two buttons for iterating through the different enemy settings
+        Label enemySettingLabel = new Label(PropertiesHelper.getCurrentEnemySetting(), game.getSkin());
+        previousEnemySettingButton = new TextButton("<", game.getSkin(), "default");
+        nextEnemySettingButton = new TextButton(">", game.getSkin(), "default");
+
+        Table row2Table = new Table();
+        row2Table.add(previousEnemySettingButton).size(60).padRight(20);
+        row2Table.add(enemySettingLabel).padRight(20).width(290);
+        row2Table.add(nextEnemySettingButton).size(60);
+        table.add(row2Table).padBottom(20).row();
+
+        previousEnemySettingButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                PropertiesHelper.previousEnemySetting();
+                enemySettingLabel.setText(PropertiesHelper.getCurrentEnemySetting());
+                game.resetGame();
+            }
+        });
+
+        nextEnemySettingButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                PropertiesHelper.nextEnemySetting();
+                enemySettingLabel.setText(PropertiesHelper.getCurrentEnemySetting());
+                game.resetGame();
+            }
+        });
+
         // Create and add a button to open the file loader
         loadMapButton = new TextButton("Load map from file...", game.getSkin());
         table.add(loadMapButton).width(450).row();
@@ -136,7 +171,7 @@ public class MenuScreen implements Screen {
                 NativeFileChooserCallback callback = new NativeFileChooserCallback() {
                     @Override
                     public void onFileChosen(FileHandle fileHandle) {
-                        System.out.println("Chosen File: " + fileHandle.path() );
+                        System.out.println("Chosen File: " + fileHandle.path());
 
                         // Check if it is a .properties File
                         if (fileHandle.extension().equals("properties")) {
@@ -164,10 +199,11 @@ public class MenuScreen implements Screen {
 
         this.game = game;
     }
-    
+
     /**
      * The render method is called every frame to render the menu screen.
      * It clears the screen and draws the stage.
+     *
      * @param deltaTime The time in seconds since the last render.
      */
     @Override
@@ -187,11 +223,15 @@ public class MenuScreen implements Screen {
         previousMapButton.setDisabled(game.hasStarted());
         nextMapButton.setDisabled(game.hasStarted());
         loadMapButton.setDisabled(game.hasStarted());
+        nextEnemySettingButton.setDisabled(game.hasStarted());
+        previousEnemySettingButton.setDisabled(game.hasStarted());
+
     }
-    
+
     /**
      * Resize the stage when the screen is resized.
-     * @param width The new width of the screen.
+     *
+     * @param width  The new width of the screen.
      * @param height The new height of the screen.
      */
     @Override

@@ -40,6 +40,9 @@ public class PropertiesHelper {
             "Test Extra Speed", "maps/map-4.properties"
     );
 
+    public static final List<String> enemySettings = Arrays.asList("RANDOM ENEMY", "Basic 1 Enemy", "Basic 2 Enemy", "Ghost Enemy", "Smart Bat Enemy");
+    private static int currentEnemySetting = 0;
+
     public static Map<String, String> getMapPaths() {
         return MAP_PATHS;
     }
@@ -176,7 +179,7 @@ public class PropertiesHelper {
     /**
      * Loads power-up objects from the map's properties file based on their coordinates and types.
      *
-     * @param world the physics world to initialize their hitboxes.
+     * @param world                       the physics world to initialize their hitboxes.
      * @param objectsToBeRemovedNextCycle a list of drawable objects that are flagged for removal in the next game cycle.
      * @return a list of PowerUp objects created from the map properties.
      */
@@ -209,7 +212,7 @@ public class PropertiesHelper {
     /**
      * Loads and initializes a list of Enemy objects based on the specified map properties.
      *
-     * @param world the physics world to associate the enemies with, enabling proper interaction and behaviors.
+     * @param world   the physics world to associate the enemies with, enabling proper interaction and behaviors.
      * @param gameMap the map object where the enemies will be placed and operated upon.
      * @return a list of Enemy objects loaded and initialized based on the map properties.
      */
@@ -239,19 +242,47 @@ public class PropertiesHelper {
      * Provides a list of suppliers that generate enemy objects with specific movement behaviors.
      * This is used to spawn a random enemy type at this position on the map.
      *
-     * @param world the physics world where the enemies will be placed.
-     * @param x the initial x-coordinate for the enemies.
-     * @param y the initial y-coordinate for the enemies.
+     * @param world   the physics world where the enemies will be placed.
+     * @param x       the initial x-coordinate for the enemies.
+     * @param y       the initial y-coordinate for the enemies.
      * @param gameMap the map object associated with the enemies' interactions and behaviors.
      * @return a list of suppliers, each capable of generating an enemy instance.
      */
     private static List<Supplier<Enemy>> getEnemySuppliers(World world, float x, float y, GameMap gameMap) {
-        return List.of(
-                () -> new EnemyWithBasicMovement(world, x, y, gameMap),
-                () -> new EnemyWithDecisiveMovement(world, x, y, gameMap),
-                () -> new EnemySmartSearcher(world, x, y, gameMap),
-                ()->new EnemyGhost(world, x, y, gameMap)
-        );
+        return switch (getCurrentEnemySetting()) {
+            case "Basic 1 Enemy" -> List.of(() -> new EnemyWithBasicMovement(world, x, y, gameMap));
+            case "Basic 2 Enemy" -> List.of(() -> new EnemyWithDecisiveMovement(world, x, y, gameMap));
+            case "Ghost Enemy" -> List.of(() -> new EnemyGhost(world, x, y, gameMap));
+            case "Smart Bat Enemy" -> List.of(() -> new EnemySmartSearcher(world, x, y, gameMap));
+            default -> List.of(
+                    () -> new EnemyWithBasicMovement(world, x, y, gameMap),
+                    () -> new EnemyWithDecisiveMovement(world, x, y, gameMap),
+                    () -> new EnemySmartSearcher(world, x, y, gameMap),
+                    () -> new EnemyGhost(world, x, y, gameMap)
+            );
+        };
+
+    }
+
+    /** Returns the current enemy settings that are selected */
+    public static String getCurrentEnemySetting() {
+        return enemySettings.get(currentEnemySetting);
+    }
+
+    public static void nextEnemySetting() {
+        currentEnemySetting++;
+
+        if (currentEnemySetting >= enemySettings.size()) {
+            currentEnemySetting = 0;
+        }
+    }
+
+    public static void previousEnemySetting() {
+        currentEnemySetting--;
+
+        if (currentEnemySetting < 0) {
+            currentEnemySetting = enemySettings.size() - 1;
+        }
     }
 
     /**
