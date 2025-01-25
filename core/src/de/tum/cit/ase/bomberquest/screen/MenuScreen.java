@@ -21,11 +21,8 @@ import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserIntent;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.

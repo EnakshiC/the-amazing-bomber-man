@@ -112,6 +112,9 @@ public class GameMap {
 
         // Load all wall elements
         this.wallElements = new ArrayList<>(PropertiesHelper.loadWallsFromProperties(world, objectsToRemoveNextCycle));
+
+        // Setting dynamic time for the game with 20 seconds per enemy plus 60 seconds to find the exit
+        timeLeft = enemiesCountAtBeginning * 20.0f + 60.0f;
     }
 
     /**
