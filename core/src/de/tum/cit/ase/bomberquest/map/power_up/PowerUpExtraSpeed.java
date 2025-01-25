@@ -8,32 +8,29 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
 import java.util.List;
 
 /**
- * Represents a specific type of PowerUp that adds an extra 15 seconds to the game time.
+ * Represents a specific type of PowerUp that adds extra speed to the player.
  */
-public class PowerUpExtraTime extends PowerUp {
-
-    private static final float ADDED_TIME = 15.0f;
+public class PowerUpExtraSpeed extends PowerUp {
 
     /**
-     * Constructs a PowerUpExtraTime instance, a specific type of PowerUp that increases the time left in the game
-     * by 15 seconds.
+     * Constructs a PowerUpExtraSpeed instance, a specific type of PowerUp that increases the speed of the player.
      *
      * @param world The physics world where the PowerUp exists, enabling physical interactions.
      * @param x The X-coordinate (in tiles) of the PowerUp's position.
      * @param y The Y-coordinate (in tiles) of the PowerUp's position.
      * @param objectsToBeRemovedNextCycle A list of objects scheduled for removal in the next game cycle.
      */
-    public PowerUpExtraTime(World world, float x, float y, List<Drawable> objectsToBeRemovedNextCycle) {
-        super(world, x, y, new TimeAddEffect(), Textures.POWER_UP_EXTRA_TIME, objectsToBeRemovedNextCycle);
+    public PowerUpExtraSpeed(World world, float x, float y, List<Drawable> objectsToBeRemovedNextCycle) {
+        super(world, x, y, new SpeedAddEffect(), Textures.POWER_UP_EXTRA_SPEED, objectsToBeRemovedNextCycle);
     }
 
     /**
-     * The effect of this power-up: add extra time to the timeLeft in the game.
+     * The effect of this power-up: increases the speed of the player.
      */
-    private static class TimeAddEffect implements PowerUpEffect {
+    private static class SpeedAddEffect implements PowerUpEffect {
         @Override
         public void apply(GameMap gameMap) {
-            gameMap.addTime(ADDED_TIME);
+            gameMap.getPlayer().increaseSpeed();
         }
     }
 }

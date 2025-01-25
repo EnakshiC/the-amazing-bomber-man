@@ -45,6 +45,8 @@ public class Player implements Drawable {
 
     private final GameMap gameMap;
 
+    private float speedMultiplier = 1.0f;
+
     /**
      * Constructor to create a player instance at a specified position.
      *
@@ -111,7 +113,12 @@ public class Player implements Drawable {
                 yVelocity = 0.0f;
             }
         }
-        this.hitbox.setLinearVelocity(xVelocity, yVelocity);
+
+        this.hitbox.setLinearVelocity(xVelocity * speedMultiplier, yVelocity * speedMultiplier);
+    }
+
+    public void increaseSpeed() {
+        speedMultiplier += 0.2f;
     }
 
     public void die() {

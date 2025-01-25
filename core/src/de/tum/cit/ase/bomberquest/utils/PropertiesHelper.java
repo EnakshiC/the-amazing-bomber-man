@@ -7,10 +7,7 @@ import de.tum.cit.ase.bomberquest.map.basic_tiles.EmptyTile;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.IndestructibleWall;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.Path;
 import de.tum.cit.ase.bomberquest.map.enemies.*;
-import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
-import de.tum.cit.ase.bomberquest.map.power_up.PowerUpBombRadius;
-import de.tum.cit.ase.bomberquest.map.power_up.PowerUpConcurrentBombs;
-import de.tum.cit.ase.bomberquest.map.power_up.PowerUpExtraTime;
+import de.tum.cit.ase.bomberquest.map.power_up.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 import java.io.FileInputStream;
@@ -39,7 +36,8 @@ public class PropertiesHelper {
     private static final Map<String, String> MAP_PATHS = Map.of(
             "Map 1", "maps/map-1.properties",
             "Map 2", "maps/map-2.properties",
-            "Test Extra Time", "maps/map-3.properties"
+            "Test Extra Time", "maps/map-3.properties",
+            "Test Extra Speed", "maps/map-4.properties"
     );
 
     public static Map<String, String> getMapPaths() {
@@ -197,6 +195,8 @@ public class PropertiesHelper {
                         elements.add(new PowerUpBombRadius(world, x, y, objectsToBeRemovedNextCycle));
                     } else if (value == 7) {
                         elements.add(new PowerUpExtraTime(world, x, y, objectsToBeRemovedNextCycle));
+                    } else if (value == 8) {
+                        elements.add(new PowerUpExtraSpeed(world, x, y, objectsToBeRemovedNextCycle));
                     }
                 }
             }
