@@ -223,6 +223,15 @@ public class GameMap {
     }
 
     /**
+     * Adds time to the timeLeft in the game
+     *
+     * @param addedTime Time in seconds that will be added
+     */
+    public void addTime(float addedTime) {
+        timeLeft += addedTime;
+    }
+
+    /**
      * Ends the game and terminates the game loop. Depending on the outcome
      * it will either transition to the victory screen or handle the player's death and
      * the subsequent transition to the defeat screen.

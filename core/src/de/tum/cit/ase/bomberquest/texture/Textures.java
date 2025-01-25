@@ -28,4 +28,6 @@ public class Textures {
     public static final TextureRegion POWER_UP_BOMB_RADIUS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 7);
 
     public static final TextureRegion POWER_UP_CONCURRENT_BOMBS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 5);
+
+    public static final TextureRegion POWER_UP_EXTRA_TIME = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 2);
 }

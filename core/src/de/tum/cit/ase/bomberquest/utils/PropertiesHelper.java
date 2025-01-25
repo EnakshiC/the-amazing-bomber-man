@@ -10,6 +10,7 @@ import de.tum.cit.ase.bomberquest.map.enemies.*;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUpBombRadius;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUpConcurrentBombs;
+import de.tum.cit.ase.bomberquest.map.power_up.PowerUpExtraTime;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 import java.io.FileInputStream;
@@ -37,7 +38,8 @@ public class PropertiesHelper {
     // Available maps in the game initially
     private static final Map<String, String> MAP_PATHS = Map.of(
             "Map 1", "maps/map-1.properties",
-            "Map 2", "maps/map-2.properties"
+            "Map 2", "maps/map-2.properties",
+            "Test Extra Time", "maps/map-3.properties"
     );
 
     public static Map<String, String> getMapPaths() {
@@ -63,63 +65,24 @@ public class PropertiesHelper {
     }
 
     /**
-     * Validates the map file by checking the keys (coordinates) and values (object types).
-     *
-     * @param properties the properties to validate.
-     * @return true if valid, false otherwise.
-     */
-    private static boolean isMapValid(Properties properties) {
-        for (Object key : properties.keySet()) {
-            String keyStr = key.toString();
-            // Ensure keys are valid coordinates
-            if (!keyStr.matches("\\d+,\\d+")) {
-                System.err.println("Invalid key format: " + keyStr);
-                return false;
-            }
-
-            String value = properties.getProperty(keyStr);
-            try {
-                int objectType = Integer.parseInt(value);
-                // Ensure value is a valid object type
-                if (objectType < 0 || objectType > 6) {
-                    System.err.println("Invalid object type: " + value);
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid value format: " + value);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Stores a new map path if there is a valid file at the given path.
      *
      * @param path is an absolute path to a .properties map file.
      */
     public static void loadNewMap(String path) {
-        Properties properties = new Properties();
         try (FileInputStream input = new FileInputStream(path)) {
-            properties.load(input);
+            new Properties().load(input);
         } catch (IOException e) {
             System.err.println("Error loading .properties file: " + e.getMessage());
             return;
         }
 
-        if (isMapValid(properties)) {
-            currentFilePath = path;
-            // Reset the exit
-            exitCoordinates = null;
+        currentFilePath = path;
 
-            // Reset the entry
-            entryCoordinates = null;
-
-        } else {
-            System.err.println("Invalid map file. Reverting to fallback.");
-            currentFilePath = FALLBACK_PATH;
-        }
+        // Reset the exit
+        exitCoordinates = null;
+        // Reset the entry
+        entryCoordinates = null;
     }
 
     /**
@@ -167,7 +130,7 @@ public class PropertiesHelper {
 
                     if (value == 0) {
                         row.add(new IndestructibleWall(world, x, y));
-                    } else if (value == 1 || value == 4 || value == 5 || value == 6) {
+                    } else if (value == 1 || value == 4 || value == 5 || value == 6 || value == 7 || value == 8) {
                         // Add a DestructibleWall where it should be and over exit and power-ups
                         row.add(new DestructibleWall(world, x, y, objectsToBeRemovedNextCycle));
                     } else {
@@ -232,6 +195,8 @@ public class PropertiesHelper {
                         elements.add(new PowerUpConcurrentBombs(world, x, y, objectsToBeRemovedNextCycle));
                     } else if (value == 6) {
                         elements.add(new PowerUpBombRadius(world, x, y, objectsToBeRemovedNextCycle));
+                    } else if (value == 7) {
+                        elements.add(new PowerUpExtraTime(world, x, y, objectsToBeRemovedNextCycle));
                     }
                 }
             }
