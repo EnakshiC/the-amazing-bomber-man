@@ -176,8 +176,8 @@ public class GameScreen implements Screen {
         }
         if (playerY < mapCamera.position.y - mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5) {
             mapCamera.position.y = playerY + mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5f;
-        } else if (playerY > mapCamera.position.y + mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5 - 2 * TILE_SIZE_PX) {
-            mapCamera.position.y = playerY - mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5f + 2 * TILE_SIZE_PX;
+        } else if (playerY > mapCamera.position.y + mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5 - 2 * TILE_SIZE_PX - (double) Hud.HEIGHT / 2) {
+            mapCamera.position.y = playerY - mapCamera.viewportHeight * VIEW_FRAME_PERCENTAGE * .5f + 2 * TILE_SIZE_PX + (float) Hud.HEIGHT / 2;
         }
 
         mapCamera.update(); // Apply camera updates

@@ -127,6 +127,14 @@ public class Player implements Drawable {
     }
 
     /**
+     * Returns current speed of player
+     */
+    public float getCurrentSpeed() {
+        return Math.round(speedMultiplier * 10) / 10f;
+
+    }
+
+    /**
      * Returns the appropriate texture region (animation frame) based on the player's movement state.
      *
      * @return The texture region for the current appearance of the player.

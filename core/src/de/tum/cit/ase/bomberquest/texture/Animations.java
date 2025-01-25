@@ -378,7 +378,7 @@ public class Animations {
      * Uses the frame at row 4, column 7 of the sprite sheet.
      */
     public static final Animation<TextureRegion>GHOST_ENEMY_STANDING=new Animation<>(0.2f,
-            SpriteSheet.MOBS.at(4, 7)
+            SpriteSheet.MOBS.at(5, 7)
             );
 
     //Animations for Enemies Dying (Smoke and Explosions)
