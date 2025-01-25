@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * The PropertiesHelper class helps with the handling of the .properties map files.
@@ -27,6 +28,8 @@ public class PropertiesHelper {
     private static String currentFilePath = FALLBACK_PATH;
 
     private static String exitCoordinates;
+
+    private static String entryCoordinates;
 
     // Random to select random enemies
     private static final Random RANDOM = new Random();
@@ -109,6 +112,9 @@ public class PropertiesHelper {
             currentFilePath = path;
             // Reset the exit
             exitCoordinates = null;
+
+            // Reset the entry
+            entryCoordinates = null;
 
         } else {
             System.err.println("Invalid map file. Reverting to fallback.");
@@ -288,12 +294,9 @@ public class PropertiesHelper {
      * @return the x-coordinate of the player's entrance, or 0 if no entrance is found.
      */
     public static int getPlayerEntranceX() {
-        return getProperties().keySet().stream()
-                .filter(key -> getProperties().getProperty(key.toString()).equals("2"))
-                .map(key -> key.toString().split(",")[0])
-                .mapToInt(Integer::parseInt)
-                .findFirst()
-                .orElse(0); // Default to 0 if no entrance is found
+        ensureEntryCoordinatesInitialized();
+
+        return Integer.parseInt(entryCoordinates.split(",")[0]); // Default to 0 if no entrance is found
     }
 
     /**
@@ -302,12 +305,33 @@ public class PropertiesHelper {
      * @return the y-coordinate of the player's entrance, or 0 if no entrance is found.
      */
     public static int getPlayerEntranceY() {
-        return getProperties().keySet().stream()
-                .filter(key -> getProperties().getProperty(key.toString()).equals("2"))
-                .map(key -> key.toString().split(",")[1])
-                .mapToInt(Integer::parseInt)
-                .findFirst()
-                .orElse(0); // Default to 0 if no entrance is found
+        ensureEntryCoordinatesInitialized();
+
+        return Integer.parseInt(entryCoordinates.split(",")[1]);
+    }
+
+    /**
+     * Ensures the entry coordinates are initialized only once.
+     * "synchronized" ensures that the method is only called once at the same time, so not to change the
+     * entry between returning the x and y coordinates
+     */
+    private static synchronized void ensureEntryCoordinatesInitialized() {
+        if (entryCoordinates == null) {
+            setEntryCoordinates();
+        }
+    }
+
+    /**
+     * Retrieves all entries for potential entrances to the map and selects a random one and sets it
+     * Fallback is '2,1'
+     */
+    private static void setEntryCoordinates() {
+        entryCoordinates = getProperties().keySet().stream()
+                .map(Object::toString)
+                .filter(string -> getProperties().getProperty(string).equals("2"))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), list ->
+                        list.isEmpty() ? "2,1" : list.get(new Random().nextInt(list.size()))
+                ));
     }
 
     /**
