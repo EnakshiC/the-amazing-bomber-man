@@ -37,7 +37,8 @@ public class PropertiesHelper {
             "Map 1", "maps/map-1.properties",
             "Map 2", "maps/map-2.properties",
             "Test Extra Time", "maps/map-3.properties",
-            "Test Extra Speed", "maps/map-4.properties"
+            "Test Extra Speed", "maps/map-4.properties",
+            "Test Enemy", "maps/map-5.properties"
     );
 
     public static final List<String> enemySettings = Arrays.asList("RANDOM ENEMY", "Basic 1 Enemy", "Basic 2 Enemy", "Ghost Enemy", "Smart Bat Enemy");
