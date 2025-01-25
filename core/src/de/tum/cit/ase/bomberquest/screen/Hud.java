@@ -89,7 +89,7 @@ public class Hud {
         font.draw(spriteBatch, "Press Esc to Pause!", 10, startY);
         font.draw(spriteBatch, "Bombs Allowed: " + gameMap.getMaxBombsAllowed(), 10, startY - padding);
         font.draw(spriteBatch, "Blast Radius: " + gameMap.getBombRadius(), 10, startY - 2 * padding);
-        font.draw(spriteBatch, "Enemies killed: " + gameMap.getEnemies().size() +"/ " + gameMap.getEnemiesCountAtBeginning(), 10, startY - 3 * padding);
+        font.draw(spriteBatch, "Enemies killed: " + (gameMap.getEnemiesCountAtBeginning() - gameMap.getEnemies().size()) +"/ " + gameMap.getEnemiesCountAtBeginning(), 10, startY - 3 * padding);
         font.draw(spriteBatch, "Time Left: " + getMinutes(gameMap.getTimeLeft()) + ":" + getSeconds(gameMap.getTimeLeft()), 10, startY - 4 * padding);
 
         // Finish drawing
