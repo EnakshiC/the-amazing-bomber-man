@@ -88,6 +88,7 @@ public class Hud {
 
         if (currentEnemies == 0) {
             font.draw(spriteBatch, "Exit open!", x, y + 10f);
+            x += 20;
         } else {
             font.draw(spriteBatch, ": " + (enemiesAtStart - currentEnemies) + "/" + enemiesAtStart, x, y + 10f);
         }

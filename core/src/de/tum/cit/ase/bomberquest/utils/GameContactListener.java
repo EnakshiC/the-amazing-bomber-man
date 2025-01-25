@@ -29,8 +29,6 @@ public class GameContactListener implements ContactListener {
         Object a = contact.getFixtureA().getBody().getUserData();
         Object b = contact.getFixtureB().getBody().getUserData();
 
-        // System.out.println("Contact detected between: " + a + " and " + b);
-
         // If BombExplosion collides with Destructible Wall, destroy wall
         if (a instanceof DestructibleWall && b instanceof BombExplosion) {
             ((DestructibleWall) a).destroy();

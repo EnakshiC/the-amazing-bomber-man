@@ -22,7 +22,7 @@ public class Exit implements Drawable {
         this.y = y;
         this.gameMap=gameMap;
 
-        HitboxHelper.createPolygonHitbox(world, x, y, this, false, true);
+        HitboxHelper.createCircleHitbox(world, x, y, this, true);
     }
 
     /** The exit is open if there are no more enemies alive in the map. */
