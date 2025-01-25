@@ -179,6 +179,7 @@ public class MenuScreen implements Screen {
                             game.resetGame();
                             currentKey = "< CUSTOM MAP >";
                             mapLabel.setText(currentKey);
+                            game.goToGame();
                         }
                     }
 
