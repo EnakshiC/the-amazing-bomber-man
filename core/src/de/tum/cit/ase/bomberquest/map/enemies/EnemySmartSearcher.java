@@ -38,17 +38,14 @@ public class EnemySmartSearcher extends Enemy {
     @Override
     public void tick(float deltaTime) {
         super.tick(deltaTime);
-        super.currentDirection = findPathToPlayer(gameMap);
+        super.currentDirection = findPathToPlayer();
     }
 
-    private Direction findPathToPlayer(GameMap gameMap) {
+    private Direction findPathToPlayer() {
         int startX = Math.round(super.getX());
         int startY = Math.round(super.getY());
         int targetX = Math.round(this.gameMap.getPlayer().getX());
         int targetY = Math.round(this.gameMap.getPlayer().getY());
-
-        // System.out.println("Player X: " + targetX + " Player Y: " + targetY);
-        // System.out.println("Start X: " + startX + " Start Y: " + startY);
 
         // If we are already at the target, return,
         // but still continue to hit the enemy also visually instead of stopping at the tiles corner
@@ -186,16 +183,14 @@ public class EnemySmartSearcher extends Enemy {
      * Helper class to represent a node in the grid
      */
     private static class Node {
-        int x, y;
-        Node parent;
+        final int x;
+        final int y;
+        final Node parent;
         // Cost from start to this node
-        int gCost;
-
-        // Estimated cost from this node to target
-        int hCost;
+        final int gCost;
 
         // fValue/fCost = total cost
-        int fCost; // Total cost
+        final int fCost; // Total cost
 
         Node(int x, int y) {
             this(x, y, null, Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -206,7 +201,6 @@ public class EnemySmartSearcher extends Enemy {
             this.y = y;
             this.parent = parent;
             this.gCost = gCost;
-            this.hCost = hCost;
             this.fCost = gCost + hCost;
         }
 

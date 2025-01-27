@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Textures;
-import org.w3c.dom.Text;
 
 /**
  * A Heads-Up Display (HUD) that displays information on the screen.
@@ -125,10 +124,4 @@ public class Hud {
         camera.setToOrtho(false, width, height);
     }
 
-    /**
-     * Disposes resources used by the HUD.
-     */
-    public void dispose() {
-        shapeRenderer.dispose();
-    }
 }

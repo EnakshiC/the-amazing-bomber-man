@@ -1,8 +1,8 @@
 package de.tum.cit.ase.bomberquest.map.bomb;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
-import de.tum.cit.ase.bomberquest.texture.Textures;
 
 import java.util.List;
 
@@ -15,6 +15,8 @@ public class Bomb extends SelfRemovingElement {
 
     /** The time it takes for the bomb to explode after it has been placed. */
     public static final float FUSE_TIME = 3.0f;
+
+    private float timeOnScreen = 0.0f;
 
     /**
      * Stores x-coordinate of bomb's position in the game
@@ -46,20 +48,21 @@ public class Bomb extends SelfRemovingElement {
     @Override
     public void tick(float frameTime) {
         super.tick(frameTime);
+        timeOnScreen += frameTime;
     }
 
     /**
      * Retrieves current appearance of the bomb
-     * @return
+     * @return the texture of the bomb
      */
     @Override
     public TextureRegion getCurrentAppearance() {
-        return Textures.BOMB;
+        return Animations.BOMB_PULSATING.getKeyFrame(timeOnScreen, true);
     }
 
     /**
      * Retrieves x-coordinate of the bomb's position
-     * @return
+     * @return the x
      */
     @Override
     public float getX() {

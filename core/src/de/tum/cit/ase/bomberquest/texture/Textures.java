@@ -17,13 +17,9 @@ public class Textures {
 
     public static final TextureRegion PATH = SpriteSheet.BASIC_TILES.at(2, 5);
 
-    public static final TextureRegion CHEST = SpriteSheet.BASIC_TILES.at(5, 5);
-
     public static final TextureRegion DESTRUCTIBLE_WALL = SpriteSheet.BASIC_TILES.at(3, 1);
 
     public static final TextureRegion INDESTRUCTIBLE_WALL = SpriteSheet.BASIC_TILES.at(2, 7);
-
-    public static final TextureRegion BOMB = SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1);
 
     public static final TextureRegion POWER_UP_BOMB_RADIUS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 7);
 

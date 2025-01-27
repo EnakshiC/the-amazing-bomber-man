@@ -46,6 +46,8 @@ The game implements all needed basic functionalities as described in the project
 - ExtraSpeedPowerUp: adds another .2 multiplier to the starting speed of the player (1.0 -> 1.2 -> 1.4 -> ...)
 - Dynamic timer: the time of the game is dependent on the enemies at the start (20 seconds each) plus 60 seconds to find the exit
 - Choose your enemy: select an exclusive enemy type or scatter enemies randomly throughout the map each time!
+- Extra Animations for bomb pulsating and multiple stages of bomb explosion
+- 
 
 ___
 ## Code Structure

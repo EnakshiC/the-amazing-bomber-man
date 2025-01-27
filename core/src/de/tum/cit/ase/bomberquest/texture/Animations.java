@@ -71,51 +71,6 @@ public class Animations {
             SpriteSheet.CHARACTER.at(1, 15)
     );
 
-    //Animations for Character Placing Bombs
-    /**
-     * The animation for the character placing bomb while walking down.
-     * Uses the frame at row 1, column 6 of the sprite sheet.
-     */
-
-    public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_DOWN = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(1, 1),
-            SpriteSheet.CHARACTER.at(1, 6),
-            SpriteSheet.CHARACTER.at(1, 7),
-            SpriteSheet.CHARACTER.at(1, 8)
-    );
-
-    /**
-     * The animation for the character placing bomb while walking up.
-     * Uses the frame at row 3, column 6 of the sprite sheet.
-     */
-    public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_UP = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(3, 1),
-            SpriteSheet.CHARACTER.at(3, 6),
-            SpriteSheet.CHARACTER.at(3, 7),
-            SpriteSheet.CHARACTER.at(3, 8)
-    );
-
-    /**
-     * The animation for the character placing bomb while walking left.
-     * Uses the frame at row 4, column 6 of the sprite sheet.
-     */
-    public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_LEFT = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(4, 1),
-            SpriteSheet.CHARACTER.at(4, 6),
-            SpriteSheet.CHARACTER.at(4, 7),
-            SpriteSheet.CHARACTER.at(4, 8)
-    );
-
-    /**
-     * The animation for the character placing bomb while walking right.
-     * Uses the frame at row 2, column 6 of the sprite sheet.
-     */
-    public static final Animation<TextureRegion> CHARACTER_PLACING_BOMB_RIGHT = new Animation<>(0.2f,
-            SpriteSheet.CHARACTER.at(2, 1),
-            SpriteSheet.CHARACTER.at(2, 6),
-            SpriteSheet.CHARACTER.at(2, 7),
-            SpriteSheet.CHARACTER.at(2, 8)
-    );
 
     // Animations for Character Covering Ears
     /**
@@ -165,7 +120,6 @@ public class Animations {
             SpriteSheet.CHARACTER.at(2, 12),
             SpriteSheet.CHARACTER.at(2, 13)
     );
-
 
 
     //Animations for Basic Enemies
@@ -319,14 +273,6 @@ public class Animations {
             SpriteSheet.MOBS.at(7, 5)
     );
 
-    /**
-     * The animation for the bats standing.
-     * Uses the frame at row 5, column 4 of the sprite sheet.
-     */
-    public static final Animation<TextureRegion> BAT_ENEMY_STANDING = new Animation<>(0.2f,
-            SpriteSheet.MOBS.at(5, 4)
-    );
-
 
     //Animations for Ghosts
     /**
@@ -349,7 +295,7 @@ public class Animations {
             SpriteSheet.MOBS.at(8, 8),
             SpriteSheet.MOBS.at(8, 9),
             SpriteSheet.MOBS.at(8, 8)
-            );
+    );
 
     /**
      * The animation for the ghosts walking left.
@@ -377,9 +323,9 @@ public class Animations {
      * The animation for the ghosts standing.
      * Uses the frame at row 4, column 7 of the sprite sheet.
      */
-    public static final Animation<TextureRegion>GHOST_ENEMY_STANDING=new Animation<>(0.2f,
+    public static final Animation<TextureRegion> GHOST_ENEMY_STANDING = new Animation<>(0.2f,
             SpriteSheet.MOBS.at(5, 7)
-            );
+    );
 
     //Animations for Enemies Dying (Smoke and Explosions)
     /**
@@ -547,5 +493,12 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(14, 3),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(9, 8),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(9, 3)
+    );
+
+    public static final Animation<TextureRegion> BOMB_PULSATING = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 2),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 3),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 2)
     );
 }
