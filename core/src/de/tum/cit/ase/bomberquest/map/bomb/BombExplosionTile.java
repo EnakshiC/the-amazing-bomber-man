@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 
 /**
- * Represents the tiles of a bomb explosion in the grid-based game. Each tile corresponds
+ * Represents all the tiles of a bomb explosion in the grid-based game. Each tile corresponds
  * to a specific position (direction) relative to the explosion's center or a specific
  * type within the explosion pattern. The tiles can be categorized as either middle or
  * end parts of the explosion, moving in different directions.
@@ -68,14 +68,28 @@ public enum BombExplosionTile {
         return BombExplosionTile.CENTER;
     }
 
+    /**
+     * Retrieves animations for associated explosion tiles
+     * @return Animation for this tile
+     */
     public Animation<TextureRegion> getAnimation() {
         return animation;
     }
 
+
+    /**
+     * Retrieves vector direction of explosion tiles relative to centre tile
+     * @return
+     */
     public String getDirection() {
         return direction;
     }
 
+
+    /**
+     * Checks if this tile represents the end of an explosion branch.
+     * @return
+     */
     public boolean isEnd() {
         return isEnd;
     }

@@ -9,7 +9,7 @@ import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 import java.util.List;
 
 /**
- * Represents an explosion that occurs when a bomb detonates in the game.
+ * Represents an explosion that occurs when a bomb explodes in the game.
  * The explosion lasts for a limited duration, after which it self-removes
  * from the game world.
  */
@@ -18,11 +18,26 @@ public class BombExplosion extends SelfRemovingElement {
     /** The time it takes for the explosion to evaporate. */
     public static final float EXPLOSION_DURATION = 1.0f;
 
+    /**
+     * Stores x-coordinate of tile where bomb has exploded
+     */
     final float x;
+    /**
+     * Stores y-coordinate of tile where bomb has exploded
+     */
     final float y;
 
+
+    /**
+     * Represents visual tile used for bomb explosion animation
+     * & subsequent changes in its duration
+     */
     final BombExplosionTile bombExplosionTile;
 
+    /**
+     * Represents physical hitbox for explosion within game world
+     * Used for detecting collisions with objects and registers in physics of the world
+     */
     final Body hitbox;
 
     /**
