@@ -82,8 +82,17 @@ public abstract class Enemy implements Drawable, Destroyable {
         this.objectsToBeRemovedNextCycle = gameMap.getObjectsToRemoveNextCycle();
     }
 
+    /**
+     * Updates the state of an enemy based on the elapsed frame time.
+     * Handles following behaviors:
+     * - If an enemy is dying -> increments the dying timer and schedules removal after 0.5 seconds.
+     * - Updates the enemy's movement direction if it's not in a turn-around state.
+     * - Adjusts the velocity of the enemy's hitbox based on its current direction and speed.
+     *
+     * @param frameTime The time elapsed since the last frame update, used for calculations.
+     */
     public void tick(float frameTime) {
-        // If enemy is dying update dying time and remove after 0.5 seconds
+        // If an enemy is dying update dying time and remove after 0.5 seconds
         if (isDying) {
             elapsedDyingTime += frameTime;
             if (elapsedDyingTime >= 0.5f) {
@@ -95,7 +104,7 @@ public abstract class Enemy implements Drawable, Destroyable {
 
         this.elapsedTime += frameTime;
 
-        // If the enemy is currently in a turn-around, do not determine a new direction, but update elapsedTurnAroundTime
+        // If an enemy is currently in a turn-around, do not determine a new direction, but update elapsedTurnAroundTime
         if (elapsedTurnAroundTime <= 0.0f) {
             this.currentDirection = determineDirection();
         } else {
@@ -106,8 +115,8 @@ public abstract class Enemy implements Drawable, Destroyable {
     }
 
     /**
-     * Determines the next direction the enemy should move based on its current position.
-     * If the enemy is free to keep moving in the same direction, they do.
+     * Determines the next direction an enemy should move based on its current position.
+     * If an enemy is free to keep moving in the same direction, they do.
      * If the next tile in the direction is a wall, they choose randomly a new direction from the available options.
      *
      * @return The direction the enemy should move.
@@ -226,9 +235,10 @@ public abstract class Enemy implements Drawable, Destroyable {
     }
 
     /** Triggers the dying state of the enemy. */
+    //TODO - Adapt new sounds for different enemies?
     public void kill() {
         isDying = true;
-        SoundEffect.ENEMY_DYING.play();
+        SoundEffect.BASIC_ENEMY_DYING.play();
     }
 
     @Override

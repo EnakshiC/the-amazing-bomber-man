@@ -6,7 +6,7 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
 
 /**
  * Represents an empty tile in the game world.
- * The EmptyTile is a non-collidable, transparent object that is mainly used to fill
+ * The EmptyTile is a non-collide-able, transparent object that is mainly used to fill
  * gaps between walls in the List<List<Drawable>> of wall in the map.
  */
 public record EmptyTile(float getX, float getY) implements Drawable {
