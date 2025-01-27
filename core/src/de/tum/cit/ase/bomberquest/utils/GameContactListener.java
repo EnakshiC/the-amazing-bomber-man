@@ -9,6 +9,7 @@ import de.tum.cit.ase.bomberquest.map.basic_tiles.DestructibleWall;
 import de.tum.cit.ase.bomberquest.map.basic_tiles.Wall;
 import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
 import de.tum.cit.ase.bomberquest.map.enemies.Enemy;
+import de.tum.cit.ase.bomberquest.map.enemies.EnemyGhost;
 import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
 
 /**
@@ -37,16 +38,24 @@ public class GameContactListener implements ContactListener {
             ((DestructibleWall) b).destroy();
         }
 
+        // Player collides with BombExplosion
         if (a instanceof Player && b instanceof BombExplosion) {
             gameMap.endGame(false);
         } else if (b instanceof Player && a instanceof BombExplosion) {
             gameMap.endGame(false);
         }
 
+        // Player collides with Enemy
         if (a instanceof Player && b instanceof Enemy) {
             gameMap.endGame(false);
+            if (b instanceof EnemyGhost) {
+                ((EnemyGhost) b).makeVisible();
+            }
         } else if (b instanceof Player && a instanceof Enemy) {
             gameMap.endGame(false);
+            if (a instanceof EnemyGhost) {
+                ((EnemyGhost) a).makeVisible();
+            }
         }
 
         // If Player collides with PowerUp, collect it

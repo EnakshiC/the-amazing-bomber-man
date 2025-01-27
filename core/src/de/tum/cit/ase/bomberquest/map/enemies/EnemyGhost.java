@@ -25,7 +25,7 @@ public class EnemyGhost extends EnemyWithDecisiveMovement{
         VISIBLE,
         FADING_OUT,
         INVISIBLE,
-        FADING_IN;
+        FADING_IN
     }
 
     /**
@@ -88,6 +88,7 @@ public class EnemyGhost extends EnemyWithDecisiveMovement{
             }
         }
     }
+
     @Override
     protected TextureRegion getStandingFrame(float elapsedTime)
     {return Animations.GHOST_ENEMY_STANDING.getKeyFrame(elapsedTime, true);
@@ -116,5 +117,9 @@ public class EnemyGhost extends EnemyWithDecisiveMovement{
     public float getAlpha()
     {
         return alpha;
+    }
+
+    public void makeVisible() {
+        alpha = 1.0f;
     }
 }
