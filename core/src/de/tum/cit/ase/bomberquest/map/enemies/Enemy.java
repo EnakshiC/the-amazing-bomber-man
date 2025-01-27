@@ -170,7 +170,7 @@ public abstract class Enemy implements Drawable, Destroyable {
 
         elapsedTurnAroundTime = .5f;
 
-        System.err.println("Enemy had to trigger turnaround due to Wall collision!");
+        // System.err.println("Enemy had to trigger turnaround due to Wall collision!");
     }
 
     /**
