@@ -15,6 +15,7 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
  * A Heads-Up Display (HUD) that displays information on the screen.
  * It uses a separate camera so that it is always fixed on the screen.
  */
+
 public class Hud {
 
     private final SpriteBatch spriteBatch;
