@@ -3,7 +3,6 @@ package de.tum.cit.ase.bomberquest.map.bomb;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import de.tum.cit.ase.bomberquest.map.SelfRemovingElement;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.utils.HitboxHelper;
 

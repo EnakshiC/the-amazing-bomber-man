@@ -1,7 +1,6 @@
 package de.tum.cit.ase.bomberquest.map.bomb;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import de.tum.cit.ase.bomberquest.map.SelfRemovingElement;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
 

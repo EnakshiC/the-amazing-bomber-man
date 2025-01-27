@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.map;
+package de.tum.cit.ase.bomberquest.map.bomb;
 
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
