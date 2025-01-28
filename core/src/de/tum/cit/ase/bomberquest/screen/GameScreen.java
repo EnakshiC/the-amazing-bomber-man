@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
@@ -85,7 +86,6 @@ public class GameScreen implements Screen {
         this.mapCamera.setToOrtho(false, (float) Gdx.graphics.getWidth() / SCALE, (float) Gdx.graphics.getHeight() / SCALE);
 
         // Load background tiles once
-        // TODO: Check if it still works when we change the map!
         this.backgroundPaths = PropertiesHelper.loadBackgroundPathsFromProperties()
                 .stream().flatMap(List::stream).toList();
 
@@ -198,6 +198,7 @@ public class GameScreen implements Screen {
 
         // Start drawing
         spriteBatch.begin();
+        spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         // Render middle layer: power-ups, exit, etc.
         draw(spriteBatch, map.getExit());
@@ -235,11 +236,13 @@ public class GameScreen implements Screen {
         }
 
         // Draw fog of war on top of everything
-        for (FogOfWar.FogTile fogTile : map.getFogOfWar().getFogTiles()) {
-            spriteBatch.setColor(1, 1, 1, fogTile.getAlpha());
-            draw(spriteBatch, fogTile);
+        if (map.getFogOfWar().isGameHasFog()) {
+            for (FogOfWar.FogTile fogTile : map.getFogOfWar().getFogTiles()) {
+                spriteBatch.setColor(1, 1, 1, fogTile.getAlpha());
+                draw(spriteBatch, fogTile);
+            }
+            spriteBatch.setColor(1, 1, 1, 1);
         }
-        spriteBatch.setColor(1, 1, 1, 1);
 
         draw(spriteBatch, map.getPlayer());
 

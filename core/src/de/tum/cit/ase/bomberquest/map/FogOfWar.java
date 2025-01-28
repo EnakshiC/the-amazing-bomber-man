@@ -115,6 +115,10 @@ public class FogOfWar {
         return currentFogSettingIndex != 0;
     }
 
+    public boolean isGameHasFog() {
+        return gameHasFog;
+    }
+
     /**
      * Checks if there is a clear line of sight (no walls) from a visible tile to the given tile.
      *
@@ -185,7 +189,7 @@ public class FogOfWar {
     /**
      * Tick method to update player state each frame.
      */
-    public void tick(double frameTime) {
+    public void tick() {
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
                 visible[x][y] = false;
@@ -211,19 +215,20 @@ public class FogOfWar {
                 int nx = cx + dir.dx;
                 int ny = cy + dir.dy;
 
-                // Bounds
+                // Bounds check
                 if (nx < 0 || nx >= mapWidth || ny < 0 || ny >= mapHeight) continue;
 
                 if (visited[nx][ny]) continue;
 
-                // Distance check
-                int dist = Math.abs(nx - px) + Math.abs(ny - py);
+                // Distance check (Manhattan distance for radius)
+                int dist = Math.max(Math.abs(nx - px), Math.abs(ny - py));
                 if (dist > fogRadius) continue;
 
+                // Mark as visited and visible
                 visited[nx][ny] = true;
                 visible[nx][ny] = true;
 
-                // If it's a wall, do not enqueue further
+                // Add diagonal tiles even if direct paths are blocked
                 if (!isWall(nx, ny)) {
                     queue.add(new Node(nx, ny));
                 }

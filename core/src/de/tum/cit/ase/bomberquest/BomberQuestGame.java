@@ -59,6 +59,7 @@ public class BomberQuestGame extends Game {
      */
     @Override
     public void create() {
+        Gdx.graphics.setVSync(true);
         this.spriteBatch = new SpriteBatch(); // Create SpriteBatch for rendering
         this.skin = new Skin(Gdx.files.internal("skin/craftacular/craftacular-ui.json")); // Load UI skin
         this.map = new GameMap(this); // Create a new game map (you should change this to load the map from a file instead)

@@ -161,7 +161,7 @@ public class GameMap {
         for (BombExplosion e : explosionTiles) e.tick(frameTime);
         for (Enemy enemy : enemies) enemy.tick(frameTime);
         this.player.tick(frameTime);
-        this.fogOfWar.tick(frameTime);
+        this.fogOfWar.tick();
 
         // Update the world's physics engine
         doPhysicsStep(frameTime);

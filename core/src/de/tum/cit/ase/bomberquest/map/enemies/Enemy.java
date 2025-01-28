@@ -251,7 +251,6 @@ public abstract class Enemy implements Drawable, Destroyable {
     }
 
     /** Triggers the dying state of the enemy. */
-    //TODO - Adapt new sounds for different enemies?
     public void kill() {
         isDying = true;
         SoundEffect.BASIC_ENEMY_DYING.play();
