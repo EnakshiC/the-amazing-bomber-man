@@ -11,14 +11,21 @@
   - "Test Enemy" is a map to test and see the movement of different enemies
     - There is a line with destructible walls in front of the player on the bottom row. Here are all upgrades waiting for the player. Especially the first three are ExtraTime PowerUps to extend the games time.
   - "Test Extra Speed" is a map to test the ExtraSpeed PowerUp
-- Bottom arrow keys  iterate over different enemy settings
+- - "Load map from file..."
+- Opens a native file selector
+- Search and select a .properties file
+- On opening, the map is created and a game started immediately
+- Middle arrow keys:  iterate over different enemy settings
   - More about the different enemies below
   - "RANDOM ENEMY" places a random enemy (of our 4) in the map each time a game is started
   - The other four settings will insert only this enemy on every enemy marked field in the game
-- "Load map from file..."
-  - Opens a native file selector
-  - Search and select a .properties file
-  - On opening, the map is created and a game started immediately
+- Bottom arrow keys: iterate over different fog of war settings
+  - No Fog: map fully visible
+  - Easy Fog: fog with a radius around the player of r=5
+  - Medium Fog: fog with a radius around the player of r=3
+  - Hard Fog: fog with a radius around the player of r=1
+  - Extreme Fog: fog with a radius around the player of r=0
+
 
 **Important: If a game is running, all settings are disables until the game is ended.** The game can end by either the game mechanics (win/loose) or by pressing Esc (to go to menu) and pressing the "End Game" button.
 
@@ -47,7 +54,7 @@ The game implements all needed basic functionalities as described in the project
 - Dynamic timer: the time of the game is dependent on the enemies at the start (20 seconds each) plus 60 seconds to find the exit
 - Choose your enemy: select an exclusive enemy type or scatter enemies randomly throughout the map each time!
 - Extra Animations for bomb pulsating and multiple stages of bomb explosion
-- 
+- Fog of War in different difficulty settings. Shows only the parts of the map that the player has discovered in different radius around the player. Tiles that are adjacent to discovered tiles are displayed in a semi transparency.
 
 ___
 ## Code Structure

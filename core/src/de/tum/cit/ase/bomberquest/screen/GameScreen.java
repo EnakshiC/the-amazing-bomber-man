@@ -234,8 +234,14 @@ public class GameScreen implements Screen {
             }
         }
 
-        draw(spriteBatch, map.getPlayer());
+        // Draw fog of war on top of everything
+        for (FogOfWar.FogTile fogTile : map.getFogOfWar().getFogTiles()) {
+            spriteBatch.setColor(1, 1, 1, fogTile.getAlpha());
+            draw(spriteBatch, fogTile);
+        }
+        spriteBatch.setColor(1, 1, 1, 1);
 
+        draw(spriteBatch, map.getPlayer());
 
         // Finish drawing, i.e. send the drawn items to the graphics card
         spriteBatch.end();

@@ -11,6 +11,8 @@ public class Textures {
     
     public static final TextureRegion EMPTY = SpriteSheet.BASIC_TILES.at(11, 3);
 
+    public static final TextureRegion RED = SpriteSheet.BASIC_TILES.at(2, 2);
+
     public static final TextureRegion EXIT_CLOSE = SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 12);
 
     public static final TextureRegion EXIT_OPEN = SpriteSheet.BASIC_TILES.at(3, 7);
@@ -28,4 +30,6 @@ public class Textures {
     public static final TextureRegion POWER_UP_EXTRA_TIME = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 2);
 
     public static final TextureRegion POWER_UP_EXTRA_SPEED = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 4);
+
+    public static final TextureRegion FOG_CENTER = SpriteSheet.FOG.at(1, 1);
 }

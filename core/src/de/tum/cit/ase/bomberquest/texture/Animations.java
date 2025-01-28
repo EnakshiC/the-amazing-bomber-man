@@ -2,6 +2,7 @@ package de.tum.cit.ase.bomberquest.texture;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import de.tum.cit.ase.bomberquest.map.FogOfWar;
 import de.tum.cit.ase.bomberquest.map.bomb.BombExplosion;
 
 /**
@@ -495,10 +496,10 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(9, 3)
     );
 
+    /**
+     * The animation for the bomb pulsating while it is waiting to explode
+     */
     public static final Animation<TextureRegion> BOMB_PULSATING = new Animation<>(0.1f,
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 2),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 3),
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 2)
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1)
     );
 }

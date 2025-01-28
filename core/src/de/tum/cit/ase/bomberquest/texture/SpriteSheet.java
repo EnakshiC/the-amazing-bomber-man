@@ -28,7 +28,9 @@ public enum SpriteSheet {
     MOBS("mobs.png", 16, 16),
 
     /** The smoke spritesheet, which has a grid size of 16x16. */
-    SMOKE("smoke.png", 16, 16);
+    SMOKE("smoke.png", 16, 16),
+
+    FOG("fog.png", 16, 16);
     
     private final Texture spritesheet;
     private final int width;

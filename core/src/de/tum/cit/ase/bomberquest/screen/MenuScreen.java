@@ -16,12 +16,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.map.FogOfWar;
 import de.tum.cit.ase.bomberquest.utils.PropertiesHelper;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserIntent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,7 +39,7 @@ public class MenuScreen implements Screen {
      * The key of the currently selected map
      * Is "<Custom Map>" if a file was selected
      */
-    private String currentKey;
+    private String currentMapKey;
 
     // All buttons of the MenuScreen
     // ... as local variables since we need to edit them in render() according to the current game running or not
@@ -48,6 +50,8 @@ public class MenuScreen implements Screen {
     private final TextButton loadMapButton;
     private final TextButton previousEnemySettingButton;
     private final TextButton nextEnemySettingButton;
+    private final TextButton previousFogSettingButton;
+    private final TextButton nextFogSettingButton;
 
 
     /**
@@ -56,7 +60,7 @@ public class MenuScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public MenuScreen(BomberQuestGame game) {
-        currentKey = "Map 1";// PropertiesHelper.getMapPaths().keySet().iterator().next();
+        currentMapKey = "Map 1";
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -93,7 +97,7 @@ public class MenuScreen implements Screen {
 
         // ITERATE THROUGH EXISTING MAPS
         // Add a label and two buttons for iterating through the map
-        Label mapLabel = new Label(currentKey, game.getSkin());
+        Label mapLabel = new Label(currentMapKey, game.getSkin());
         previousMapButton = new TextButton("<", game.getSkin(), "default");
         nextMapButton = new TextButton(">", game.getSkin(), "default");
 
@@ -107,10 +111,10 @@ public class MenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 List<String> keys = new ArrayList<>(PropertiesHelper.getMapPaths().keySet());
-                int currentIndex = keys.contains(currentKey) ? keys.indexOf(currentKey) : 1;
-                currentKey = keys.get((currentIndex - 1 + keys.size()) % keys.size());
-                mapLabel.setText(currentKey);
-                PropertiesHelper.loadNewMap(PropertiesHelper.getMapPaths().get(currentKey));
+                int currentIndex = keys.contains(currentMapKey) ? keys.indexOf(currentMapKey) : 1;
+                currentMapKey = keys.get((currentIndex - 1 + keys.size()) % keys.size());
+                mapLabel.setText(currentMapKey);
+                PropertiesHelper.loadNewMap(PropertiesHelper.getMapPaths().get(currentMapKey));
                 game.resetGame();
             }
         });
@@ -119,11 +123,51 @@ public class MenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 List<String> keys = new ArrayList<>(PropertiesHelper.getMapPaths().keySet());
-                int currentIndex = keys.contains(currentKey) ? keys.indexOf(currentKey) : -1;
-                currentKey = keys.get((currentIndex + 1) % keys.size());
-                mapLabel.setText(currentKey);
-                PropertiesHelper.loadNewMap(PropertiesHelper.getMapPaths().get(currentKey));
+                int currentIndex = keys.contains(currentMapKey) ? keys.indexOf(currentMapKey) : -1;
+                currentMapKey = keys.get((currentIndex + 1) % keys.size());
+                mapLabel.setText(currentMapKey);
+                PropertiesHelper.loadNewMap(PropertiesHelper.getMapPaths().get(currentMapKey));
                 game.resetGame();
+            }
+        });
+        // Create and add a button to open the file loader
+        loadMapButton = new TextButton("Load map from file...", game.getSkin());
+        table.add(loadMapButton).width(450).padBottom(30).row();
+        loadMapButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                NativeFileChooserConfiguration chooserConfig = new NativeFileChooserConfiguration();
+                chooserConfig.title = "Choose Map File";
+                chooserConfig.directory = new FileHandle(System.getProperty("user.home"));
+                chooserConfig.intent = NativeFileChooserIntent.OPEN;
+
+                NativeFileChooserCallback callback = new NativeFileChooserCallback() {
+                    @Override
+                    public void onFileChosen(FileHandle fileHandle) {
+                        System.out.println("Chosen File: " + fileHandle.path());
+
+                        // Check if it is a .properties File
+                        if (fileHandle.extension().equals("properties")) {
+                            PropertiesHelper.loadNewMap(fileHandle.path());
+                            game.resetGame();
+                            currentMapKey = "< CUSTOM MAP >";
+                            mapLabel.setText(currentMapKey);
+                            game.goToGame();
+                        }
+                    }
+
+                    @Override
+                    public void onCancellation() {
+                        // System.out.println("Cancel Choose File");
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        System.err.println("Error: " + e);
+                    }
+                };
+                chooserConfig.title = "Chose Map File";
+                game.getFileChooser().chooseFile(chooserConfig, callback);
             }
         });
 
@@ -157,44 +201,35 @@ public class MenuScreen implements Screen {
             }
         });
 
-        // Create and add a button to open the file loader
-        loadMapButton = new TextButton("Load map from file...", game.getSkin());
-        table.add(loadMapButton).width(450).row();
-        loadMapButton.addListener(new ChangeListener() {
+
+        // SELECT FOG SETTINGS
+        // Add a label and two buttons for iterating through the different fog settings
+        Label fogSettingLabel = new Label(FogOfWar.FOG_SETTINGS.get(FogOfWar.currentFogSettingIndex), game.getSkin());
+        previousFogSettingButton = new TextButton("<", game.getSkin(), "default");
+        nextFogSettingButton = new TextButton(">", game.getSkin(), "default");
+
+        Table row3Table = new Table();
+        row3Table.add(previousFogSettingButton).size(60).padRight(20);
+        row3Table.add(fogSettingLabel).padRight(20).width(290);
+        row3Table.add(nextFogSettingButton).size(60);
+        table.add(row3Table).padBottom(20).row();
+
+        previousFogSettingButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                NativeFileChooserConfiguration chooserConfig = new NativeFileChooserConfiguration();
-                chooserConfig.title = "Choose Map File";
-                chooserConfig.directory = new FileHandle(System.getProperty("user.home"));
-                chooserConfig.intent = NativeFileChooserIntent.OPEN;
+                FogOfWar.previousFogSetting();
+                fogSettingLabel.setText(FogOfWar.FOG_SETTINGS.get(FogOfWar.currentFogSettingIndex));
 
-                NativeFileChooserCallback callback = new NativeFileChooserCallback() {
-                    @Override
-                    public void onFileChosen(FileHandle fileHandle) {
-                        System.out.println("Chosen File: " + fileHandle.path());
+                game.resetGame();
+            }
+        });
 
-                        // Check if it is a .properties File
-                        if (fileHandle.extension().equals("properties")) {
-                            PropertiesHelper.loadNewMap(fileHandle.path());
-                            game.resetGame();
-                            currentKey = "< CUSTOM MAP >";
-                            mapLabel.setText(currentKey);
-                            game.goToGame();
-                        }
-                    }
-
-                    @Override
-                    public void onCancellation() {
-                        // System.out.println("Cancel Choose File");
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        System.err.println("Error: " + e);
-                    }
-                };
-                chooserConfig.title = "Chose Map File";
-                game.getFileChooser().chooseFile(chooserConfig, callback);
+        nextFogSettingButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                FogOfWar.nextFogSetting();
+                fogSettingLabel.setText(FogOfWar.FOG_SETTINGS.get(FogOfWar.currentFogSettingIndex));
+                game.resetGame();
             }
         });
 
@@ -226,7 +261,8 @@ public class MenuScreen implements Screen {
         loadMapButton.setDisabled(game.hasStarted());
         nextEnemySettingButton.setDisabled(game.hasStarted());
         previousEnemySettingButton.setDisabled(game.hasStarted());
-
+        nextFogSettingButton.setDisabled(game.hasStarted());
+        previousFogSettingButton.setDisabled(game.hasStarted());
     }
 
     /**

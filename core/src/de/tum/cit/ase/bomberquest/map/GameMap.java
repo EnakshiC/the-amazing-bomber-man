@@ -72,6 +72,7 @@ public class GameMap {
     private final List<Enemy> enemies = new ArrayList<>();
     private final List<List<Drawable>> wallElements;
     private final List<PowerUp> powerUps = new ArrayList<>();
+    private final FogOfWar fogOfWar;
 
     /**
      * Objects in this list will be removed from World/Canvas next tick cycle
@@ -112,6 +113,9 @@ public class GameMap {
         // Load all wall elements
         this.wallElements = new ArrayList<>(PropertiesHelper.loadWallsFromProperties(world, objectsToRemoveNextCycle));
 
+        // Implement fog of war
+        this.fogOfWar = new FogOfWar(this);
+
         // Setting dynamic time for the game with 20 seconds per enemy plus 60 seconds to find the exit
         timeLeft = enemiesCountAtBeginning * 20.0f + 60.0f;
     }
@@ -121,6 +125,7 @@ public class GameMap {
      * Every dynamic object in the game should update its state here.
      *
      * @param frameTime the time that has passed since the last update
+     *
      */
     public void tick(float frameTime) {
         // No more updates if the game is over
@@ -146,6 +151,7 @@ public class GameMap {
         for (BombExplosion e : explosionTiles) e.tick(frameTime);
         for (Enemy enemy : enemies) enemy.tick(frameTime);
         this.player.tick(frameTime);
+        this.fogOfWar.tick(frameTime);
 
         // Update the world's physics engine
         doPhysicsStep(frameTime);
@@ -332,6 +338,10 @@ public class GameMap {
 
     public List<PowerUp> getPowerUps() {
         return powerUps;
+    }
+
+    public FogOfWar getFogOfWar() {
+        return fogOfWar;
     }
 
     public int getBombRadius() {
