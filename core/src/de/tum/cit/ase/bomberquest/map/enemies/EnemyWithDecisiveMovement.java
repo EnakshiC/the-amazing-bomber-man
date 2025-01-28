@@ -67,7 +67,12 @@ public class EnemyWithDecisiveMovement extends Enemy {
             return currentDirection;
         }
     }
-
+    /**
+     * Calculates the opposite direction for a given {@link Direction}.
+     *
+     * @param dir The current direction.
+     * @return The opposite {@link Direction}.
+     */
     private Direction oppositeDirection(Direction dir) {
         return switch (dir) {
             case UP -> Direction.DOWN;
@@ -78,6 +83,11 @@ public class EnemyWithDecisiveMovement extends Enemy {
         };
     }
 
+    /**
+     * Updates the enemy's state and decrements the decision timer.
+     *
+     * @param frameTime Time elapsed since the last frame update.
+     */
     @Override
     public void tick(float frameTime) {
         super.tick(frameTime);
@@ -87,26 +97,56 @@ public class EnemyWithDecisiveMovement extends Enemy {
         decisionTimer -= frameTime;
     }
 
+    /**
+     * Retrieves the standing animation frame.
+     *
+     * @param elapsedTime The time since the animation started.
+     * @return The {@link TextureRegion} for the standing animation.
+     */
     @Override
     protected TextureRegion getStandingFrame(float elapsedTime) {
         return Animations.SLIMY_ENEMY_STANDING.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the walking animation frame for upward movement.
+     *
+     * @param elapsedTime The time since the animation started.
+     * @return The {@link TextureRegion} for upward movement.
+     */
     @Override
     protected TextureRegion getWalkUpFrame(float elapsedTime) {
         return Animations.SLIMY_ENEMY_WALK_UP.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the walking animation frame for downward movement.
+     *
+     * @param elapsedTime The time since the animation started.
+     * @return The {@link TextureRegion} for downward movement.
+     */
     @Override
     protected TextureRegion getWalkDownFrame(float elapsedTime) {
         return Animations.SLIMY_ENEMY_WALK_DOWN.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the walking animation frame for leftward movement.
+     *
+     * @param elapsedTime The time since the animation started.
+     * @return The {@link TextureRegion} for leftward movement.
+     */
     @Override
     protected TextureRegion getWalkLeftFrame(float elapsedTime) {
         return Animations.SLIMY_ENEMY_WALK_LEFT.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the walking animation frame for rightward movement.
+     *
+     * @param elapsedTime The time since the animation started.
+     * @return The {@link TextureRegion} for rightward movement.
+     */
     @Override
     protected TextureRegion getWalkRightFrame(float elapsedTime) {
         return Animations.SLIMY_ENEMY_WALK_RIGHT.getKeyFrame(elapsedTime, true);

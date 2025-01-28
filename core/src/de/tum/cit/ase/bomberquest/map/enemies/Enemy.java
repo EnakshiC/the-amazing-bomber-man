@@ -46,9 +46,19 @@ public abstract class Enemy implements Drawable, Destroyable {
 
     private final List<Drawable> objectsToBeRemovedNextCycle;
 
+    /**
+     *  Enum representing movement directions for the enemy.
+     */
     public enum Direction {
         UP, DOWN, LEFT, RIGHT, NONE;
 
+
+        /**
+         * Retrieves the horizontal delta (dx) for a given direction.
+         *
+         * @param dir The direction for which the delta is calculated.
+         * @return -1 for {@code LEFT}, 1 for {@code RIGHT}, and 0 for other directions.
+         */
         public static int dx(Direction dir) {
             return switch (dir) {
                 case LEFT -> -1;
@@ -57,6 +67,12 @@ public abstract class Enemy implements Drawable, Destroyable {
             };
         }
 
+        /**
+         * Retrieves the vertical delta (dy) for a given direction.
+         *
+         * @param dir The direction for which the delta is calculated.
+         * @return 1 for UP, -1 for DOWN, and 0 for other directions.
+         */
         public static int dy(Direction dir) {
             return switch (dir) {
                 case UP -> 1;

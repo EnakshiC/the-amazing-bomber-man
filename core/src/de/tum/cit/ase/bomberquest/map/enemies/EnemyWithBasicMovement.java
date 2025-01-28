@@ -24,26 +24,57 @@ public class EnemyWithBasicMovement extends Enemy {
         super(world, x, y, gameMap);
     }
 
+
+    /**
+     * Retrieves the animation frame for the enemy when it is standing still.
+     *
+     * @param elapsedTime The elapsed time since the animation started, used for frame calculation.
+     * @return The {@link TextureRegion} representing the standing animation frame of the enemy.
+     */
     @Override
     protected TextureRegion getStandingFrame(float elapsedTime) {
         return Animations.BASIC_ENEMY_STANDING.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the animation frame for the enemy when moving upwards.
+     *
+     * @param elapsedTime The elapsed time since the animation started, used for frame calculation.
+     * @return The {@link TextureRegion} representing the upward walking animation frame of the enemy.
+     */
     @Override
     protected TextureRegion getWalkUpFrame(float elapsedTime) {
         return Animations.BASIC_ENEMY_WALK_UP.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the animation frame for the enemy when moving downwards.
+     *
+     * @param elapsedTime The elapsed time since the animation started, used for frame calculation.
+     * @return The {@link TextureRegion} representing the downward walking animation frame of the enemy.
+     */
     @Override
     protected TextureRegion getWalkDownFrame(float elapsedTime) {
         return Animations.BASIC_ENEMY_WALK_DOWN.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the animation frame for the enemy when moving leftwards.
+     *
+     * @param elapsedTime The elapsed time since the animation started, used for frame calculation.
+     * @return The {@link TextureRegion} representing the leftward walking animation frame of the enemy.
+     */
     @Override
     protected TextureRegion getWalkLeftFrame(float elapsedTime) {
         return Animations.BASIC_ENEMY_WALK_LEFT.getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Retrieves the animation frame for the enemy when moving rightwards.
+     *
+     * @param elapsedTime The elapsed time since the animation started, used for frame calculation.
+     * @return The {@link TextureRegion} representing the rightward walking animation frame of the enemy.
+     */
     @Override
     protected TextureRegion getWalkRightFrame(float elapsedTime) {
         return Animations.BASIC_ENEMY_WALK_RIGHT.getKeyFrame(elapsedTime, true);
