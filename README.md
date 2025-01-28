@@ -6,7 +6,7 @@
   - Will be a "Continue Game" Button when a game is already running
 - "End Game" Button ends a game - only if one is running
 - Top arrow keys iterate over our pre-set maps
-  - "Map 1" and "Map 2" are the ones provided by the project
+  - "Map 1" and "Map 2" are the ones provided by the project, but a couple of power-ups have been exchanges with our new ons (see below)
   - "Test Extra Time" is a map to test the ExtraTime PowerUp
   - "Test Enemy" is a map to test and see the movement of different enemies
     - There is a line with destructible walls in front of the player on the bottom row. Here are all upgrades waiting for the player. Especially the first three are ExtraTime PowerUps to extend the games time.
@@ -49,8 +49,8 @@ The game implements all needed basic functionalities as described in the project
 - **A smart bat that finds the shortest path to the player via an A\* algorithm**
 - A smoke animation when enemies die hitting a bomb blast
 - The player is covering his ears as long as there is a bomb on the field or exploding. Extra animations for both standing and walking in all directions.
-- ExtraTimePowerUp: adds another 20 seconds to the remaining game time
-- ExtraSpeedPowerUp: adds another .2 multiplier to the starting speed of the player (1.0 -> 1.2 -> 1.4 -> ...)
+- **ExtraTimePowerUp** ("7" in -property files): adds another 20 seconds to the remaining game time
+- **ExtraSpeedPowerUp** ("8" in .property files): adds another .2 multiplier to the starting speed of the player (1.0 -> 1.2 -> 1.4 -> ...)
 - Dynamic timer: the time of the game is dependent on the enemies at the start (20 seconds each) plus 60 seconds to find the exit
 - Choose your enemy: select an exclusive enemy type or scatter enemies randomly throughout the map each time!
 - Extra Animations for bomb pulsating and multiple stages of bomb explosion
