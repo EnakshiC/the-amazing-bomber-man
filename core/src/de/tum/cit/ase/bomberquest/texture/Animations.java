@@ -500,6 +500,9 @@ public class Animations {
      * The animation for the bomb pulsating while it is waiting to explode
      */
     public static final Animation<TextureRegion> BOMB_PULSATING = new Animation<>(0.1f,
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1)
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 2),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 3),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 2)
     );
 }

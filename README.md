@@ -54,7 +54,7 @@ The game implements all needed basic functionalities as described in the project
 - Dynamic timer: the time of the game is dependent on the enemies at the start (20 seconds each) plus 60 seconds to find the exit
 - Choose your enemy: select an exclusive enemy type or scatter enemies randomly throughout the map each time!
 - Extra Animations for bomb pulsating and multiple stages of bomb explosion
-- Fog of War in different difficulty settings. Shows only the parts of the map that the player has discovered in different radius around the player. Tiles that are adjacent to discovered tiles are displayed in a semi transparency.
+- **Fog of War** in different difficulty settings. Shows only the parts of the map that the player has discovered in different radius around the player. Tiles that are adjacent to discovered tiles are displayed in a semi transparency.
 
 ___
 ## Code Structure

@@ -23,7 +23,6 @@ import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserIntent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -204,7 +203,7 @@ public class MenuScreen implements Screen {
 
         // SELECT FOG SETTINGS
         // Add a label and two buttons for iterating through the different fog settings
-        Label fogSettingLabel = new Label(FogOfWar.FOG_SETTINGS.get(FogOfWar.currentFogSettingIndex), game.getSkin());
+        Label fogSettingLabel = new Label(FogOfWar.getFogSettings(), game.getSkin());
         previousFogSettingButton = new TextButton("<", game.getSkin(), "default");
         nextFogSettingButton = new TextButton(">", game.getSkin(), "default");
 
@@ -218,7 +217,7 @@ public class MenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 FogOfWar.previousFogSetting();
-                fogSettingLabel.setText(FogOfWar.FOG_SETTINGS.get(FogOfWar.currentFogSettingIndex));
+                fogSettingLabel.setText(FogOfWar.getFogSettings());
 
                 game.resetGame();
             }
@@ -228,7 +227,7 @@ public class MenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 FogOfWar.nextFogSetting();
-                fogSettingLabel.setText(FogOfWar.FOG_SETTINGS.get(FogOfWar.currentFogSettingIndex));
+                fogSettingLabel.setText(FogOfWar.getFogSettings());
                 game.resetGame();
             }
         });

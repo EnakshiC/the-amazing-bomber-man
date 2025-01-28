@@ -28,8 +28,11 @@ public class FogOfWar {
 
     private final List<FogTile> fogTiles = new LinkedList<>();
 
-    public static int currentFogSettingIndex = 0;
-    public static final List<String> FOG_SETTINGS = Arrays.asList("No Fog", "Easy Fog", "Medium Fog", "Hard Fog", "Extreme Fog");
+
+    private static int currentFogSettingIndex = 0;
+    private static final List<String> FOG_SETTINGS = Arrays.asList("No Fog", "Easy Fog", "Medium Fog", "Hard Fog", "Extreme Fog");
+
+    public static String getFogSettings() { return FOG_SETTINGS.get(currentFogSettingIndex); }
 
     /**
      * Constructs a new FogOfWar instance for the given game map.
@@ -61,8 +64,9 @@ public class FogOfWar {
         }
     }
 
-
-    // Iterating through different fog of war settings
+    /**
+     * Selects the next fog of war setting
+     */
     public static void nextFogSetting() {
         currentFogSettingIndex++;
         if (currentFogSettingIndex >= FOG_SETTINGS.size()) {
@@ -70,6 +74,9 @@ public class FogOfWar {
         }
     }
 
+    /**
+     * Selects the previous fog of war setting
+     */
     public static void previousFogSetting() {
         currentFogSettingIndex--;
         if (currentFogSettingIndex < 0) {
@@ -77,6 +84,11 @@ public class FogOfWar {
         }
     }
 
+    /**
+     * Returns the actual radius of visibility for the current settings
+     *
+     * @return the radius of visibility
+     */
     private static int getFogRadius() {
         // No Fog
         if (currentFogSettingIndex == 0) return 999;
@@ -96,15 +108,84 @@ public class FogOfWar {
         return 999;
     }
 
+    /**
+     * @return true if there is fog in the game with the current settings
+     */
     private static boolean getGameHasFog() {
         return currentFogSettingIndex != 0;
+    }
+
+    /**
+     * Checks if there is a clear line of sight (no walls) from a visible tile to the given tile.
+     *
+     * @param x The x-coordinate of the target tile.
+     * @param y The y-coordinate of the target tile.
+     *
+     * @return true if there is a clear line of sight, false otherwise.
+     */
+    private boolean hasLineOfSight(int x, int y) {
+        for (int dx = -fogRadius; dx <= fogRadius; dx++) {
+            for (int dy = -fogRadius; dy <= fogRadius; dy++) {
+                int nx = x + dx;
+                int ny = y + dy;
+
+                // Check if within bounds and visible
+                if (nx >= 0 && nx < mapWidth && ny >= 0 && ny < mapHeight && visible[nx][ny]) {
+                    // Check line of sight
+                    if (isClearPath(nx, ny, x, y)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if there is a clear path (no walls) between two tiles using Bresenham's line algorithm.
+     *
+     * @param x1 The x-coordinate of the start tile.
+     * @param y1 The y-coordinate of the start tile.
+     * @param x2 The x-coordinate of the end tile.
+     * @param y2 The y-coordinate of the end tile.
+     *
+     * @return true if the path is clear, false otherwise.
+     */
+    private boolean isClearPath(int x1, int y1, int x2, int y2) {
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int sx = x1 < x2 ? 1 : -1;
+        int sy = y1 < y2 ? 1 : -1;
+        int err = dx - dy;
+
+        while (true) {
+            // If a wall is found, the path is blocked
+            if (isWall(x1, y1)) {
+                return false;
+            }
+
+            // Reached the target tile
+            if (x1 == x2 && y1 == y2) {
+                break;
+            }
+
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x1 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y1 += sy;
+            }
+        }
+        return true;
     }
 
     /**
      * Tick method to update player state each frame.
      */
     public void tick(double frameTime) {
-        // Clear visibility
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
                 visible[x][y] = false;
@@ -184,7 +265,12 @@ public class FogOfWar {
         }
     }
 
-    /** Checks if a given tile is a wall (Indestructible or a solid Destructible) */
+    /** Checks if a given tile is a wall (Indestructible or a solid Destructible)
+     * @param x the x value of the tile
+     * @param y the y vale of the tile
+     *
+     * @return true if the element at position x,y is a (currently) solid wall
+     * */
     private boolean isWall(int x, int y) {
         for (Drawable element : gameMap.getWallElements()) {
             int ex = Math.round(element.getX());
@@ -198,12 +284,25 @@ public class FogOfWar {
         return false;
     }
 
+    /**
+     * Returns the current transparency of a tile
+     *
+     * @param x the x value of the tile
+     * @param y the y value of the tile
+     *
+     * @return alpha value visibility of this fog tile
+     */
     public float calculateAlpha(int x, int y) {
         // Already discovered tiles are fully visible
         if (discovered[x][y]) return 0.0f;
 
+        // Check if there is a line of sight to the tile
+        if (!hasLineOfSight(x, y)) {
+            return 1.0f; // Fully opaque if there is no line of sight
+        }
+
         // Check the neighbours in all directions
-        float alpha = 1.0f; // Standard: fully non-transparent
+        float alpha = 1.0f; // Standard: fully opaque
         int maxDistance = 2; // Max. distance for alpha calculations
 
         for (int dx = -maxDistance; dx <= maxDistance; dx++) {
@@ -225,6 +324,12 @@ public class FogOfWar {
         return alpha;
     }
 
+    /**
+     * Helper class for the style of a fog tile
+     * @param x
+     * @param y
+     * @param fogOfWar
+     */
     public record FogTile(int x, int y, FogOfWar fogOfWar) implements Drawable {
         @Override
         public TextureRegion getCurrentAppearance() {
