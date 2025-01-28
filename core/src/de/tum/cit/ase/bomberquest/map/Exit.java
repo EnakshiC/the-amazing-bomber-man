@@ -17,6 +17,14 @@ public class Exit implements Drawable {
     private final int y;
     private final GameMap gameMap;
 
+    /**
+     * Constructs an {@code Exit} object at a specified position on the game map.
+     *
+     * @param world   The physics world where the exit's hitbox is registered.
+     * @param x       The x-coordinate of the exit's position in the game map.
+     * @param y       The y-coordinate of the exit's position in the game map.
+     * @param gameMap The game map associated with this exit, used to check its state.
+     */
     public Exit(World world, int x, int y, GameMap gameMap) {
         this.x = x;
         this.y = y;
@@ -30,6 +38,12 @@ public class Exit implements Drawable {
         return gameMap.getEnemies().isEmpty();
     }
 
+    /**
+     * Retrieves the current appearance of the exit based on its state.
+     *
+     * @return The {@link TextureRegion} for the open exit if {@code isOpen()} is {@code true},
+     *         otherwise the {@link TextureRegion} for the closed exit.
+     */
     @Override
     public TextureRegion getCurrentAppearance() {
         if(isOpen()) {
@@ -40,16 +54,26 @@ public class Exit implements Drawable {
         }
     }
 
+    /**
+    * Retrieves the x-coordinate of the exit's position.
+    */
     @Override
     public float getX() {
         return x;
     }
 
+    /**
+    * Retrieves the y-coordinate of the exit's position.
+    */
     @Override
     public float getY() {
         return y;
     }
 
+
+    /**
+    * Returns a string representation of the exit's position.
+    */
     @Override
     public String toString() {
         return "x: " + x + " y: " + y;

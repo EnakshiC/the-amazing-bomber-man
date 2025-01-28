@@ -38,6 +38,13 @@ public abstract class SelfRemovingElement implements Drawable {
         this.objectsToBeRemovedNextCycle = objectsToBeRemovedNextCycle;
     }
 
+    /**
+     * Updates the element's state based on the time elapsed since the last frame update.
+     * If total time since creation exceeds the time-to-live value, element
+     * schedules itself for removal by adding itself to the removal list.
+     *
+     * @param frameTime The time (in seconds) elapsed since the last update.
+     */
     public void tick(float frameTime) {
         timeSinceCreation += frameTime;
         if (timeSinceCreation >= timeToLive) {
@@ -49,6 +56,11 @@ public abstract class SelfRemovingElement implements Drawable {
         }
     }
 
+    /**
+     * Retrieves total time (in seconds) elapsed since the element was created
+     *
+     * @return The time since creation.
+     */
     public float getTimeSinceCreation() {
         return timeSinceCreation;
     }

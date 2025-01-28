@@ -17,14 +17,31 @@ import de.tum.cit.ase.bomberquest.map.power_up.PowerUp;
  * between game entities in the games specific context.
  */
 public class GameContactListener implements ContactListener {
+
+    /** The game map associated with the contact listener. */
     private final GameMap gameMap;
 
+    /**
+     * Constructs a new {@link GameContactListener} for the specified game map.
+     *
+     * @param gameMap The {@link GameMap} where the collisions are being handled.
+     */
     public GameContactListener(GameMap gameMap) {
         super();
 
         this.gameMap = gameMap;
     }
 
+    /**
+     * Called when two fixtures begin to touch.
+     * This method handles the following cases:
+     * - Bomb explosions destroying destructible walls.
+     * - Player collisions with enemies, explosions, or the exit.
+     * - Player collecting power-ups.
+     * - Enemies interacting with walls, explosions, or the player.
+     *
+     * @param contact The {@link Contact} object containing information about the collision.
+     */
     @Override
     public void beginContact(Contact contact) {
         Object a = contact.getFixtureA().getBody().getUserData();
@@ -96,10 +113,24 @@ public class GameContactListener implements ContactListener {
 
     }
 
+    /**
+     * Called before the collision is resolved.
+     * Used for modifications to the collision's outcome but isn't actively used here.
+     *
+     * @param contact      The {@link Contact} object representing the collision.
+     * @param oldManifold  The previous collision state.
+     */
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
     }
 
+    /**
+     * Called after the collision is resolved.
+     * Used for analyzing collision outcomes but isn't actively used here.
+     *
+     * @param contact  The {@link Contact} object representing the collision.
+     * @param impulse  The collision impulse.
+     */
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
     }

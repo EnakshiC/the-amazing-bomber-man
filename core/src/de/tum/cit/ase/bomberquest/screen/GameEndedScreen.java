@@ -42,7 +42,11 @@ public class GameEndedScreen implements Screen {
     public void show() {
 
     }
-
+    /**
+     * Renders the game-ended screen, displaying the outcome message and instructions.
+     *
+     * @param deltaTime The time elapsed since the last frame.
+     */
     @Override
     public void render(float deltaTime)
     {

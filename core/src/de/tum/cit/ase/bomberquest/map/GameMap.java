@@ -64,7 +64,8 @@ public class GameMap {
      */
     private final World world;
 
-    // Game objects
+    // Game objects for player, exit points, list of current bombs,
+    // list of active bombs, list of enemies, list of power-ups, list of objects to be removed
     private final Player player;
     private final Exit exit;
     private final List<Bomb> bombsInPlay = new ArrayList<>();
@@ -85,10 +86,19 @@ public class GameMap {
     private int bombRadius = 1;
     private float timeLeft = 300.0f;
 
+    /** Indicates whether the game has ended. */
     private boolean gameIsOver = false;
+    /** Indicates whether the game ended in victory. */
     private boolean gameWasWon = false;
+    /** Timer for fading out after the game ends. */
     private float gameOverFadeOutTime = 0.0f;
 
+
+    /**
+     * Initializes a new game map, setting up all entities and loading configuration.
+     *
+     * @param game The BomberQuest game instance.
+     */
     public GameMap(BomberQuestGame game) {
         this.game = game;
 

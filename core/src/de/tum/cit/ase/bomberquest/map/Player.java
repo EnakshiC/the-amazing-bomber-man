@@ -41,10 +41,20 @@ public class Player implements Drawable {
         UP, DOWN, LEFT, RIGHT, NONE
     }
 
+    /**
+     * Indicates whether the player is in a dying state.
+     */
     private boolean isDying = false;
 
+    /**
+     * Reference to the game map, used to interact with other game entities.
+     */
     private final GameMap gameMap;
 
+    /**
+     * Multiplier applied to the player's movement speed.
+     * Players speed can be increased using power-ups!
+     */
     private float speedMultiplier = 1.0f;
 
     /**
@@ -117,10 +127,16 @@ public class Player implements Drawable {
         this.hitbox.setLinearVelocity(xVelocity * speedMultiplier, yVelocity * speedMultiplier);
     }
 
+    /**
+     * Increases the player's movement speed by a fixed amount.
+     */
     public void increaseSpeed() {
         speedMultiplier += 0.2f;
     }
 
+    /**
+     * Sets the player into a dying state and plays the dying sound effect.
+     */
     public void die() {
         SoundEffect.PLAYER_DYING.play();
         isDying = true;
@@ -153,7 +169,6 @@ public class Player implements Drawable {
             return Animations.CHARACTER_STANDING.getKeyFrame(elapsedTime, false);
         }
 
-        // TODO: Have different appearance when laying a bomb...
         if (!gameMap.getBombsInPlay().isEmpty() || !gameMap.getExplosionTiles().isEmpty())
         {
             return switch (this.currentDirection) {

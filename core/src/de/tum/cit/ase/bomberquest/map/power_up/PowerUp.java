@@ -64,22 +64,41 @@ public abstract class PowerUp implements Drawable, Destroyable {
         objectsToBeRemovedNextCycle.add(this);
     }
 
+    /**
+     * Retrieves the current visual appearance of the PowerUp.
+     *
+     * @return The {@link TextureRegion} representing the PowerUp's appearance.
+     */
     @Override
     public TextureRegion getCurrentAppearance() {
         return appearance;
     }
 
+    /**
+     * Retrieves the x-coordinate of the PowerUp's position.
+     *
+     * @return The x-coordinate in the game world.
+     */
     @Override
     public float getX() {
         return x;
     }
 
+    /**
+     * Retrieves the y-coordinate of the PowerUp's position.
+     *
+     * @return The y-coordinate in the game world.
+     */
     @Override
     public float getY() {
         return y;
     }
 
-
+    /**
+     * Destroys the PowerUp's physical hitbox in the game world.
+     *
+     * @param world The physics world where the hitbox is registered.
+     */
     @Override
     public void destroyBody(World world) {
         if (hitbox != null) {

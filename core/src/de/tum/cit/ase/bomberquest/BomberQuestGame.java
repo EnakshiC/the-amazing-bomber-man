@@ -103,6 +103,10 @@ public class BomberQuestGame extends Game {
         this.resetGame();
     }
 
+
+    /**
+     * Resets game when chosen by Player
+     */
     public void resetGame() {
         hasStarted = false;
         // Creating a new map will load with new parameters

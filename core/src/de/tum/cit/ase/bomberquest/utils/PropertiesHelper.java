@@ -21,18 +21,22 @@ import java.util.stream.Collectors;
  * It stores the current map, returns enemies, players positions, entries, exits, etc.
  */
 public class PropertiesHelper {
+    /** Fallback path to the default map file. */
     private static final String FALLBACK_PATH = "maps/map-1.properties";
 
+    /** Current file path of the loaded map. */
     private static String currentFilePath = FALLBACK_PATH;
 
+    /** Stores the coordinates of the map's exit point. */
     private static String exitCoordinates;
 
+    /** Stores the coordinates of the map's entry point. */
     private static String entryCoordinates;
 
-    // Random to select random enemies
+    /** Random instance for generating random enemies or map elements. */
     private static final Random RANDOM = new Random();
 
-    // Available maps in the game initially
+    /** A map of available maps with their names and file paths. */
     private static final Map<String, String> MAP_PATHS = Map.of(
             "Map 1", "maps/map-1.properties",
             "Map 2", "maps/map-2.properties",
@@ -41,9 +45,17 @@ public class PropertiesHelper {
             "Test Enemy", "maps/map-5.properties"
     );
 
+    /** List of available enemy settings for the game. */
     public static final List<String> enemySettings = Arrays.asList("RANDOM ENEMY", "Basic 1 Enemy", "Basic 2 Enemy", "Ghost Enemy", "Smart Bat Enemy");
+
+    /** Index of the current enemy setting. */
     private static int currentEnemySetting = 0;
 
+    /**
+     * Retrieves the map paths available for the game.
+     *
+     * @return a map of map names and their corresponding file paths.
+     */
     public static Map<String, String> getMapPaths() {
         return MAP_PATHS;
     }
