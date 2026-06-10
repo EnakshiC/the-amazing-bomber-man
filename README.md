@@ -1,2 +1,2 @@
 # the-amazing-bomber-man
-Java Bomberman-inspired game featuring adaptive fog-of-war, enemy AI, and interaction-focused gameplay design.
+Java Bomberman-inspired game developed with libGDX featuring enemy AI, adaptive fog-of-war, power-ups, and dynamic gameplay.
