@@ -6,13 +6,12 @@
   - Will be a "Continue Game" Button when a game is already running
 - "End Game" Button ends a game - only if one is running
 - Top arrow keys iterate over our pre-set maps
-  - "Map 1" and "Map 2" are the ones provided by the project, but a couple of power-ups have been exchanges with our new ons (see below)
+  - "Map 1" and "Map 2" are the ones provided by the project, but a couple of power-ups have been exchanged with our new ones (see below)
   - "Test Extra Time" is a map to test the ExtraTime PowerUp
   - "Test Enemy" is a map to test and see the movement of different enemies
     - There is a line with destructible walls in front of the player on the bottom row. Here are all upgrades waiting for the player. Especially the first three are ExtraTime PowerUps to extend the games time.
   - "Test Extra Speed" is a map to test the ExtraSpeed PowerUp
-- - "Load map from file..."
-- Opens a native file selector
+- - "Load map from file..." opens a native file selector
 - Search and select a .properties file
 - On opening, the map is created and a game started immediately
 - Middle arrow keys:  iterate over different enemy settings
@@ -27,12 +26,12 @@
   - Extreme Fog: fog with a radius around the player of r=0
 
 
-**Important: If a game is running, all settings are disables until the game is ended.** The game can end by either the game mechanics (win/loose) or by pressing Esc (to go to menu) and pressing the "End Game" button.
+**Important: If a game is running, all settings are disabled until the game is ended.** The game can end by either the game mechanics (win/loose) or by pressing Esc (to go to menu) and pressing the "End Game" button.
 
 ---
 
 ## Explanation of Game Elements and Functionality
-The player is controlled on the map via the **Arrow Keys**. He can only move in one of the cardinal direction at a time. The **SPACE** key places a bomb on the current tile, if there is still a bomb left that can be placed. **ESC** opens the menu to end it or continue it again.
+The player is controlled on the map via the **Arrow Keys**. He can only move in one of the cardinal directions at a time. The **SPACE** key places a bomb on the current tile, if there is still a bomb left that can be placed. **ESC** opens the menu to end it or continue it again.
 
 ### Enemies:
 - Basic Enemy 1 (``EnemyWithBasicMovement``): is walking in a straight line until facing a wall, then decides where to go next.
@@ -84,3 +83,46 @@ This is all in the "core/src/de/tum/cit/ase/bomberquest/..." directory
   - ``GameContactListener``: listens to all collisions in the physical game world and handles all events based on the type of the colliding objects
   - ``HitBoxHelper``: helps with the creation of bodies for all objects having a physical body in the world
   - ``PropertiesHelper``: handles the creation of all elements on the map out of the .property file. Is most often called from the ``GameMap`` constructor and returns enemies, positions, walls, etc. from the currently selected .property file
+___
+## My Contributions
+
+My contributions focused on gameplay interactions and player experience, including:
+
+* Animation systems
+* Gameplay interaction logic
+* Fog-of-war implementation
+* Menu and game-state transitions
+* Player feedback systems
+
+___
+## Screenshots
+### Main Menu
+<p align="center">
+  <img width="759" height="415" alt="image" src="https://github.com/user-attachments/assets/d5bd447c-e4a3-4dd4-ae96-a84199e79a95" />
+</p>
+
+### Gameplay
+<p align="center">
+  <img width="758" height="434" alt="image" src="https://github.com/user-attachments/assets/4d68b992-b248-4b41-90bf-1f6ffe7f3b18" />
+</p>
+
+### HUD and Exit State
+<p align="center">
+  <img width="812" height="482" alt="image" src="https://github.com/user-attachments/assets/12a37912-ac5d-4ad6-8e9d-6739a31c9763" />
+</p>
+
+### Fog of War
+<p align="center">
+  <img width="717" height="432" alt="image" src="https://github.com/user-attachments/assets/b52341f1-7030-4a16-a381-8ec2eeaf7226" />
+</p>
+
+### Victory Screen
+<p align="center">
+  <img width="952" height="482" alt="image" src="https://github.com/user-attachments/assets/5478548f-d47c-415c-b95d-24afb63340f2" />
+</p>
+
+### Game Over Screen
+<p align="center">
+  <img width="948" height="486" alt="image" src="https://github.com/user-attachments/assets/12be4808-1418-4025-acb6-01f88171a8b1" />
+</p>
+___
